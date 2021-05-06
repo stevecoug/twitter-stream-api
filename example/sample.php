@@ -1,7 +1,8 @@
 <?php
-require_once('../src/Phirehose.php');
-require_once('../src/OauthPhirehose.php');
 
+use RWC\Phirehose\OauthPhirehose;
+
+require  __DIR__ . '/../vendor/autoload.php';
 /**
  * Example of using Phirehose to display the 'sample' twitter stream.
  */

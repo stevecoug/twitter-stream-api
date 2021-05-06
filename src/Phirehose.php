@@ -79,6 +79,12 @@ abstract class Phirehose
         $this->lang = $lang;
     }
 
+    public function setLang(string $lang): self
+    {
+        $this->lang = $lang;
+        return $this;
+    }
+
     /**
      * Returns public statuses from or in reply to a set of users. Mentions ("Hello @user!") and implicit replies
      * ("@user Hello!" created without pressing the reply button) are not matched. It is up to you to find the integer
@@ -260,7 +266,7 @@ abstract class Phirehose
                 // Check if we're ready to check filter predicates
                 if ((time() - $lastFilterCheck) >= $this->filterCheckMin && $this->method->equals(Method::filter())) {
                     $lastFilterCheck = time();
-                    $this->checkFilterPredicates();
+                    $this->addFilters();
                 }
                 // Check if filter is ready + allowed to be updated (reconnect)
                 if ($this->filterChanged === true && (time() - $lastFilterUpd) >= $this->filterUpdMin) {
@@ -286,7 +292,7 @@ abstract class Phirehose
     protected function reconnect(): self
     {
         $reconnect = $this->reconnect;
-        $this->disconnect(); // Implicitly sets reconnect to false-
+        $this->disconnect(); // Implicitly sets reconnect to false
         $this->reconnect = $reconnect; // Restore state to prev
         $this->connect();
         return $this;
@@ -320,7 +326,7 @@ abstract class Phirehose
 
             // Check filter predicates for every connect (for filter method)
             if ($this->method->equals(Method::filter())) {
-                $this->checkFilterPredicates();
+                $this->addFilters();
             }
 
             // Construct URL/HTTP bits
@@ -390,6 +396,7 @@ abstract class Phirehose
                 "Content-type: application/x-www-form-urlencoded",
                 "Content-length: " . strlen($postData),
                 "Accept: */*\r\n",
+                'Authorization: ' . $this->getAuthorizationHeader($url, $requestParams),
                 'User-Agent: ' . $this->userAgent,
                 "",
                 $postData,
@@ -474,10 +481,12 @@ abstract class Phirehose
      * @see setTrack()
      * @see setFollow()
      */
-    protected function checkFilterPredicates(): void
+    protected function addFilters(): void
     {
         // Override in subclass
     }
+
+    abstract protected function getAuthorizationHeader(string $url, array $requestParams);
 
     /**
      * This is the one and only method that must be implemented additionally. As per the streaming API documentation,

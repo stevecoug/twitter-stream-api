@@ -1,6 +1,5 @@
 <?php
-require_once('../src/UserstreamPhirehose.php');
-
+require  __DIR__ . '/../vendor/autoload.php';
 /**
  * Barebones example of using UserstreamPhirehose.
  */

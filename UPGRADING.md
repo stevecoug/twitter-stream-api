@@ -12,3 +12,5 @@ forked to show credits where it's due.
 * All setters are now fluent
 * `getFollow` becomes `getFollowedUsers`
 * setLocationsByCircle has been removed, it is out of scope for this library, implement it yourself
+* You can no longer set the consumer key and consumer secrety with constants.
+* checkFilterPredicates is now addFilters

@@ -1,7 +1,5 @@
 <?php
-require_once('../src/Phirehose.php');
-require_once('../src/OauthPhirehose.php');
-
+require  __DIR__ . '/../vendor/autoload.php';
 /**
  * Example of using Phirehose to collect tweets to a "ghetto queue" (ie: simple, filesystem based queue).
  * This is not designed to be a production-ready/scalable collection system but is simple and does not rely on any

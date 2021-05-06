@@ -1,6 +1,8 @@
 <?php
-require_once('../src/OauthPhirehose.php');
 
+use RWC\Phirehose\OauthPhirehose;
+
+require  __DIR__ . '/../vendor/autoload.php';
 /**
  * Barebones example of using OauthPhirehose to do user streams.
  *
