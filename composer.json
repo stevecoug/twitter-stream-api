@@ -23,11 +23,22 @@
   "require": {
     "php": "^8",
     "ext-sockets": "*",
-    "spatie/enum": "^3.8"
+    "spatie/enum": "^3.8",
+    "friendsofphp/php-cs-fixer": "^2",
+    "phpstan/phpstan": "^0.12.85"
   },
   "autoload": {
     "psr-4": {
       "RWC\\Phirehose\\": "src/"
     }
+  },
+  "scripts": {
+    "lint": "php-cs-fixer fix -v",
+    "test:lint": "php-cs-fixer fix -v --dry-run",
+    "test:types": "phpstan analyse --ansi --memory-limit=0",
+    "test": [
+      "@test:lint",
+      "@test:types"
+    ]
   }
 }

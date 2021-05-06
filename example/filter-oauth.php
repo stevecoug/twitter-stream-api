@@ -1,17 +1,17 @@
 <?php
 
-require  __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 use RWC\Phirehose\Enums\Method;
 use RWC\Phirehose\OauthPhirehose;
 
 /**
- * Example of using Phirehose to display a live filtered stream using track words
+ * Example of using Phirehose to display a live filtered stream using track words.
  */
 class FilterTrackConsumer extends OauthPhirehose
 {
     /**
-     * Enqueue each status
+     * Enqueue each status.
      *
      * @param string $status
      */
@@ -24,14 +24,13 @@ class FilterTrackConsumer extends OauthPhirehose
          */
         $data = json_decode($status, true);
         if (is_array($data) && isset($data['user']['screen_name'])) {
-            print $data['user']['screen_name'] . ': ' . urldecode($data['text']) . "\n";
+            echo $data['user']['screen_name'] . ': ' . urldecode($data['text']) . "\n";
         }
     }
 }
 
-
 // Start streaming
 $sc = new FilterTrackConsumer('OAUTH_TOKEN', 'OAUTH_SECRET', Method::filter());
 $sc->setConsumerDetails('consumer key', 'consumer secret');
-$sc->setTrack(array('morning', 'goodnight', 'hello', 'the'));
+$sc->setTrack(['morning', 'goodnight', 'hello', 'the']);
 $sc->consume();

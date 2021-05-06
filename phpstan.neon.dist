@@ -1,0 +1,11 @@
+parameters:
+  level: 6
+  paths:
+    - src
+
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
+  reportUnmatchedIgnoredErrors: true
+  ignoreErrors:
+    - '#Static call to instance method RWC\\Phirehose\\Enums\\.+#'
+    - '#Unreachable statement - code above always terminates\.#'

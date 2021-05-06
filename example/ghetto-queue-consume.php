@@ -1,4 +1,5 @@
 <?php
+
 require __DIR__ . '/../vendor/autoload.php';
 
 /**
@@ -13,28 +14,26 @@ require __DIR__ . '/../vendor/autoload.php';
  */
 class GhettoQueueConsumer
 {
-
     /**
-     * Member attribs
+     * Member attribs.
      */
     protected $queueDir;
     protected $filePattern;
     protected $checkInterval;
 
     /**
-     * Construct the consumer and start processing
+     * Construct the consumer and start processing.
      */
     public function __construct($queueDir = '/tmp', $filePattern = 'phirehose-ghettoqueue*.queue', $checkInterval = 10)
     {
-        $this->queueDir = $queueDir;
-        $this->filePattern = $filePattern;
+        $this->queueDir      = $queueDir;
+        $this->filePattern   = $filePattern;
         $this->checkInterval = $checkInterval;
 
         // Sanity checks
         if (!is_dir($queueDir)) {
             throw new ErrorException('Invalid directory: ' . $queueDir);
         }
-
     }
 
     /**
@@ -42,16 +41,14 @@ class GhettoQueueConsumer
      */
     public function process()
     {
-
         // Init some things
         $lastCheck = 0;
 
         // Loop infinitely
         while (true) {
-
             // Get a list of queue files
             $queueFiles = glob($this->queueDir . '/' . $this->filePattern);
-            $lastCheck = time();
+            $lastCheck  = time();
 
             $this->log('Found ' . count($queueFiles) . ' queue files to process...');
 
@@ -65,13 +62,14 @@ class GhettoQueueConsumer
             while (time() - $lastCheck < $this->checkInterval) {
                 sleep(1);
             }
-
         } // Infinite loop
+    }
 
-    } // End process()
+    // End process()
 
     /**
-     * Processes a queue file and does something with it (example only)
+     * Processes a queue file and does something with it (example only).
+     *
      * @param string $queueFile The queue file
      */
     protected function processQueueFile(string $queueFile): bool
@@ -84,6 +82,7 @@ class GhettoQueueConsumer
         // Check if something has gone wrong, or perhaps the file is just locked by another process
         if (!is_resource($fp)) {
             echo 'WARN: Unable to open file or file already open: ' . $queueFile . ' - Skipping.';
+
             return false;
         }
 
@@ -104,7 +103,6 @@ class GhettoQueueConsumer
             if (is_array($data) && isset($data['user']['screen_name'])) {
                 echo 'Decoded tweet: ' . $data['user']['screen_name'] . ': ' . urldecode($data['text']);
             }
-
         } // End while
 
         // Release lock and close
@@ -114,9 +112,7 @@ class GhettoQueueConsumer
         // All done with this file
         echo 'Successfully processed ' . $statusCounter . ' tweets from ' . $queueFile . ' - deleting.';
         unlink($queueFile);
-
     }
-
 }
 
 // Construct consumer and start processing

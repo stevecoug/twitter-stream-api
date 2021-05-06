@@ -1,8 +1,6 @@
 <?php
 
-
 namespace RWC\Phirehose\Exceptions;
-
 
 use Exception;
 

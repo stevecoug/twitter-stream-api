@@ -14,3 +14,9 @@ forked to show credits where it's due.
 * setLocationsByCircle has been removed, it is out of scope for this library, implement it yourself
 * You can no longer set the consumer key and consumer secrety with constants.
 * checkFilterPredicates is now addFilters
+
+## Tests
+
+Nearly impossible. Because it would mean emulating (mocking) an Oauth server which also streams content.
+
+For now, there's no test, if you have months for this, go ahead, PR.

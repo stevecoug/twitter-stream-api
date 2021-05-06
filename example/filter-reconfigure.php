@@ -1,21 +1,21 @@
 <?php
-require  __DIR__ . '/../vendor/autoload.php';
+
+require __DIR__ . '/../vendor/autoload.php';
 use RWC\Phirehose\Enums\Method;
 use RWC\Phirehose\OauthPhirehose;
 
 /**
- * Example of how to update filter predicates using Phirehose
+ * Example of how to update filter predicates using Phirehose.
  */
 class DynamicTrackConsumer extends OauthPhirehose
 {
-
     /**
-     * Subclass specific attribs
+     * Subclass specific attribs.
      */
-    protected $myTrackWords = array('morning', 'goodnight', 'hello', 'the');
+    protected $myTrackWords = ['morning', 'goodnight', 'hello', 'the'];
 
     /**
-     * Enqueue each status
+     * Enqueue each status.
      *
      * @param string $status
      */
@@ -34,11 +34,9 @@ class DynamicTrackConsumer extends OauthPhirehose
         // This is all that's required, Phirehose will detect the change and reconnect as soon as possible
         $randWord1 = $this->myTrackWords[random_int(0, 3)];
         $randWord2 = $this->myTrackWords[random_int(0, 3)];
-        $this->setTrack(array($randWord1, $randWord2));
+        $this->setTrack([$randWord1, $randWord2]);
     }
-
 }
-
 
 // Start streaming
 $sc = new DynamicTrackConsumer('OAUTH_TOKEN', 'OAUTH_SECRET', Method::filter());

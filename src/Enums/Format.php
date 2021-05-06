@@ -1,8 +1,6 @@
 <?php
 
-
 namespace RWC\Phirehose\Enums;
-
 
 use Spatie\Enum\Enum;
 
@@ -12,5 +10,4 @@ use Spatie\Enum\Enum;
  */
 class Format extends Enum
 {
-
 }

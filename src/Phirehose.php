@@ -2,24 +2,23 @@
 
 namespace RWC\Phirehose;
 
-use Exception;
 use RWC\Phirehose\Enums\Format;
 use RWC\Phirehose\Enums\Method;
 use RWC\Phirehose\Exceptions\PhirehoseException;
+use Socket;
 
 abstract class Phirehose
 {
-    public const EARTH_RADIUS_KM = 6371;
     protected string $baseURL = 'https://stream.twitter.com/1.1/statuses/';
     protected string $username;
     protected string $password;
-    protected string $method;
-    protected string $format;
+    protected Method $method;
+    protected Format $format;
     protected int $count;
     protected array $followedUsers;
     protected array $trackWords;
     protected array $locationBoxes;
-    /** @var resource|null */
+    /** @var resource|Socket|null */
     protected $conn;
     protected array $fdrPool;
     protected string $buff;
@@ -32,26 +31,26 @@ abstract class Phirehose
     protected int $maxIdlePeriod = 0;
 
     /**
-     * Seconds since the last call to statusUpdate()
+     * Seconds since the last call to statusUpdate().
      *
      * Reset to zero after each call to statusUpdate()
      * Highest value it should ever reach is $this->avgPeriod
      */
-    protected int $avgElapsed = 0;
-    protected int $connectFailuresMax = 20;
-    protected int $connectTimeout = 5;
-    protected int $readTimeout = 5;
+    protected int $avgElapsed           = 0;
+    protected int $connectFailuresMax   = 20;
+    protected int $connectTimeout       = 5;
+    protected int $readTimeout          = 5;
     protected int $idleReconnectTimeout = 90;
-    protected int $avgPeriod = 60;
-    protected string $userAgent = 'Phirehose/1.0RC +https://github.com/fennb/phirehose';
-    protected int $filterCheckMin = 5;
-    protected int $filterUpdMin = 120;
-    protected int $tcpBackoff = 1;
-    protected int $tcpBackoffMax = 16;
-    protected int $httpBackoff = 10;
-    protected int $httpBackoffMax = 240;
-    protected int $hostPort = 80;
-    protected int $secureHostPort = 443;
+    protected int $avgPeriod            = 60;
+    protected string $userAgent         = 'Phirehose/1.0RC +https://github.com/fennb/phirehose';
+    protected int $filterCheckMin       = 5;
+    protected int $filterUpdMin         = 120;
+    protected int $tcpBackoff           = 1;
+    protected int $tcpBackoffMax        = 16;
+    protected int $httpBackoff          = 10;
+    protected int $httpBackoffMax       = 240;
+    protected int $hostPort             = 80;
+    protected int $secureHostPort       = 443;
     protected string $lang;
 
     /**
@@ -59,10 +58,9 @@ abstract class Phirehose
      *    was there before AND it works for me! But the official docs say to use /1.1/
      *    so that is what I have used for site.
      *     https://dev.twitter.com/docs/api/1.1/get/user
-     *
      * @todo Shouldn't really hard-code URL strings in this function.
      */
-    public function __construct(string $username, string $password, Method $method, ?Format $format = null, bool $lang = false)
+    public function __construct(string $username, string $password, Method $method, ?Format $format = null, string $lang = 'en')
     {
         if ($method->equals(Method::user())) {
             $this->baseURL = 'https://userstream.twitter.com/1.1/';
@@ -74,14 +72,15 @@ abstract class Phirehose
 
         $this->username = $username;
         $this->password = $password;
-        $this->method = $method ?? Method::sample();
-        $this->format = $format ?? Format::json();
-        $this->lang = $lang;
+        $this->method   = $method ?? Method::sample();
+        $this->format   = $format ?? Format::json();
+        $this->lang     = $lang;
     }
 
     public function setLang(string $lang): self
     {
         $this->lang = $lang;
+
         return $this;
     }
 
@@ -89,8 +88,7 @@ abstract class Phirehose
      * Returns public statuses from or in reply to a set of users. Mentions ("Hello @user!") and implicit replies
      * ("@user Hello!" created without pressing the reply button) are not matched. It is up to you to find the integer
      * IDs of each twitter user.
-     * Applies to: METHOD_FILTER
-     *
+     * Applies to: METHOD_FILTER.
      */
     public function setFollow(array $userIds = []): static
     {
@@ -99,13 +97,14 @@ abstract class Phirehose
             $this->filterChanged = true;
         }
         $this->followedUsers = $userIds;
+
         return $this;
     }
 
     /**
      * Specifies keywords to track. Track keywords are case-insensitive logical ORs. Terms are exact-matched, ignoring
      * punctuation. Phrases, keywords with spaces, are not supported. Queries are subject to Track Limitations.
-     * Applies to: METHOD_FILTER
+     * Applies to: METHOD_FILTER.
      */
     public function setTrack(array $trackWords = []): self
     {
@@ -114,6 +113,7 @@ abstract class Phirehose
             $this->filterChanged = true;
         }
         $this->trackWords = $trackWords;
+
         return $this;
     }
 
@@ -135,8 +135,6 @@ abstract class Phirehose
      *      array(-122.75, 36.8, -121.75, 37.8), // San Francisco
      *      array(-74, 40, -73, 41),             // New York
      *  ));
-     *
-     * @param array $boundingBoxes
      */
     public function setLocations(array $boundingBoxes = []): self
     {
@@ -147,7 +145,7 @@ abstract class Phirehose
             // Sanity check
             if (count($boundingBox) !== 4) {
                 PhirehoseException::throw('Invalid location bounding box: [%s]', [
-                    implode(', ', $boundingBox)
+                    implode(', ', $boundingBox),
                 ]);
             }
             // Append this lat/lon pairs to flattened array
@@ -159,6 +157,7 @@ abstract class Phirehose
         }
         // Set flattened value
         $this->locationBoxes = $locationBoxes;
+
         return $this;
     }
 
@@ -170,7 +169,8 @@ abstract class Phirehose
      * If you pass $reconnect as false, it will still not return in normal use: it will only return
      *   if the remote side (Twitter) close the socket. (Or the socket dies for some other external reason.)
      *
-     * @param boolean $reconnect Reconnects as per recommended
+     * @param bool $reconnect Reconnects as per recommended
+     *
      * @see handleStatus()
      */
     public function consume(bool $reconnect = true): void
@@ -180,13 +180,12 @@ abstract class Phirehose
 
         // Loop indefinitely based on reconnect
         do {
-
             // (Re)connect
             $this->reconnect();
 
             // Init state
             $lastAverage = $lastFilterCheck = $lastFilterUpd = $lastStreamActivity = time();
-            $fdw = $fde = null; // Placeholder write/error file descriptors for stream_select
+            $fdw         = $fde         = null; // Placeholder write/error file descriptors for stream_select
 
             // We use a blocking-select with timeout, to allow us to continue processing on idle streams
             //TODO: there is a bug lurking here. If $this->conn is fine, but $numChanged returns zero, because readTimeout was
@@ -221,9 +220,9 @@ abstract class Phirehose
 
                 // Track maximum idle period
                 // (We got start of an HTTP chunk, this is stream activity)
-                $this->idlePeriod = (time() - $lastStreamActivity);
+                $this->idlePeriod    = (time() - $lastStreamActivity);
                 $this->maxIdlePeriod = ($this->idlePeriod > $this->maxIdlePeriod) ? $this->idlePeriod : $this->maxIdlePeriod;
-                $lastStreamActivity = time();
+                $lastStreamActivity  = time();
 
                 //Append one HTTP chunk to $this->buff
                 $len = hexdec($chunk_info);   //$len includes the \r\n at the end of the chunk (despite what wikipedia says)
@@ -273,7 +272,6 @@ abstract class Phirehose
                     $this->reconnect();
                     $lastFilterUpd = time();
                 }
-
             } // End while-stream-activity
 
             if (function_exists('pcntl_signal_dispatch')) {
@@ -287,7 +285,7 @@ abstract class Phirehose
 
     /**
      * Reconnects as quickly as possible. Should be called whenever a reconnect is required rather that connect/disconnect
-     * to preserve streams reconnect state
+     * to preserve streams reconnect state.
      */
     protected function reconnect(): self
     {
@@ -295,6 +293,7 @@ abstract class Phirehose
         $this->disconnect(); // Implicitly sets reconnect to false
         $this->reconnect = $reconnect; // Restore state to prev
         $this->connect();
+
         return $this;
     }
 
@@ -306,8 +305,9 @@ abstract class Phirehose
         if (is_resource($this->conn)) {
             fclose($this->conn);
         }
-        $this->conn = null;
+        $this->conn      = null;
         $this->reconnect = false;
+
         return $this;
     }
 
@@ -318,19 +318,18 @@ abstract class Phirehose
     {
         // Init state
         $connectFailures = 0;
-        $tcpRetry = $this->tcpBackoff / 2;
-        $httpRetry = $this->httpBackoff / 2;
+        $tcpRetry        = $this->tcpBackoff / 2;
+        $httpRetry       = $this->httpBackoff / 2;
 
         // Keep trying until connected (or max connect failures exceeded)
         do {
-
             // Check filter predicates for every connect (for filter method)
             if ($this->method->equals(Method::filter())) {
                 $this->addFilters();
             }
 
             // Construct URL/HTTP bits
-            $url = $this->baseURL . $this->method . '.' . $this->format;
+            $url      = $this->baseURL . $this->method . '.' . $this->format;
             $urlParts = parse_url($url);
 
             // Setup params appropriately
@@ -359,9 +358,9 @@ abstract class Phirehose
              * Open socket connection to make POST request. It'd be nice to use stream_context_create with the native
              * HTTP transport but it hides/abstracts too many required bits (like HTTP error responses).
              */
-            $errNo = $errStr = null;
+            $errNo  = $errStr  = null;
             $scheme = ($urlParts['scheme'] === 'https') ? 'ssl://' : 'tcp://';
-            $port = ($urlParts['scheme'] === 'https') ? $this->secureHostPort : $this->hostPort;
+            $port   = ($urlParts['scheme'] === 'https') ? $this->secureHostPort : $this->hostPort;
 
             @$this->conn = fsockopen($scheme . $urlParts['host'], $port, $errNo, $errStr, $this->connectTimeout);
 
@@ -379,28 +378,27 @@ abstract class Phirehose
 
             // TCP connect OK
             // If we have a socket connection, we can attempt a HTTP request - Ensure blocking read for the moment
-            stream_set_blocking($this->conn, 1);
+            stream_set_blocking($this->conn, true);
 
             // Encode request data
             $postData = http_build_query(
                 data: $requestParams,
-                numeric_prefix: null,
                 encoding_type: PHP_QUERY_RFC3986
             );
 
             // Do it
             $request = implode(PHP_EOL, [
-                "POST " . $urlParts['path'] . " HTTP/1.1",
-                "Host: " . $urlParts['host'] . ':' . $port,
-                "Connection: Close\r\n",
-                "Content-type: application/x-www-form-urlencoded",
-                "Content-length: " . strlen($postData),
-                "Accept: */*\r\n",
+                'POST ' . $urlParts['path'] . ' HTTP/1.1',
+                'Host: ' . $urlParts['host'] . ':' . $port,
+                'Connection: Close',
+                'Content-type: application/x-www-form-urlencoded',
+                'Content-length: ' . strlen($postData),
+                'Accept: */*',
                 'Authorization: ' . $this->getAuthorizationHeader($url, $requestParams),
                 'User-Agent: ' . $this->userAgent,
-                "",
+                '',
                 $postData,
-                ""
+                '',
             ]);
 
             fwrite($this->conn, $request);
@@ -410,17 +408,15 @@ abstract class Phirehose
 
             // Response buffers
             $respHeaders = $respBody = '';
-            $isChunking = false;
+            $isChunking  = false;
 
             // Consume each header response line until we get to body
             while ($hLine = trim(fgets($this->conn, 4096))) {
                 $respHeaders .= $hLine . "\n";
 
-                if (strtolower($hLine) !== 'transfer-encoding: chunked') {
-                    continue;
+                if (strtolower($hLine) === 'transfer-encoding: chunked') {
+                    $isChunking = true;
                 }
-
-                $isChunking = true;
             }
 
             // If we got a non-200 response, we need to backoff and retry
@@ -442,16 +438,7 @@ abstract class Phirehose
                 sleep($httpRetry);
                 continue;
             } // End if not http 200
-
-            if (!$isChunking) {
-                throw new Exception("Twitter did not send a chunking header. Is this really HTTP/1.1? Here are headers:\n$respHeaders");
-            }   //TODO: rather crude!
-
-            // Loop until connected OK
         } while (!is_resource($this->conn) || $httpCode !== 200);
-
-        // Connected OK, reset connect failures
-        $connectFailures = 0;
 
         // Switch to non-blocking to consume the stream (important)
         stream_set_blocking($this->conn, 0);
@@ -460,8 +447,9 @@ abstract class Phirehose
         $this->filterChanged = false;
 
         // Flush stream buffer & (re)assign fdrPool (for reconnect)
-        $this->fdrPool = array($this->conn);
-        $this->buff = '';
+        $this->fdrPool = [$this->conn];
+        $this->buff    = '';
+
         return $this;
     }
 
@@ -486,20 +474,20 @@ abstract class Phirehose
         // Override in subclass
     }
 
-    abstract protected function getAuthorizationHeader(string $url, array $requestParams);
+    abstract protected function getAuthorizationHeader(string $url, array $requestParams): string;
 
     /**
      * This is the one and only method that must be implemented additionally. As per the streaming API documentation,
-     * statuses should NOT be processed within the same process that is performing collection
+     * statuses should NOT be processed within the same process that is performing collection.
      */
-    abstract public function enqueueStatus(string $status);
+    abstract public function enqueueStatus(string $status): void;
 
     public function heartbeat(): void
     {
     }
 
     /**
-     * Called every 60 or $this->avgPeriod seconds
+     * Called every 60 or $this->avgPeriod seconds.
      */
     protected function statusUpdate(): void
     {

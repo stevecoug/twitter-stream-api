@@ -5,12 +5,12 @@ use RWC\Phirehose\OauthPhirehose;
 require __DIR__ . '/../vendor/autoload.php';
 
 /**
- * Example of using Phirehose to display a live filtered stream using track words
+ * Example of using Phirehose to display a live filtered stream using track words.
  */
 class FilterTrackConsumer extends OauthPhirehose
 {
     /**
-     * Enqueue each status
+     * Enqueue each status.
      *
      * @param string $status
      */
@@ -23,21 +23,20 @@ class FilterTrackConsumer extends OauthPhirehose
          */
         $data = json_decode($status, true);
         if (is_array($data) && isset($data['user']['screen_name'])) {
-            print $data['user']['screen_name'] . ': ' . urldecode($data['text']) . "\n";
+            echo $data['user']['screen_name'] . ': ' . urldecode($data['text']) . "\n";
         }
     }
 }
 
 // The OAuth credentials you received when registering your app at Twitter
-define("TWITTER_CONSUMER_KEY", "");
-define("TWITTER_CONSUMER_SECRET", "");
-
+define('TWITTER_CONSUMER_KEY', '');
+define('TWITTER_CONSUMER_SECRET', '');
 
 // The OAuth data for the twitter account
-define("OAUTH_TOKEN", "");
-define("OAUTH_SECRET", "");
+define('OAUTH_TOKEN', '');
+define('OAUTH_SECRET', '');
 
 // Start streaming
 $sc = new FilterTrackConsumer(OAUTH_TOKEN, OAUTH_SECRET, Phirehose::METHOD_FILTER);
-$sc->setTrack(array('morning', 'goodnight', 'hello', 'the'));
+$sc->setTrack(['morning', 'goodnight', 'hello', 'the']);
 $sc->consume();
