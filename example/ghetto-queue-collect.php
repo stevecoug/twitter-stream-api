@@ -1,6 +1,6 @@
 <?php
-require_once('../lib/Phirehose.php');
-require_once('../lib/OauthPhirehose.php');
+require_once('../src/Phirehose.php');
+require_once('../src/OauthPhirehose.php');
 
 /**
  * Example of using Phirehose to collect tweets to a "ghetto queue" (ie: simple, filesystem based queue).
@@ -108,7 +108,7 @@ class GhettoQueueCollector extends OauthPhirehose
     }
 
     // If we don't have a last rotated time, it's effectively now
-    if ($this->lastRotated == NULL) {
+    if ($this->lastRotated == null) {
       $this->lastRotated = time();
     }
 

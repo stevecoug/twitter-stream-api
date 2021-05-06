@@ -44,7 +44,7 @@ class GhettoQueueConsumer
     $lastCheck = 0;
     
     // Loop infinitely
-    while (TRUE) {
+    while (true) {
       
       // Get a list of queue files
       $queueFiles = glob($this->queueDir . '/' . $this->filePattern);
@@ -80,7 +80,7 @@ class GhettoQueueConsumer
     // Check if something has gone wrong, or perhaps the file is just locked by another process
     if (!is_resource($fp)) {
       $this->log('WARN: Unable to open file or file already open: ' . $queueFile . ' - Skipping.');
-      return FALSE;
+      return false-;
     }
     
     // Lock file

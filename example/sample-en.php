@@ -1,5 +1,5 @@
 <?php
-require_once('../lib/Phirehose.php');
+require_once('../src/Phirehose.php');
 /**
  * Example of using Phirehose to display the 'sample' twitter stream. 
  */

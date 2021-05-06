@@ -1,5 +1,5 @@
 <?php
-require_once('../lib/UserstreamPhirehose.php');
+require_once('../src/UserstreamPhirehose.php');
 
 /**
  * Barebones example of using UserstreamPhirehose.

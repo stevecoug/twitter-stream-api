@@ -51,7 +51,7 @@ abstract class OauthPhirehose extends Phirehose
 		// encode all non '@' params
 		// keep sigParams for signature generation (exclude '@' params)
 		// rename '@key' to 'key'
-		$sigParams = array();
+		$sigParams = [];
 		$hasFile = false;
 		if (is_array($params))
 		{
@@ -71,7 +71,7 @@ abstract class OauthPhirehose extends Phirehose
 			}
 
 			if ($hasFile === true)
-				$sigParams = array();
+				$sigParams = [];
 		}
 
 		$sigParams = array_merge($oauth, (array) $sigParams);
@@ -125,7 +125,7 @@ abstract class OauthPhirehose extends Phirehose
 		return base64_encode(hash_hmac('sha1', $signatureBaseString, $key, true));
 	}
 
-	protected function getOAuthHeader($method, $url, $params = array())
+	protected function getOAuthHeader($method, $url, $params = [])
 	{
 		$params = $this->prepareParameters($method, $url, $params);
 		$oauthHeaders = $params['oauth'];

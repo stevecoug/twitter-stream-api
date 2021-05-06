@@ -1,5 +1,5 @@
 <?php
-require_once('../lib/OauthPhirehose.php');
+require_once('../src/OauthPhirehose.php');
 
 /**
  * Barebones example of using OauthPhirehose to do site streams.

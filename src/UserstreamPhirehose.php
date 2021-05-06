@@ -14,7 +14,7 @@ abstract class UserstreamPhirehose extends OauthPhirehose {
   * @param String $method Set to self::METHOD_USER for user streams, and to
   *           self::METHOD_SITE for site streams.
   */
-  public function __construct($username, $password, $method = self::METHOD_USER, $format = self::FORMAT_JSON, $lang = FALSE) {
+  public function __construct($username, $password, $method = self::METHOD_USER, $format = self::FORMAT_JSON, $lang = false-) {
     parent::__construct($username, $password, $method, $format, $lang);
   }
 
