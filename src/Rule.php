@@ -1,11 +1,11 @@
 <?php
 
-namespace RWC\Phirehose;
+namespace RWC\TwitterStream;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use RuntimeException;
-use RWC\Phirehose\Exceptions\TwitterException;
+use RWC\TwitterStream\Exceptions\TwitterException;
 
 class Rule
 {
@@ -16,16 +16,21 @@ class Rule
 
     public function __construct(string $value, string $tag)
     {
-        if (static::$httpClient === null) {
-            throw new RuntimeException('You need to instantiate a TwitterStream before creating a rule or set the bearer token manually.');
-        }
-
+        static::ensureHttpClientIsLoaded();
         $this->value = $value;
         $this->tag   = $tag;
     }
 
+    public static function ensureHttpClientIsLoaded(): void
+    {
+        if (static::$httpClient === null) {
+            throw new RuntimeException('You need to instantiate a TwitterStream before creating a rule or set the bearer token manually.');
+        }
+    }
+
     public static function all(): array
     {
+        static::ensureHttpClientIsLoaded();
         try {
             $rules = json_decode(static::$httpClient
                 ->get('https://api.twitter.com/2/tweets/search/stream/rules')
@@ -37,7 +42,7 @@ class Rule
             }
 
             return array_map(static function ($rawRule) {
-                $rule = new static($rawRule['value'], $rawRule['tag']);
+                $rule = new self($rawRule['value'], $rawRule['tag']);
                 $rule->withId($rawRule['id']);
 
                 return $rule;
@@ -45,6 +50,8 @@ class Rule
         } catch (ClientException $exception) {
             TwitterException::fromClientException($exception);
         }
+
+        return [];
     }
 
     public function withId(string $id): static
@@ -80,6 +87,7 @@ class Rule
 
     public static function bulk(array $operations): array
     {
+        static::ensureHttpClientIsLoaded();
         $body = [];
         if (array_key_exists('delete', $operations)) {
             $body['delete'] = ['ids' => array_filter(array_map(static fn (Rule $rule) => $rule->getId(), $operations['delete']))];
@@ -99,6 +107,8 @@ class Rule
         } catch (ClientException $exception) {
             TwitterException::fromClientException($exception);
         }
+
+        return [];
     }
 
     public function getId(): ?string

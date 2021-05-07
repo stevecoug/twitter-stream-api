@@ -1,4 +1,5 @@
 /vendor
 composer.lock
-.ideat
+.idea
 tinker.php
+.php-cs-fixer.cache

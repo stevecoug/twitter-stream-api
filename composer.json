@@ -1,5 +1,5 @@
 {
-  "name": "redwebcreation/tweets-stream",
+  "name": "redwebcreation/twitter-stream",
   "description": "A PHP interface to the Twitter Streaming API.",
   "keywords": [
     "redwebcreation",
@@ -29,7 +29,7 @@
   },
   "autoload": {
     "psr-4": {
-      "RWC\\Phirehose\\": "src/"
+      "RWC\\TwitterStream\\": "src/"
     }
   },
   "scripts": {

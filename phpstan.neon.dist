@@ -1,5 +1,5 @@
 parameters:
-  level: 6
+  level: max
   paths:
     - src
 
@@ -7,5 +7,4 @@ parameters:
   checkGenericClassInNonGenericObjectType: false
   reportUnmatchedIgnoredErrors: true
   ignoreErrors:
-    - '#Static call to instance method RWC\\Phirehose\\Enums\\.+#'
-    - '#Unreachable statement - code above always terminates\.#'
+    - '#Cannot call method (get|post)\(\) on GuzzleHttp\\Client\|null#'

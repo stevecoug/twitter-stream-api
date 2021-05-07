@@ -1,6 +1,6 @@
 <?php
 
-namespace RWC\Phirehose\Exceptions;
+namespace RWC\TwitterStream\Exceptions;
 
 use Exception;
 use GuzzleHttp\Exception\ClientException;
@@ -13,6 +13,6 @@ class TwitterException extends Exception
 
         $message = implode(PHP_EOL, array_map(fn ($error) => $error['message'], $response['errors']));
 
-        throw new static($message);
+        throw new self($message);
     }
 }

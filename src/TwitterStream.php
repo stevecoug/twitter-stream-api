@@ -1,6 +1,6 @@
 <?php
 
-namespace RWC\Phirehose;
+namespace RWC\TwitterStream;
 
 use Generator;
 use GuzzleHttp\Client;
@@ -24,9 +24,9 @@ class TwitterStream
         Rule::useHttpClient($this->httpClient);
     }
 
-    public function filteredTweets(): Generator
+    public function filteredTweets(Sets $sets = null): Generator
     {
-        $this->streamConnection = $this->connectToFilteredStream();
+        $this->streamConnection = $this->connectToFilteredStream($sets);
 
         while (!$this->streamConnection->eof()) {
             $char  = $this->streamConnection->read(1);
@@ -36,14 +36,16 @@ class TwitterStream
                 $char = $this->streamConnection->read(1);
                 $tweet .= $char;
             }
-
-            yield json_decode($tweet);
+            yield json_decode($tweet, true);
         }
     }
 
-    protected function connectToFilteredStream(): StreamInterface
+    protected function connectToFilteredStream(Sets $sets = null): StreamInterface
     {
-        return $this->httpClient->get('https://api.twitter.com/2/tweets/search/stream?tweet.fields=created_at&expansions=author_id&user.fields=created_at', [
+        // Could use the null object pattern
+        $sets ??= new Sets();
+
+        return $this->httpClient->get('https://api.twitter.com/2/tweets/search/stream?' . $sets, [
             'stream' => true,
         ])->getBody();
     }
