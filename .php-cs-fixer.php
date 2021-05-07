@@ -1,7 +1,6 @@
 <?php
 
 $finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__ . DIRECTORY_SEPARATOR . 'example')
     ->in(__DIR__ . DIRECTORY_SEPARATOR . 'src')
     ->append(['.php_cs']);
 
@@ -22,7 +21,7 @@ $rules = [
 
 $rules['increment_style'] = ['style' => 'post'];
 
-return PhpCsFixer\Config::create()
+return (new \PhpCsFixer\Config())
     ->setUsingCache(true)
     ->setRules($rules)
     ->setFinder($finder);
