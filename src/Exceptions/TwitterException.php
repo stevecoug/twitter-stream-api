@@ -11,7 +11,11 @@ class TwitterException extends Exception
     {
         $response = json_decode($exception->getResponse()->getBody()->getContents(), true);
 
-        $message = implode(PHP_EOL, array_map(fn ($error) => $error['message'], $response['errors']));
+        if (array_key_exists('detail', $response)) {
+            $message  = $response['detail'];
+        } else {
+            $message = implode(PHP_EOL, array_map(fn ($error) => $error['message'], $response['errors']));
+        }
 
         throw new self($message);
     }
