@@ -23,12 +23,21 @@ composer require redwebcreation/twitter-stream-api
 ## Usage
 
 ```php
+use RWC\TwitterStream\Fieldset;
+use RWC\TwitterStream\Rule;
+use RWC\TwitterStream\Sets;
 use RWC\TwitterStream\TwitterStream;
 
 $twitterStream = new TwitterStream(
     $bearerToken = '',
     $apiKey  = '',
     $apiSecretKey = '',
+);
+
+Rule::create('cats has:links');
+
+$sets = new Sets(
+    new Fieldset('user.fields', 'created_at')
 );
 
 foreach ($twitterStream->filteredTweets() as $tweet) {

@@ -10,7 +10,7 @@ use RWC\TwitterStream\Exceptions\TwitterException;
 class Rule
 {
     protected static ?Client $httpClient = null;
-    protected ?string $id                = null;
+    protected ?string $id = null;
     protected string $value;
     protected string $tag;
 
@@ -18,10 +18,10 @@ class Rule
     {
         static::ensureHttpClientIsLoaded();
         $this->value = $value;
-        $this->tag   = $tag ?? $value;
+        $this->tag = $tag ?? $value;
     }
 
-    public static function ensureHttpClientIsLoaded(): void
+    protected static function ensureHttpClientIsLoaded(): void
     {
         if (static::$httpClient === null) {
             throw new RuntimeException('You need to instantiate a TwitterStream before creating a rule or set the bearer token manually.');
@@ -75,6 +75,13 @@ class Rule
         ]);
     }
 
+    public static function create(string $name, ?string $tag = null): self
+    {
+        $rule = new self($name, $tag);
+        $rule->add();
+        return $rule;
+    }
+
     public function add(): array
     {
         $results = static::addBulk($this);
@@ -94,11 +101,11 @@ class Rule
         static::ensureHttpClientIsLoaded();
         $body = [];
         if (array_key_exists('delete', $operations)) {
-            $body['delete'] = ['ids' => array_filter(array_map(static fn (Rule $rule) => $rule->getId(), $operations['delete']))];
+            $body['delete'] = ['ids' => array_filter(array_map(static fn(Rule $rule) => $rule->getId(), $operations['delete']))];
         }
 
         if (array_key_exists('add', $operations)) {
-            $body['add'] = array_map(static fn (Rule $rule) => ['value' => $rule->getValue(), 'tag' => $rule->getTag()], $operations['add']);
+            $body['add'] = array_map(static fn(Rule $rule) => ['value' => $rule->getValue(), 'tag' => $rule->getTag()], $operations['add']);
         }
 
         try {
