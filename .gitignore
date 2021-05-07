@@ -3,3 +3,4 @@ composer.lock
 .idea
 tinker.php
 .php-cs-fixer.cache
+.phpunit.result.cache

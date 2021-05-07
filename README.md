@@ -1,12 +1,12 @@
 # Twitter Stream API (v2)
 
-Consume the Twitter Stream API v2 in real-time.
-
 [![Tests](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/tests.yml)
 [![Formats](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/formats.yml/badge.svg?branch=master)](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/formats.yml)
 [![Version](https://poser.pugx.org/redwebcreation/twitter-stream-api/version)](//packagist.org/packages/redwebcreation/twitter-stream-api)
 [![Total Downloads](https://poser.pugx.org/redwebcreation/twitter-stream-api/downloads)](//packagist.org/packages/redwebcreation/twitter-stream-api)
 [![License](https://poser.pugx.org/redwebcreation/twitter-stream-api/license)](//packagist.org/packages/redwebcreation/twitter-stream-api)
+
+Consume the Twitter Stream API v2 in real-time.
 
 This package is the spiritual successor of `fennb/phirehose`.
 
@@ -85,9 +85,14 @@ To reduce the number of requests made to Twitter's API, you may want to use bulk
 ```php
 use RWC\TwitterStream\Rule;
 
+// One request
 Rule::addBulk(
-    new Rule('dog has:links OR cat has:links',)
+    new Rule('one rule'),
+    new Rule('another one')
 );
+
+// 2 request instead of 1 + x rules to delete
+Rule::deleteBulk(...Rule::all());
 ```
 
 ### Sets
@@ -108,12 +113,12 @@ use RWC\TwitterStream\Fieldset;
 use RWC\TwitterStream\Sets;
 
 $sets = new Sets(
-    new Fieldset('tweet.fields', 'created_at'),
-    new Fieldset('expansions', 'author_id')
+    new Fieldset('tweet.fields', 'created_at', '...'),
+    new Fieldset('expansions', 'author_id', '...')
 );
 ```
 
-Then, pass it to `filteredStream()`
+Then, pass it to `filteredTweets()`
 
 ```php
 $twitterStream->filteredTweets($sets);
