@@ -10,7 +10,7 @@ use RWC\TwitterStream\Exceptions\TwitterException;
 class Rule
 {
     protected static ?Client $httpClient = null;
-    protected ?string $id = null;
+    protected ?string $id                = null;
     protected string $value;
     protected string $tag;
 
@@ -18,7 +18,7 @@ class Rule
     {
         static::ensureHttpClientIsLoaded();
         $this->value = $value;
-        $this->tag = $tag ?? $value;
+        $this->tag   = $tag ?? $value;
     }
 
     public static function ensureHttpClientIsLoaded(): void
@@ -80,6 +80,7 @@ class Rule
         $results = static::addBulk($this);
 
         $this->withId($results['data'][0]['id']);
+
         return $results;
     }
 
@@ -93,11 +94,11 @@ class Rule
         static::ensureHttpClientIsLoaded();
         $body = [];
         if (array_key_exists('delete', $operations)) {
-            $body['delete'] = ['ids' => array_filter(array_map(static fn(Rule $rule) => $rule->getId(), $operations['delete']))];
+            $body['delete'] = ['ids' => array_filter(array_map(static fn (Rule $rule) => $rule->getId(), $operations['delete']))];
         }
 
         if (array_key_exists('add', $operations)) {
-            $body['add'] = array_map(static fn(Rule $rule) => ['value' => $rule->getValue(), 'tag' => $rule->getTag()], $operations['add']);
+            $body['add'] = array_map(static fn (Rule $rule) => ['value' => $rule->getValue(), 'tag' => $rule->getTag()], $operations['add']);
         }
 
         try {

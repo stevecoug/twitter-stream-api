@@ -91,7 +91,7 @@ Rule::addBulk(
     new Rule('another one')
 );
 
-// 2 request instead of 1 + x rules to delete
+// 2 requests instead of 1 + x rules to delete
 Rule::deleteBulk(...Rule::all());
 ```
 
