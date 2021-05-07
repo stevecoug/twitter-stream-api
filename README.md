@@ -8,16 +8,13 @@ Consume the Twitter Stream API v2 in real-time.
 [![Total Downloads](https://poser.pugx.org/redwebcreation/twitter-stream-api/downloads)](//packagist.org/packages/redwebcreation/twitter-stream-api)
 [![License](https://poser.pugx.org/redwebcreation/twitter-stream-api/license)](//packagist.org/packages/redwebcreation/twitter-stream-api)
 
-**This package only supports Twitter API v2 as they're deprecating the v1 and therefore it makes no sense for me to
-support it.**
-
-This package is a spiritual successor of `fennb/phirehose`. The major difference apart from the public API is that it's
-MIT licensed rather than `GPL` licensed so anyone can use it for any project.
+This package is the spiritual successor of `fennb/phirehose`.
 
 ## Getting started
 
 > Requires [PHP 8.0+](https://www.php.net/releases/)
-You  can install the package via composer:
+
+You can install the package via composer:
 
 ```bash
 composer require redwebcreation/twitter-stream-api
@@ -27,7 +24,7 @@ composer require redwebcreation/twitter-stream-api
 
 ```php
 use RWC\TwitterStream\TwitterStream;
-// Updating arguments named will not be considered a breaking change, be aware of that if you decide to use them.
+
 $twitterStream = new TwitterStream(
     $bearerToken = '',
     $apiKey  = '',
@@ -36,6 +33,10 @@ $twitterStream = new TwitterStream(
 
 foreach ($twitterStream->filteredTweets() as $tweet) {
     dump($tweet['data']['text']);
+    
+    if ($enoughTweets) {
+        $twitterStream->stopListening();
+    }
 }
 ```
 
@@ -44,10 +45,10 @@ foreach ($twitterStream->filteredTweets() as $tweet) {
 ### Rules
 
 Rules are made up of one, or many operators that are combined using boolean logic and parentheses to help define which
-Tweets will deliver to your stream.
+Tweets will deliver to your stream. Rules are saved in the Twitter API and are persistent.
 
 > You need to create a `TwitterStream` before using anything related to rules.
-> Alternatively, you can use `Rule::useBearerToken()` or `Rule::useHttpClient()` for full control.
+> Alternatively, you can use `Rule::useBearerToken()` for full control over which token is used.
 
 #### Listing all the rules
 
@@ -66,13 +67,27 @@ $rule = new Rule('cat has:image', 'cats with images');
 $rule->add();
 ```
 
+If no tag is provided, the fallback is the rule content itself.
+
 #### Deleting a rule
+
+> Note: you can not delete a rule before adding it.
 
 ```php
 use RWC\TwitterStream\Rule;
 
 $rule  = Rule::all()[0];
 $rule->delete();
+```
+
+To reduce the number of requests made to Twitter's API, you may want to use bulk rules creation.
+
+```php
+use RWC\TwitterStream\Rule;
+
+Rule::addBulk(
+    new Rule('dog has:links OR cat has:links',)
+);
 ```
 
 ### Sets
