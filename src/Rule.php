@@ -18,7 +18,7 @@ class Rule
     {
         static::ensureHttpClientIsLoaded();
         $this->value = $value;
-        $this->tag = $tag ?? $value;
+        $this->tag   = $tag ?? $value;
     }
 
     public static function ensureHttpClientIsLoaded(): void
@@ -90,11 +90,11 @@ class Rule
         static::ensureHttpClientIsLoaded();
         $body = [];
         if (array_key_exists('delete', $operations)) {
-            $body['delete'] = ['ids' => array_filter(array_map(static fn(Rule $rule) => $rule->getId(), $operations['delete']))];
+            $body['delete'] = ['ids' => array_filter(array_map(static fn (Rule $rule) => $rule->getId(), $operations['delete']))];
         }
 
         if (array_key_exists('add', $operations)) {
-            $body['add'] = array_map(static fn(Rule $rule) => ['value' => $rule->getValue(), 'tag' => $rule->getTag()], $operations['add']);
+            $body['add'] = array_map(static fn (Rule $rule) => ['value' => $rule->getValue(), 'tag' => $rule->getTag()], $operations['add']);
         }
 
         try {
