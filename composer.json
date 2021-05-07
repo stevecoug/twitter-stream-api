@@ -1,6 +1,6 @@
 {
   "name": "redwebcreation/twitter-stream-api",
-  "description": "A PHP interface to the Twitter Streaming API.",
+  "description": "Consume the Twitter Stream API in real-time.",
   "keywords": [
     "redwebcreation",
     "phirehose-replacement",
