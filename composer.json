@@ -1,5 +1,5 @@
 {
-  "name": "redwebcreation/twitter-stream",
+  "name": "redwebcreation/twitter-stream-api",
   "description": "A PHP interface to the Twitter Streaming API.",
   "keywords": [
     "redwebcreation",
@@ -35,9 +35,9 @@
     "test:lint": "php-cs-fixer fix -v --dry-run",
     "test:types": "phpstan analyse --ansi --memory-limit=0",
     "test": [
-      "@test:unit",
       "@test:lint",
-      "@test:types"
+      "@test:types",
+      "@test:unit"
     ]
   },
   "require-dev": {
