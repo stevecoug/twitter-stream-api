@@ -6,11 +6,13 @@ namespace RWC\TwitterStream\Builder;
 
 use InvalidArgumentException;
 use JetBrains\PhpStorm\Pure;
+use Pest\Expectations\OppositeExpectation;
 use ReflectionClass;
 use ReflectionProperty;
 
 class Builder
 {
+    public OppositeBuilder $not;
     protected ?int $sample = null;
     protected string $query;
     protected array $is = [];
@@ -34,6 +36,7 @@ class Builder
     public function __construct(string $query)
     {
         $this->query = $query;
+        $this->not = new OppositeBuilder($this);
     }
 
     #[Pure] public static function create(string $query): Builder
@@ -49,7 +52,7 @@ class Builder
         $properties = $reflection->getProperties(ReflectionProperty::IS_PROTECTED);
 
         foreach ($properties as $property) {
-            if ($property->getName() === 'query') {
+            if (in_array($property->getName(), ['query', 'not'])) {
                 continue;
             }
 
@@ -78,7 +81,7 @@ class Builder
             }
         }
 
-        return implode(' ', $rule);
+        return implode(' ', $rule) . $this->not;
     }
 
     public function from(string|array $users): static
