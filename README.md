@@ -77,6 +77,8 @@ $rule->add();
 
 If no tag is provided, the fallback is the rule content itself.
 
+For your convience, there is a "query builder" for rules available, learn more [here](#rule-builder).
+
 #### Deleting a rule
 
 > Note: you can not delete a rule before adding it.
@@ -131,6 +133,54 @@ Then, pass it to `filteredTweets()`
 ```php
 $twitterStream->filteredTweets($sets);
 ```
+
+### Rule Builder
+
+```php
+use RWC\TwitterStream\Builder\Builder;
+
+$builder = Builder::create('#php')
+    ->retweets()
+    ->not->replies()
+    ->from(['@afelixdorn', '@spatie_be'])
+    ->hasLinks()
+    ->not->hasImages()
+    ->sampleSize(40);
+```
+
+There are many methods available :
+
+* `from` : Matches any Tweet from a specific user.
+* `to` : Matches any Tweet that is in reply to a particular user.
+* `sampleSize` : Returns a random percent sample of Tweets that match a rule rather than the entire set of Tweets.
+* `replies` :  Deliver only explicit replies that match a rule.
+* `retweets` : Matches on Retweets that match the rest of the specified rule.
+* `quote` : Returns all Quote Tweets, also known as Tweets with comments.
+* `verified` : Deliver only Tweets whose authors are verified by Twitter.
+* `retweetsOf` : Matches Tweets that are Retweets of the specified user.
+* `context` :  Matches Tweets with a specific domain id and/or domain id, entity id pair.
+* `hasHashtags` : Matches Tweets that contain at least one hashtag.
+* `hasCashtags` : Matches Tweets that contain a cashtag symbol.
+* `hasLinks` : This operator matches Tweets which contain links and media in the Tweet body.
+* `hasMentions` : Matches Tweets that mention another Twitter user.
+* `hasMedia` : Matches Tweets that contain a media object, such as a photo, GIF, or video, as determined by Twitter.
+* `hasImages` : Matches Tweets that contain a recognized URL to an image.
+* `hasVideos` :  Matches Tweets that contain native Twitter videos, uploaded directly to Twitter.
+* `hasGeographicDataAttached` : Matches Tweets that have Tweet-specific geolocation data provided by the Twitter user.
+* `locale` :  Matches Tweets that have been classified by Twitter as being of a particular language
+* `url` : Matches on any validly-formatted URL of a Tweet.
+* `entity` : Matches Tweets with a specific entity string value.
+* `conversation` :  Matches Tweets with a specific entity string value.
+* `bio` : Matches a keyword or phrase within the Tweet publisher's bio.
+* `bioName` :Matches a keyword within the Tweet publisher's user bio name.
+* `bioLocation` :    Matches Tweets that are published by users whose location contains the specified keyword or phrase.
+* `place` :    Matches Tweets tagged with the specified location or Twitter place ID.
+* `placeCountry` :    Matches Tweets where the country code associated with a tagged place/location matches the given
+  ISO alpha-2 character code.
+* `pointRadius` : Matches against the place.geo.coordinates object of the Tweet when present, and in Twitter, against a
+  place geo polygon, where the Place polygon is fully contained within the defined region.
+* `boundingBox` : Matches against the place.geo.coordinates object of the Tweet when present, and in Twitter, against a
+  place geo polygon, where the place polygon is fully contained within the defined region.
 
 ## Testing
 

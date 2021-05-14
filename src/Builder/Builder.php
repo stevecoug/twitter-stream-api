@@ -142,7 +142,7 @@ class Builder
         return $this;
     }
 
-    public function hashtags(): static
+    public function hasHashtags(): static
     {
         $this->has[] = 'hashtags';
         return $this;
