@@ -39,7 +39,7 @@ $sets = new Sets(
     new Fieldset('user.fields', 'created_at')
 );
 
-foreach ($twitterStream->filteredTweets() as $tweet) {
+foreach ($twitterStream->filteredTweets($sets) as $tweet) {
     dump($tweet['data']['text']);
     
     if ($enoughTweets) {
