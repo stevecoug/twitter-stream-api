@@ -1,12 +1,9 @@
 <?php
 
-
 namespace RWC\TwitterStream;
-
 
 use InvalidArgumentException;
 use LogicException;
-use RWC\TwitterStream\Rule;
 use RWC\TwitterStream\Support\Arr;
 
 /**
@@ -14,7 +11,7 @@ use RWC\TwitterStream\Support\Arr;
  */
 class RuleBuilder
 {
-    protected bool $negates = false;
+    protected bool $negates     = false;
     protected array $attributes = [];
 
     public function __construct(string $query = '')
@@ -32,6 +29,7 @@ class RuleBuilder
     {
         if ($name !== 'not') {
             trigger_error('Undefined property QueryBuilder::' . $name, E_USER_WARNING);
+
             return null;
         }
 
@@ -44,13 +42,14 @@ class RuleBuilder
 
         if (empty($value)) {
             $this->negates(false);
+
             return;
         }
 
         $this->attributes[] = [
             $headless ? strtoupper($name) : $name,
             [Arr::wrap($value), $this->negates],
-            $headless
+            $headless,
         ];
         $this->negates(false);
     }
@@ -58,17 +57,18 @@ class RuleBuilder
     protected function negates(bool $negates = true): static
     {
         $this->negates = $negates;
+
         return $this;
     }
 
-    public function from(string|array $users): static
+    public function from(string | array $users): static
     {
         $this->from = $users;
 
         return $this;
     }
 
-    public function to(string|array $users): static
+    public function to(string | array $users): static
     {
         $this->from = $users;
 
@@ -86,41 +86,46 @@ class RuleBuilder
         }
 
         $this->sample = $size;
+
         return $this;
     }
 
     public function replies(): static
     {
         $this->is = 'reply';
+
         return $this;
     }
 
     public function retweets(): static
     {
         $this->is = 'retweet';
+
         return $this;
     }
 
     public function quote(): static
     {
         $this->is = 'quote';
+
         return $this;
     }
 
     public function verified(): static
     {
         $this->is = 'verified';
+
         return $this;
     }
 
-    public function retweetsOf(string|array $users): static
+    public function retweetsOf(string | array $users): static
     {
         $this->retweets_of = $users;
 
         return $this;
     }
 
-    public function context(string|array $context): static
+    public function context(string | array $context): static
     {
         $this->context = $context;
 
@@ -130,79 +135,88 @@ class RuleBuilder
     public function hasHashtags(): static
     {
         $this->has = 'hashtags';
+
         return $this;
     }
 
     public function hasCashtags(): static
     {
         $this->has = 'cashtags';
+
         return $this;
     }
 
     public function hasLinks(): static
     {
         $this->has = 'links';
+
         return $this;
     }
 
     public function hasMentions(): static
     {
         $this->has = 'mentions';
+
         return $this;
     }
 
     public function hasMedia(): static
     {
         $this->has = 'media';
+
         return $this;
     }
 
     public function hasImages(): static
     {
         $this->has = 'images';
+
         return $this;
     }
 
     public function hasVideos(): static
     {
         $this->has = 'videos';
+
         return $this;
     }
 
     public function hasGeographicDataAttached(): static
     {
         $this->has = 'geo';
+
         return $this;
     }
 
     public function locale(string $lang): static
     {
         $this->lang = $lang;
+
         return $this;
     }
 
-    public function url(string|array $urls): static
+    public function url(string | array $urls): static
     {
         $this->url = $urls;
 
         return $this;
     }
 
-    public function entity(string|array $entities): static
+    public function entity(string | array $entities): static
     {
         $this->entity = $entities;
 
         return $this;
     }
 
-    public function conversation(string|array $conversations): static
+    public function conversation(string | array $conversations): static
     {
         $this->conversation_id = $conversations;
 
         return $this;
     }
 
-    public function bio(string|array $bios): static
+    public function bio(string | array $bios): static
     {
         $this->bio = $bios;
 
@@ -212,6 +226,7 @@ class RuleBuilder
     public function or(): static
     {
         $this->or = true;
+
         return $this;
     }
 
@@ -225,6 +240,7 @@ class RuleBuilder
         // Returning the builder is optional.
         $builder($stub);
         $this->group = $stub;
+
         return $this;
     }
 
@@ -235,37 +251,39 @@ class RuleBuilder
         }
 
         $this->is = 'nullcast';
+
         return $this;
     }
 
     public function and(): static
     {
         $this->and = true;
+
         return $this;
     }
 
-    public function bioName(string|array $bioNames): static
+    public function bioName(string | array $bioNames): static
     {
         $this->bio_name = $bioNames;
 
         return $this;
     }
 
-    public function bioLocation(string|array $bioLocations): static
+    public function bioLocation(string | array $bioLocations): static
     {
         $this->bio_location = $bioLocations;
 
         return $this;
     }
 
-    public function place(string|array $places): static
+    public function place(string | array $places): static
     {
         $this->place = $places;
 
         return $this;
     }
 
-    public function placeCountry(string|array $placesCountry): static
+    public function placeCountry(string | array $placesCountry): static
     {
         $this->place_country = $placesCountry;
 
@@ -279,6 +297,7 @@ class RuleBuilder
         }, false);
 
         $this->point_radius = $isCollection ? $points : [$points];
+
         return $this;
     }
 
@@ -289,6 +308,7 @@ class RuleBuilder
         }, false);
 
         $this->bounding_box = $isCollection ? $boxes : [$boxes];
+
         return $this;
     }
 
@@ -303,7 +323,7 @@ class RuleBuilder
 
         foreach ($this->attributes as $attribute) {
             [$name, $set, $headless] = $attribute;
-            [$properties, $negates] = $set;
+            [$properties, $negates]  = $set;
 
             foreach ($properties as $property) {
                 if (is_array($property)) {
@@ -325,6 +345,7 @@ class RuleBuilder
     public function raw(string $expression): static
     {
         $this->raw = $expression;
+
         return $this;
     }
 

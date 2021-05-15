@@ -178,6 +178,19 @@ RuleBuilder::create('#laravel')
 // Produces: #laravel (tip OR tips OR 🔥)
 ```
 
+You can also directly save the rule :
+
+```php
+use RWC\TwitterStream\RuleBuilder;
+
+RuleBuilder::create('cats')
+  ->hasImages()
+  ->not->retweets()
+  ->save('cats with images, not a retweet');
+```
+
+This sends a request to Twitter.
+
 There are many methods available :
 
 * `from` : Matches any Tweet from a specific user.
