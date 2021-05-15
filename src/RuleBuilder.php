@@ -7,7 +7,29 @@ use LogicException;
 use RWC\TwitterStream\Support\Arr;
 
 /**
- * @property RuleBuilder $not
+ * @property RuleBuilder  $not
+ * @property array|string $from
+ * @property array|string $to
+ * @property string       $is
+ * @property string       $has
+ * @property int          $sample
+ * @property array|string $retweets_of
+ * @property array|string $context
+ * @property array|string $lang
+ * @property array|string $url
+ * @property array|string $entity
+ * @property array|string $conversation_id
+ * @property array|string $bio
+ * @property array|string $bio_name
+ * @property array|string $bio_location
+ * @property array|string $place
+ * @property array|string $place_country
+ * @property array        $point_radius
+ * @property array        $bounding_box
+ * @property string       $raw
+ * @property bool         $or
+ * @property bool         $and
+ * @property RuleBuilder  $group
  */
 class RuleBuilder
 {
@@ -20,7 +42,7 @@ class RuleBuilder
         $this->__set('query', $query);
     }
 
-    public static function create(string $query = '')
+    public static function create(string $query = ''): RuleBuilder
     {
         return new self($query);
     }
@@ -36,7 +58,7 @@ class RuleBuilder
         return $this->negates();
     }
 
-    public function __set(string $name, $value): void
+    public function __set(string $name, mixed $value): void
     {
         $headless = in_array($name, ['and', 'or', 'query', 'raw']);
 
@@ -230,7 +252,7 @@ class RuleBuilder
         return $this;
     }
 
-    public function group(callable $builder)
+    public function group(callable $builder): static
     {
         if ($this->negates) {
             throw new LogicException('A group can not be negated. Negate each individual statement.');
