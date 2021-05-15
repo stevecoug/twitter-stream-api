@@ -137,7 +137,7 @@ Then, pass it to `filteredTweets()`
 $twitterStream->filteredTweets($sets);
 ```
 
-### Rule Builder
+## Rule Builder
 
 It's a powerful tool to build complex rules using an expressive syntax.
 
@@ -192,7 +192,7 @@ RuleBuilder::create('cats')
 This sends a request to Twitter.
 
 
-### Available methods
+##l# Available methods
 
 * `from` : Matches any Tweet from a specific user.
 * `to` : Matches any Tweet that is in reply to a particular user.
