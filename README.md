@@ -22,8 +22,8 @@ composer require redwebcreation/twitter-stream-api
 ## Usage
 
 ```php
+use RWC\TwitterStream\RuleBuilder;
 use RWC\TwitterStream\Fieldset;
-use RWC\TwitterStream\Rule;
 use RWC\TwitterStream\Sets;
 use RWC\TwitterStream\TwitterStream;
 
@@ -33,7 +33,10 @@ $twitterStream = new TwitterStream(
     $apiSecretKey = '',
 );
 
-Rule::create('cats has:links');
+RuleBuilder::create('cats')
+  ->not->retweets()
+  ->hasLinks()
+  ->save();
 
 $sets = new Sets(
     new Fieldset('user.fields', 'created_at')
@@ -136,23 +139,27 @@ $twitterStream->filteredTweets($sets);
 
 ### Rule Builder
 
-```php
-use RWC\TwitterStream\Builder\Builder;
+It's a powerful tool to build complex rules using an expressive syntax.
 
-$builder = Builder::create('#php')
-    ->group(function (Builder $builder) {
+```php
+use RWC\TwitterStream\RuleBuilder;
+
+$builder = RuleBuilder::create('#php')
+    ->group(function (RuleBuilder $builder) {
         $builder->raw('tip')->or()->raw('🔥');
     })
     ->retweets()
     ->hasImages()
     ->not->hasLinks();
+
+// Produces #php (tip OR 🔥) is:retweet has:images -has:links
 ```
 
 You can negate an operator using the magic property `not`.
 
 ```php
-use RWC\TwitterStream\Builder\Builder;
-Builder::create('#php')
+use RWC\TwitterStream\RuleBuilder;
+RuleBuilder::create('#php')
   ->not->retweets()
   ->hasLinks();
 
@@ -162,9 +169,9 @@ Builder::create('#php')
 You can also group operators together :
 
 ```php
-use RWC\TwitterStream\Builder\Builder;
-Builder::create('#laravel')
-    ->group(function (Builder $builder) {
+use RWC\TwitterStream\RuleBuilder;
+RuleBuilder::create('#laravel')
+    ->group(function (RuleBuilder $builder) {
         $builder->raw('tip')->or()->raw('tips')->or()->raw('🔥');
     });
 

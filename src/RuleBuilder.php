@@ -1,17 +1,18 @@
 <?php
 
 
-namespace RWC\TwitterStream\Builder;
+namespace RWC\TwitterStream;
 
 
 use InvalidArgumentException;
 use LogicException;
+use RWC\TwitterStream\Rule;
 use RWC\TwitterStream\Support\Arr;
 
 /**
- * @property Builder $not
+ * @property RuleBuilder $not
  */
-class Builder
+class RuleBuilder
 {
     protected bool $negates = false;
     protected array $attributes = [];
@@ -27,7 +28,7 @@ class Builder
         return new self($query);
     }
 
-    public function __get(string $name): ?Builder
+    public function __get(string $name): ?RuleBuilder
     {
         if ($name !== 'not') {
             trigger_error('Undefined property QueryBuilder::' . $name, E_USER_WARNING);
@@ -309,7 +310,7 @@ class Builder
                     $property = '[' . implode(' ', $property) . ']';
                 }
 
-                if ($property instanceof Builder) {
+                if ($property instanceof RuleBuilder) {
                     $rule[] = '(' . $property . ')';
                     continue;
                 }
@@ -325,5 +326,10 @@ class Builder
     {
         $this->raw = $expression;
         return $this;
+    }
+
+    public function save(string $tag = null): Rule
+    {
+        return Rule::create($compiled = $this->compile(), $tag ?? $compiled);
     }
 }
