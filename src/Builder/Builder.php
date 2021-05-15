@@ -5,47 +5,83 @@ namespace RWC\TwitterStream\Builder;
 
 
 use InvalidArgumentException;
-use JetBrains\PhpStorm\Pure;
-use Pest\Expectations\OppositeExpectation;
-use ReflectionClass;
-use ReflectionProperty;
+use LogicException;
+use RWC\TwitterStream\Support\Arr;
 
+/**
+ * @property Builder $not
+ */
 class Builder
 {
-    use Concerns\CompilesRule;
-    public OppositeBuilder $not;
-    protected static array $excludedProperties = ['query', 'not'];
+    protected bool $negates = false;
+    protected array $attributes = [];
 
-    protected ?int $sample = null;
-    protected string $query;
-
-    #[Pure] public function __construct(string $query)
+    public function __construct(string $query = '')
     {
-        $this->query = $query;
-        $this->not = new OppositeBuilder($this);
+        // For some reason, PHPStorm autocompletes the query property with a $this->query = $query;
+        $this->__set('query', $query);
     }
 
-    #[Pure] public static function create(string $query): Builder
+    public static function create(string $query = '')
     {
         return new self($query);
     }
 
+    public function __get(string $name): ?Builder
+    {
+        if ($name !== 'not') {
+            trigger_error('Undefined property QueryBuilder::' . $name, E_USER_WARNING);
+            return null;
+        }
+
+        return $this->negates();
+    }
+
+    public function __set(string $name, $value): void
+    {
+        $headless = in_array($name, ['and', 'or', 'query', 'raw']);
+
+        if (empty($value)) {
+            $this->negates(false);
+            return;
+        }
+
+        $this->attributes[] = [
+            $headless ? strtoupper($name) : $name,
+            [Arr::wrap($value), $this->negates],
+            $headless
+        ];
+        $this->negates(false);
+    }
+
+    protected function negates(bool $negates = true): static
+    {
+        $this->negates = $negates;
+        return $this;
+    }
+
     public function from(string|array $users): static
     {
-        $this->from = is_array($users) ? $users : [$users];
+        $this->from = $users;
+
         return $this;
     }
 
     public function to(string|array $users): static
     {
-        $this->to = is_array($users) ? $users : [$users];
+        $this->from = $users;
+
         return $this;
     }
 
-    public function sampleSize(int $size): static
+    public function sample(int $size): static
     {
         if (0 >= $size || $size > 100) {
-            throw new InvalidArgumentException('The sample size must be between 0 and 100 percents');
+            throw new InvalidArgumentException('The sample size must be between 1 and 100 percents');
+        }
+
+        if ($this->negates) {
+            throw new LogicException('Can not negate the sample field');
         }
 
         $this->sample = $size;
@@ -54,139 +90,181 @@ class Builder
 
     public function replies(): static
     {
-        $this->is[] = 'reply';
+        $this->is = 'reply';
         return $this;
     }
 
     public function retweets(): static
     {
-        $this->is[] = 'retweet';
+        $this->is = 'retweet';
         return $this;
     }
 
     public function quote(): static
     {
-        $this->is[] = 'quote';
+        $this->is = 'quote';
         return $this;
     }
 
     public function verified(): static
     {
-        $this->is[] = 'verified';
+        $this->is = 'verified';
         return $this;
     }
 
     public function retweetsOf(string|array $users): static
     {
-        $this->retweetsOf = is_array($users) ? $users : [$users];
+        $this->retweets_of = $users;
+
         return $this;
     }
 
     public function context(string|array $context): static
     {
-        $this->context[] = is_array($context) ? $context : [$context];
+        $this->context = $context;
+
         return $this;
     }
 
     public function hasHashtags(): static
     {
-        $this->has[] = 'hashtags';
+        $this->has = 'hashtags';
         return $this;
     }
 
     public function hasCashtags(): static
     {
-        $this->has[] = 'cashtags';
+        $this->has = 'cashtags';
         return $this;
     }
 
     public function hasLinks(): static
     {
-        $this->has[] = 'links';
+        $this->has = 'links';
         return $this;
     }
 
     public function hasMentions(): static
     {
-        $this->has[] = 'mentions';
+        $this->has = 'mentions';
         return $this;
     }
 
     public function hasMedia(): static
     {
-        $this->has[] = 'media';
+        $this->has = 'media';
         return $this;
     }
 
     public function hasImages(): static
     {
-        $this->has[] = 'images';
+        $this->has = 'images';
         return $this;
     }
 
     public function hasVideos(): static
     {
-        $this->has[] = 'videos';
+        $this->has = 'videos';
         return $this;
     }
 
     public function hasGeographicDataAttached(): static
     {
-        $this->has[] = 'geo';
+        $this->has = 'geo';
         return $this;
     }
 
     public function locale(string $lang): static
     {
-        $this->lang[] = $lang;
+        $this->lang = $lang;
         return $this;
     }
 
     public function url(string|array $urls): static
     {
-        $this->url = is_array($urls) ? $urls : [$urls];
+        $this->url = $urls;
+
         return $this;
     }
 
     public function entity(string|array $entities): static
     {
-        $this->entity = is_array($entities) ? $entities : [$entities];
+        $this->entity = $entities;
+
         return $this;
     }
 
     public function conversation(string|array $conversations): static
     {
-        $this->conversationId = is_array($conversations) ? $conversations : [$conversations];
+        $this->conversation_id = $conversations;
+
         return $this;
     }
 
     public function bio(string|array $bios): static
     {
-        $this->bio = is_array($bios) ? $bios : [$bios];
+        $this->bio = $bios;
+
+        return $this;
+    }
+
+    public function or(): static
+    {
+        $this->or = true;
+        return $this;
+    }
+
+    public function group(callable $builder)
+    {
+        if ($this->negates) {
+            throw new LogicException('A group can not be negated. Negate each individual statement.');
+        }
+
+        $this->group = $builder(new self(''));
+        return $this;
+    }
+
+    public function nullcast(): static
+    {
+        if (!$this->negates) {
+            throw new LogicException('The nullcast operator must be negated');
+        }
+
+        $this->is = 'nullcast';
+        return $this;
+    }
+
+    public function and(): static
+    {
+        $this->and = true;
         return $this;
     }
 
     public function bioName(string|array $bioNames): static
     {
-        $this->bioName = is_array($bioNames) ? $bioNames : [$bioNames];
+        $this->bio_name = $bioNames;
+
         return $this;
     }
 
     public function bioLocation(string|array $bioLocations): static
     {
-        $this->bioLocation = is_array($bioLocations) ? $bioLocations : [$bioLocations];
+        $this->bio_location = $bioLocations;
+
         return $this;
     }
 
     public function place(string|array $places): static
     {
-        $this->place = is_array($places) ? $places : [$places];
+        $this->place = $places;
+
         return $this;
     }
 
     public function placeCountry(string|array $placesCountry): static
     {
-        $this->placeCountry = is_array($placesCountry) ? $placesCountry : [$placesCountry];
+        $this->place_country = $placesCountry;
+
         return $this;
     }
 
@@ -196,18 +274,53 @@ class Builder
             return $_ || is_array($point);
         }, false);
 
-        $this->pointRadius = $isCollection ? $points : [$points];
+        $this->point_radius = $isCollection ? $points : [$points];
         return $this;
     }
 
     public function boundingBox(array $boxes): static
     {
-
         $isCollection = array_reduce($boxes, function ($_, $box) {
             return $_ || is_array($box);
         }, false);
 
-        $this->boundingBox = $isCollection ? $boxes : [$boxes];
+        $this->bounding_box = $isCollection ? $boxes : [$boxes];
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->compile();
+    }
+
+    public function compile(): string
+    {
+        $rule = [];
+
+        foreach ($this->attributes as $attribute) {
+            [$name, $set, $headless] = $attribute;
+            [$properties, $negates] = $set;
+
+            foreach ($properties as $property) {
+                if (is_array($property)) {
+                    $property = '[' . implode(' ', $property) . ']';
+                }
+
+                if ($property instanceof Builder) {
+                    $rule[] = '(' . $property . ')';
+                    continue;
+                }
+
+                $rule[] = ($negates ? '-' : '') . ($headless ? '' : $name . ':') . (in_array($name, ['AND', 'OR']) ? $name : $property);
+            }
+        }
+
+        return implode(' ', $rule);
+    }
+
+    public function raw(string $expression): static
+    {
+        $this->raw = $expression;
         return $this;
     }
 }

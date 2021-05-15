@@ -145,7 +145,7 @@ $builder = Builder::create('#php')
     ->from(['@afelixdorn', '@spatie_be'])
     ->hasLinks()
     ->not->hasImages()
-    ->sampleSize(40);
+    ->sample(40);
 ```
 
 There are many methods available :
