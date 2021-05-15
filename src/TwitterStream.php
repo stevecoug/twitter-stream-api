@@ -15,8 +15,7 @@ class TwitterStream
         protected string $bearerToken,
         protected string $apiKey,
         protected string $apiSecretKey,
-    )
-    {
+    ) {
         $this->httpClient = new Client([
             'headers' => [
                 'Authorization' => "Bearer {$this->bearerToken}",
@@ -30,7 +29,7 @@ class TwitterStream
         $this->streamConnection = $this->connectToFilteredStream($sets);
 
         while (!$this->streamConnection->eof()) {
-            $char = $this->streamConnection->read(2);
+            $char  = $this->streamConnection->read(2);
             $tweet = $char;
 
             while ($char !== "\r\n") {
