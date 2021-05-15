@@ -10,7 +10,7 @@ use RWC\TwitterStream\Exceptions\TwitterException;
 class Rule
 {
     protected static ?Client $httpClient = null;
-    protected ?string $id                = null;
+    protected ?string $id = null;
     protected string $value;
     protected string $tag;
 
@@ -18,7 +18,7 @@ class Rule
     {
         static::ensureHttpClientIsLoaded();
         $this->value = $value;
-        $this->tag   = $tag ?? $value;
+        $this->tag = $tag ?? $value;
     }
 
     protected static function ensureHttpClientIsLoaded(): void
@@ -104,20 +104,26 @@ class Rule
         static::ensureHttpClientIsLoaded();
         $body = [];
         if (array_key_exists('delete', $operations)) {
-            $body['delete'] = ['ids' => array_filter(array_map(static fn (Rule $rule) => $rule->getId(), $operations['delete']))];
+            $body['delete'] = ['ids' => array_filter(array_map(static fn(Rule $rule) => $rule->getId(), $operations['delete']))];
         }
 
         if (array_key_exists('add', $operations)) {
-            $body['add'] = array_map(static fn (Rule $rule) => ['value' => $rule->getValue(), 'tag' => $rule->getTag()], $operations['add']);
+            $body['add'] = array_map(static fn(Rule $rule) => ['value' => $rule->getValue(), 'tag' => $rule->getTag()], $operations['add']);
         }
 
         try {
-            return json_decode(static::$httpClient->post('https://api.twitter.com/2/tweets/search/stream/rules', [
+            $results = json_decode(static::$httpClient->post('https://api.twitter.com/2/tweets/search/stream/rules', [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
                 'body' => json_encode($body),
             ])->getBody()->getContents(), true);
+
+            if (array_key_exists('errors', $results)) {
+                throw new RuntimeException($results['errors'][0]['title'] . ': ' . $results['errors'][0]['details'][0] . '(' . $results['errors'][0]['type'] . ')');
+            }
+
+            return $results;
         } catch (ClientException $exception) {
             TwitterException::fromClientException($exception);
         }
