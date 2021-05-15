@@ -140,19 +140,43 @@ $twitterStream->filteredTweets($sets);
 use RWC\TwitterStream\Builder\Builder;
 
 $builder = Builder::create('#php')
+    ->group(function (Builder $builder) {
+        $builder->raw('tip')->or()->raw('🔥');
+    })
     ->retweets()
-    ->not->replies()
-    ->from(['@afelixdorn', '@spatie_be'])
-    ->hasLinks()
-    ->not->hasImages()
-    ->sample(40);
+    ->hasImages()
+    ->not->hasLinks();
+```
+
+You can negate an operator using the magic property `not`.
+
+```php
+use RWC\TwitterStream\Builder\Builder;
+Builder::create('#php')
+  ->not->retweets()
+  ->hasLinks();
+
+// Produces: #php -is:retweet has:links
+```
+
+You can also group operators together :
+
+```php
+use RWC\TwitterStream\Builder\Builder;
+Builder::create('#laravel')
+    ->group(function (Builder $builder) {
+        $builder->raw('tip')->or()->raw('tips')->or()->raw('🔥');
+    });
+
+// Produces: #laravel (tip OR tips OR 🔥)
 ```
 
 There are many methods available :
 
 * `from` : Matches any Tweet from a specific user.
 * `to` : Matches any Tweet that is in reply to a particular user.
-* `sampleSize` : Returns a random percent sample of Tweets that match a rule rather than the entire set of Tweets.
+* `sample` : Returns a random percent sample of Tweets that match a rule rather than the entire set of Tweets.
+* `nullcast` :  Removes Tweets created for promotion only on ads.twitter.com. (Must always be negated)
 * `replies` :  Deliver only explicit replies that match a rule.
 * `retweets` : Matches on Retweets that match the rest of the specified rule.
 * `quote` : Returns all Quote Tweets, also known as Tweets with comments.

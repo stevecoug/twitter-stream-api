@@ -220,7 +220,10 @@ class Builder
             throw new LogicException('A group can not be negated. Negate each individual statement.');
         }
 
-        $this->group = $builder(new self(''));
+        $stub = new self();
+        // Returning the builder is optional.
+        $builder($stub);
+        $this->group = $stub;
         return $this;
     }
 
