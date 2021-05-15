@@ -1,6 +1,6 @@
 <?php
 
-use RWC\TwitterStream\Builder\RuleBuilder;
+use RWC\TwitterStream\RuleBuilder;
 
 it('can build a rule', function () {
     $builder = RuleBuilder::create('#php')
