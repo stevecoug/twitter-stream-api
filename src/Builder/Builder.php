@@ -12,28 +12,14 @@ use ReflectionProperty;
 
 class Builder
 {
+    use Concerns\CompilesRule;
     public OppositeBuilder $not;
+    protected static array $excludedProperties = ['query', 'not'];
+
     protected ?int $sample = null;
     protected string $query;
-    protected array $is = [];
-    protected array $has = [];
-    protected array $lang = [];
-    protected array $from = [];
-    protected array $to = [];
-    protected array $context = [];
-    protected array $retweetsOf = [];
-    protected array $url = [];
-    protected array $entity = [];
-    protected array $conversationId = [];
-    protected array $bio = [];
-    protected array $bioName = [];
-    protected array $bioLocation = [];
-    protected array $place = [];
-    protected array $placeCountry = [];
-    protected array $pointRadius = [];
-    protected array $boundingBox = [];
 
-    public function __construct(string $query)
+    #[Pure] public function __construct(string $query)
     {
         $this->query = $query;
         $this->not = new OppositeBuilder($this);
@@ -42,46 +28,6 @@ class Builder
     #[Pure] public static function create(string $query): Builder
     {
         return new self($query);
-    }
-
-    public function __toString(): string
-    {
-        $rule = [$this->query];
-
-        $reflection = new ReflectionClass($this);
-        $properties = $reflection->getProperties(ReflectionProperty::IS_PROTECTED);
-
-        foreach ($properties as $property) {
-            if (in_array($property->getName(), ['query', 'not'])) {
-                continue;
-            }
-
-            $propertyName = strtolower(preg_replace_callback(
-                "/(?'lowercase'[a-z])(?'uppercase'[A-Z])/",
-                fn($matches) => $matches['lowercase'] . '_' . strtolower($matches['uppercase']),
-                $property->getName()
-            ));
-
-            $property->setAccessible(true);
-            $propertyValue = $property->getValue($this);
-
-            if (empty($propertyValue)) {
-                continue;
-            }
-
-            if (is_array($propertyValue)) {
-                foreach ($propertyValue as $condition) {
-                    if (is_array($condition)) {
-                        $condition = '[' . implode(' ', $condition) . ']';
-                    }
-                    $rule[] = $propertyName . ':' . $condition;
-                }
-            } else {
-                $rule[] = $propertyName . ':' . $propertyValue;
-            }
-        }
-
-        return implode(' ', $rule) . $this->not;
     }
 
     public function from(string|array $users): static

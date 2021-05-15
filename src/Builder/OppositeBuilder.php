@@ -4,30 +4,11 @@
 namespace RWC\TwitterStream\Builder;
 
 
-use ReflectionClass;
-use ReflectionProperty;
-
 class OppositeBuilder
 {
+    protected static array $excludedProperties = ['builder'];
     protected Builder $builder;
-
-    protected array $is = [];
-    protected array $has = [];
-    protected array $lang = [];
-    protected array $from = [];
-    protected array $to = [];
-    protected array $context = [];
-    protected array $retweetsOf = [];
-    protected array $url = [];
-    protected array $entity = [];
-    protected array $conversationId = [];
-    protected array $bio = [];
-    protected array $bioName = [];
-    protected array $bioLocation = [];
-    protected array $place = [];
-    protected array $placeCountry = [];
-    protected array $pointRadius = [];
-    protected array $boundingBox = [];
+    use Concerns\CompilesRule;
 
     public function __construct(Builder $builder)
     {
@@ -37,7 +18,7 @@ class OppositeBuilder
     public function from(string|array $users): Builder
     {
         $this->from = is_array($users) ? $users : [$users];
-        return $this->builder->builder;
+        return $this->builder;
     }
 
     public function to(string|array $users): Builder
@@ -204,43 +185,4 @@ class OppositeBuilder
         $this->boundingBox = $isCollection ? $boxes : [$boxes];
         return $this->builder;
     }
-
-    public function __toString(): string
-    {
-        $rule = [];
-        $reflection = new ReflectionClass($this);
-        $properties = $reflection->getProperties(ReflectionProperty::IS_PROTECTED);
-
-        foreach ($properties as $property) {
-            if ($property->getName() === 'builder') {
-                continue;
-            }
-            $propertyName = strtolower(preg_replace_callback(
-                "/(?'lowercase'[a-z])(?'uppercase'[A-Z])/",
-                fn($matches) => $matches['lowercase'] . '_' . strtolower($matches['uppercase']),
-                $property->getName()
-            ));
-
-            $property->setAccessible(true);
-            $propertyValue = $property->getValue($this);
-
-            if (empty($propertyValue)) {
-                continue;
-            }
-
-            foreach ($propertyValue as $condition) {
-                if (is_array($condition)) {
-                    $condition = '[' . implode(' ', $condition) . ']';
-                }
-                $rule[] = '-' . $propertyName . ':' . $condition;
-            }
-        }
-
-        if (empty($rule)) {
-            return '';
-        }
-
-        return ' ' . implode(' ', $rule);
-    }
-
 }
