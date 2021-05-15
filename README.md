@@ -191,7 +191,8 @@ RuleBuilder::create('cats')
 
 This sends a request to Twitter.
 
-There are many methods available :
+
+### Available methods
 
 * `from` : Matches any Tweet from a specific user.
 * `to` : Matches any Tweet that is in reply to a particular user.
