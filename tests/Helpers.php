@@ -8,7 +8,7 @@ use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use JetBrains\PhpStorm\ArrayShape;
 
-#[ArrayShape([Client::class, 'array'])] function useHttpClient(array $responses, &$container): Client
+function useHttpClient(array $responses, &$container): Client
 {
     $mock = new MockHandler(
         array_map(

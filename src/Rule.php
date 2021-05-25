@@ -3,14 +3,12 @@
 namespace RWC\TwitterStream;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 use RuntimeException;
-use RWC\TwitterStream\Exceptions\TwitterException;
 
 class Rule
 {
-    protected static ?Client $httpClient = null;
-    protected ?string $id                = null;
+    protected static ?TwitterClient $httpClient = null;
+    protected ?string $id                       = null;
     protected string $value;
     protected string $tag;
 
@@ -21,37 +19,26 @@ class Rule
         $this->tag   = $tag ?? $value;
     }
 
-    protected static function ensureHttpClientIsLoaded(): void
+    protected static function ensureHttpClientIsLoaded(): TwitterClient
     {
         if (static::$httpClient === null) {
             throw new RuntimeException('You need to instantiate a TwitterStream before creating a rule or set the bearer token manually.');
         }
+
+        return static::$httpClient;
     }
 
     public static function all(): array
     {
-        static::ensureHttpClientIsLoaded();
-        try {
-            $rules = json_decode(static::$httpClient
-                ->get('https://api.twitter.com/2/tweets/search/stream/rules')
-                ->getBody()
-                ->getContents(), true);
+        $rules = static::ensureHttpClientIsLoaded()
+            ->request('GET', 'https://api.twitter.com/2/tweets/search/stream/rules');
 
-            if (!array_key_exists('data', $rules)) {
-                return [];
-            }
+        return array_map(static function ($rawRule) {
+            $rule = new self($rawRule['value'], $rawRule['tag']);
+            $rule->withId($rawRule['id']);
 
-            return array_map(static function ($rawRule) {
-                $rule = new self($rawRule['value'], $rawRule['tag']);
-                $rule->withId($rawRule['id']);
-
-                return $rule;
-            }, $rules['data']);
-        } catch (ClientException $exception) {
-            TwitterException::fromClientException($exception);
-        }
-
-        return [];
+            return $rule;
+        }, $rules['data']);
     }
 
     public function withId(string $id): static
@@ -61,18 +48,22 @@ class Rule
         return $this;
     }
 
-    public static function useHttpClient(Client $client): void
+    public static function useHttpClient(TwitterClient | Client $client): void
     {
+        if ($client instanceof Client) {
+            $client = new TwitterClient($client);
+        }
+
         static::$httpClient = $client;
     }
 
     public static function useBearerToken(string $bearerToken): void
     {
-        static::$httpClient = new Client([
+        static::$httpClient = new TwitterClient(new Client([
             'headers' => [
                 'Authorization' => "Bearer {$bearerToken}",
             ],
-        ]);
+        ]));
     }
 
     public static function create(string $name, ?string $tag = null): self
@@ -101,8 +92,8 @@ class Rule
 
     public static function bulk(array $operations): array
     {
-        static::ensureHttpClientIsLoaded();
         $body = [];
+
         if (array_key_exists('delete', $operations)) {
             $body['delete'] = ['ids' => array_filter(array_map(static fn (Rule $rule) => $rule->getId(), $operations['delete']))];
         }
@@ -111,24 +102,12 @@ class Rule
             $body['add'] = array_map(static fn (Rule $rule) => ['value' => $rule->getValue(), 'tag' => $rule->getTag()], $operations['add']);
         }
 
-        try {
-            $results = json_decode(static::$httpClient->post('https://api.twitter.com/2/tweets/search/stream/rules', [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                ],
-                'body' => json_encode($body),
-            ])->getBody()->getContents(), true);
-
-            if (array_key_exists('errors', $results)) {
-                throw new RuntimeException($results['errors'][0]['title'] . ': ' . $results['errors'][0]['details'][0] . '(' . $results['errors'][0]['type'] . ')');
-            }
-
-            return $results;
-        } catch (ClientException $exception) {
-            TwitterException::fromClientException($exception);
-        }
-
-        return [];
+        return static::ensureHttpClientIsLoaded()->request('POST', 'https://api.twitter.com/2/tweets/search/stream/rules', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode($body),
+        ]);
     }
 
     public function getId(): ?string
