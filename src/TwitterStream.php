@@ -39,7 +39,7 @@ class TwitterStream
         };
 
         while ($shouldKeepListening()) {
-            $char  = $this->streamConnection->read(1) ;
+            $char  = $this->streamConnection->read(1);
             $tweet = $char;
 
             while ($char !== "\n" && $tweet[-1] !== "\r") {
@@ -67,11 +67,10 @@ class TwitterStream
 
     public function __destruct()
     {
-        // If the connection was never initialized, this throws an error. 
+        // If the connection was never initialized, this throws an error.
         try {
-            $this->stopListening();        
+            $this->stopListening();
         } catch (Error) {
-
         }
     }
 
