@@ -68,12 +68,12 @@ class Rule
     public static function create(string $name, ?string $tag = null): self
     {
         $rule = new self($name, $tag);
-        $rule->add();
+        $rule->save();
 
         return $rule;
     }
 
-    public function add(): array
+    public function save(): array
     {
         $results = static::addBulk($this);
 
