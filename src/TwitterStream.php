@@ -2,6 +2,7 @@
 
 namespace RWC\TwitterStream;
 
+use Error;
 use Generator;
 use GuzzleHttp\Client;
 use Psr\Http\Message\StreamInterface;
@@ -38,18 +39,12 @@ class TwitterStream
         };
 
         while ($shouldKeepListening()) {
-            $char  = $this->streamConnection->read(2);
+            $char  = $this->streamConnection->read(1) ;
             $tweet = $char;
 
-            while ($char !== "\r\n") {
-                $char = $this->streamConnection->read(2);
+            while ($char !== "\n" && $tweet[-1] !== "\r") {
+                $char = $this->streamConnection->read(1);
                 $tweet .= $char;
-            }
-
-            $tweet = trim($tweet);
-
-            if (empty($tweet)) {
-                continue;
             }
 
             $decoded = json_decode($tweet, true);
@@ -65,13 +60,19 @@ class TwitterStream
         // Could use the null object pattern
         $sets ??= new Sets();
 
-        return $this->httpClient->stream('GET', 'https://api.twitter.com/2/tweets/search/stream?' . $sets)
+        return $this->httpClient
+            ->stream('GET', 'https://api.twitter.com/2/tweets/search/stream?' . $sets)
             ->getBody();
     }
 
     public function __destruct()
     {
-        $this->stopListening();
+        // If the connection was never initialized, this throws an error. 
+        try {
+            $this->stopListening();        
+        } catch (Error) {
+
+        }
     }
 
     public function stopListening(): self

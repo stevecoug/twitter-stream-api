@@ -373,6 +373,7 @@ class RuleBuilder
 
     public function save(string $tag = null): Rule
     {
-        return Rule::create($compiled = $this->compile(), $tag ?? $compiled);
+        $compiled = $this->compile();
+        return Rule::create($compiled, $tag ?? $compiled);
     }
 }
