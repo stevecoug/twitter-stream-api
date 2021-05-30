@@ -33,7 +33,7 @@ class Rule
         $rules = static::ensureHttpClientIsLoaded()->request('GET', 'https://api.twitter.com/2/tweets/search/stream/rules');
 
         return array_map(static function ($rawRule) {
-            $rule = new self($rawRule['value'], $rawRule['tag']);
+            $rule = new self($rawRule['value'], $rawRule['tag'] ?? '');
             $rule->withId($rawRule['id']);
 
             return $rule;
