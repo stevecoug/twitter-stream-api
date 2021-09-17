@@ -92,7 +92,7 @@ class RuleBuilder
 
     public function to(string|array $users): static
     {
-        $this->from = $users;
+        $this->to = $users;
 
         return $this;
     }
