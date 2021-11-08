@@ -44,7 +44,7 @@
     "symfony/var-dumper": "^5.2",
     "pestphp/pest": "^1.1",
     "friendsofphp/php-cs-fixer": "^3",
-    "phpstan/phpstan": "^0.12.85",
+    "phpstan/phpstan": "^1",
     "vlucas/phpdotenv": "^5.3"
   }
 }

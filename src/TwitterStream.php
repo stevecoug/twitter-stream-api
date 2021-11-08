@@ -42,9 +42,11 @@ class TwitterStream
             $char  = $this->streamConnection->read(1);
             $tweet = $char;
 
-            while ($char !== "\n" && $tweet[-1] !== "\r") {
+            while ($char !== ''  && $char !== "\n" && $tweet[-1] !== "\r") {
+                if ($this->streamConnection->)
                 $char = $this->streamConnection->read(1);
                 $tweet .= $char;
+
             }
 
             $decoded = json_decode($tweet, true);
@@ -67,16 +69,17 @@ class TwitterStream
 
     public function __destruct()
     {
-        // If the connection was never initialized, this throws an error.
-        try {
-            $this->stopListening();
-        } catch (Error) {
-        }
+        $this->stopListening();
     }
 
     public function stopListening(): self
     {
-        $this->streamConnection->close();
+        // If the connection was never initialized, this throws an error.
+        try {
+            $this->streamConnection->close();
+        } catch (Error) {
+
+        }
 
         return $this;
     }
