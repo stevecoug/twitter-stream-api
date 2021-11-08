@@ -42,8 +42,11 @@ class TwitterStream
             $char  = $this->streamConnection->read(1);
             $tweet = $char;
 
-            while ($char !== ''  && $char !== "\n" && $tweet[-1] !== "\r") {
-                if ($this->streamConnection->)
+            if ($tweet === '') {
+                continue;
+            }
+
+            while ($char !== "\n" && $tweet[-1] !== "\r") {
                 $char = $this->streamConnection->read(1);
                 $tweet .= $char;
 
