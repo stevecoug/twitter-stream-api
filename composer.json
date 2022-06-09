@@ -22,7 +22,8 @@
   ],
   "require": {
     "php": "^8",
-    "guzzlehttp/guzzle": "^7.3"
+    "guzzlehttp/guzzle": "^7.3",
+    "maxakawizard/json-collection-parser": "^1.8"
   },
   "autoload": {
     "psr-4": {
@@ -46,5 +47,10 @@
     "friendsofphp/php-cs-fixer": "^3",
     "phpstan/phpstan": "^1",
     "vlucas/phpdotenv": "^5.3"
+  },
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
   }
 }

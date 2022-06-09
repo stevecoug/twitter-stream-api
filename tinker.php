@@ -1,6 +1,8 @@
 <?php
 
 use NunoMaduro\Collision\Provider;
+use RWC\TwitterStream\Connection;
+use RWC\TwitterStream\FilteredStream;
 use RWC\TwitterStream\Rule;
 use RWC\TwitterStream\RuleBuilder;
 use RWC\TwitterStream\TwitterStream;
@@ -13,20 +15,18 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 $bearerToken = $_ENV['TWITTER_BEARER_TOKEN'];
-$apiKey = $_ENV['TWITTER_APIKEY'];
-$apiSecretKey = $_ENV['TWITTER_SECRET_APIKEY'];
 
-$twitterStream = new TwitterStream(
-    $bearerToken,
-    $apiKey,
-    $apiSecretKey
-);
+$stream = new FilteredStream();
 
 Rule::deleteBulk(...Rule::all());
-RuleBuilder::create('cats')
-    ->hasImages()
-    ->save();
+RuleBuilder::create('cats')->save();
 
-foreach ($twitterStream->filteredTweets() as $tweet) {
-    dump($tweet);
-}
+$stream
+    ->listen(new Connection($bearerToken), function (object $tweet) {
+        dump($tweet);
+    });
+
+//
+//foreach ($twitterStream->filteredTweets() as $tweet) {
+//    dump($tweet);
+//}
