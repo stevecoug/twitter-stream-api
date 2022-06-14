@@ -2,48 +2,108 @@
 
 namespace RWC\TwitterStream;
 
-use GuzzleHttp\Client as GuzzleClient;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\UriInterface;
-use RuntimeException;
-
 class TwitterClient
 {
-    protected GuzzleClient $httpClient;
-
-    public function __construct(GuzzleClient $httpClient)
+    public function __construct(public Connection $connection)
     {
-        $this->httpClient = $httpClient;
     }
 
-    public function stream(string $method, UriInterface|string $uri = '', array $options = []): ResponseInterface
+    public function allRules(): array
     {
-        $options['stream'] = true;
+        $rules = $this->connection->json('GET', 'https://api.twitter.com/2/tweets/search/stream/rules');
 
-        return $this->httpClient->request($method, $uri, $options);
+        return array_map(fn (array $rule) => new Rule(
+            $rule['value'],
+            $rule['tag'] ?? null,
+            $rule['id'] ?? null,
+        ), $rules);
     }
 
-    public function request(string $method, UriInterface|string $uri = '', array $options = []): array
+    /**
+     * @param Rule[] $rules
+     */
+    public function addRules(array $rules): self
     {
-        $response = $this->httpClient->request($method, $uri, $options);
+        $this->connection->request('POST', 'https://api.twitter.com/2/tweets/search/stream/rules', [
+            'body' => json_encode([
+                'add' => array_map(fn ($rule) => ['value' => $rule->value, 'tag' => $rule->tag], $rules),
+            ]),
+        ]);
 
-        $decoded = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
-
-        if (array_key_exists('errors', $decoded)) {
-            throw new RuntimeException($this->getErrorMessageFromResponse($decoded));
-        }
-
-        return $decoded;
+        return $this;
     }
 
-    protected function getErrorMessageFromResponse(array $decoded): string
+    // 1534798180050780160
+    public function deleteRules(string ...$ids): self
     {
-        $error = $decoded['errors'][0];
+        $this->connection->request('POST', 'https://api.twitter.com/2/tweets/search/stream/rules', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode([
+                'delete' => ['ids' => $ids],
+            ]),
+        ]);
 
-        if (array_key_exists('details', $error)) {
-            return sprintf('%s: %s (%s)', $error['title'], implode('. ', $error['details']), $error['type']);
-        }
-
-        return sprintf('%s (%s)', $error['title'], $error['type']);
+        return $this;
     }
+
+//    public function bulk(array $operations): array
+//    {
+//        $body = [];
+//
+//        if (array_key_exists('delete', $operations)) {
+//            $body['delete'] = ['ids' => array_filter(array_map(static fn (Rule $rule) => $rule->getId(), $operations['delete']))];
+//        }
+//
+//        if (array_key_exists('add', $operations)) {
+//            $body['add'] = array_map(static fn (Rule $rule) => ['value' => $rule->getValue(), 'tag' => $rule->getTag()], $operations['add']);
+//        }
+//
+//        return $this->request('POST', 'https://api.twitter.com/2/tweets/search/stream/rules', [
+//            'headers' => [
+//                'Content-Type' => 'application/json',
+//            ],
+//            'body' => json_encode($body),
+//        ]);
+//    }
+//
+//    public function create(string $name, ?string $tag = null): self
+//    {
+//        $rule = new self($name, $tag);
+//        $rule->save();
+//
+//        return $rule;
+//    }
+//
+//    public function save(): array
+//    {
+//        $results = static::addBulk($this);
+//
+//        if (array_key_exists('data', $results)) {
+//            $this->withId($results['data'][0]['id']);
+//        }
+//
+//        return $results;
+//    }
+//
+//    public function addBulk(self ...$rules): array
+//    {
+//        return static::bulk(['add' => $rules]);
+//    }
+//
+//
+//    public function delete(): array
+//    {
+//        return $this->deleteBulk($this);
+//    }
+//
+//    public function deleteBulk(self ...$rules): array
+//    {
+//        if (empty($rules)) {
+//            return [];
+//        }
+//
+//        return static::bulk(['delete' => $rules]);
+//    }
 }

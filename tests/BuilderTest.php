@@ -78,4 +78,34 @@ it('works', function () {
         ->compile();
 
     expect($rule)->toBe('cats has:images');
-})->only();
+});
+
+it('can combine two attributes with or', function () {
+    $rule = RuleBuilder::create('cats')
+        ->has('images')
+        ->or()
+        ->has('videos')
+        ->compile();
+
+    expect($rule)->toBe('cats has:images or has:videos');
+});
+
+// it('can group attribute inside of an or', function () {
+//    $rule = RuleBuilder::create('cats')
+//        ->has('images')
+//        ->or(function (RuleBuilder $builder) {
+//            $builder->query('puppy')->and()->query('cute');
+//        })->compile();
+//
+//    expect($rule)->toBe('cats has:images OR (puppy AND cute)');
+// })->only();
+
+it('can group attribute inside of an or', function () {
+    $rule = RuleBuilder::create('cats')
+        ->has('images')
+        ->or(function (RuleBuilder $b) {
+            return $b->query('puppy')->and()->query('cute');
+        })->compile();
+
+    expect($rule)->toBe('cats has:images or (puppy and cute)');
+});

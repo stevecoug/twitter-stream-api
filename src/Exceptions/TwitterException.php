@@ -7,14 +7,21 @@ use GuzzleHttp\Exception\ClientException;
 
 class TwitterException extends Exception
 {
+    protected array $raw;
+
+    public function __construct(string $message, array $raw = [])
+    {
+        $this->raw = $raw;
+
+        parent::__construct($message);
+    }
+
     public static function fromClientException(ClientException $exception): void
     {
         $response = json_decode($exception->getResponse()->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 
-        if (array_key_exists('detail', $response)) {
-            throw new self($response['detail']);
-        }
+        $error = $response['errors'][0];
 
-        throw new self(implode(PHP_EOL, array_map(fn ($error) => $error['message'], $response['errors'])));
+        throw new self($error['message']);
     }
 }

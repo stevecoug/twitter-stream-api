@@ -2,7 +2,10 @@
 
 namespace RWC\TwitterStream;
 
-use LogicException;
+use RWC\TwitterStream\Attributes\ManyParametersAttribute;
+use RWC\TwitterStream\Attributes\RawAttribute;
+use RWC\TwitterStream\Attributes\ValueAttribute;
+use RWC\TwitterStream\Contracts\Attribute;
 use SplStack;
 
 /**
@@ -32,8 +35,6 @@ use SplStack;
  */
 class RuleBuilder
 {
-    protected bool $negates = false;
-//    protected array $attributes = [];
     /** @var SplStack<Attribute> */
     protected SplStack $attributes;
 
@@ -41,7 +42,7 @@ class RuleBuilder
     {
         $this->attributes = new SplStack();
         $this->attributes->push(
-            new Attribute('query', $query, headless: true)
+            new RawAttribute($query)
         );
     }
 
@@ -50,79 +51,56 @@ class RuleBuilder
         return new static($query);
     }
 
-    public function __get(string $name): ?RuleBuilder
+    public function group(callable $builder): static
     {
-        if ($name !== 'not') {
-            trigger_error('Undefined property QueryBuilder::' . $name, E_USER_WARNING);
+        $stub = new self();
+        $builder($stub);
+        $this->attributes->push(new RawAttribute('(' . $stub . ')'));
 
-            return null;
-        }
-
-        return $this->negates();
+        return $this;
     }
 
-    protected function negates(bool $negates = true): static
+    public function or(callable $builder = null)
     {
-        $this->negates = $negates;
+        if (is_null($builder)) {
+            return $this->__call('or', []);
+        }
+
+        $stub = new self();
+        $builder($stub);
+        $this->attributes->push(new RawAttribute('or (' . trim($stub) . ')'));
 
         return $this;
     }
 
     public function __call(string $name, array $arguments)
     {
-        if ($name === 'has') {
-            $this->attributes->push(
-                new Attribute(
-                    'has',
-                    $arguments,
-                    $this->negates
-                )
-            );
-
-            return $this;
-        }
-        dd($name, $arguments);
-        if (empty($value)) {
-            $this->negates(false);
-
-            return $this;
-        }
-
-        // todo: make sure there's at least 1 element
-        $value = $arguments[0];
-
-        $isHeadless = in_array($name, ['and', 'or', 'query', 'raw']);
-
-        $this->attributes->push(
-            new Attribute(strtolower($name), $value, $this->negates, $isHeadless)
-        );
+        $this->attributes->push(match ($name) {
+            'query' => new RawAttribute($arguments[0]),
+            'and', 'or' => new RawAttribute($name),
+            'pointRadius' => new ManyParametersAttribute('point_radius', $arguments),
+            'boundingBox' => new ManyParametersAttribute('bounding_box', $arguments),
+            default       => new ValueAttribute($name, $arguments)
+        });
 
         return $this;
     }
 
-    public function group(callable $builder): static
+    public function __toString(): string
     {
-        if ($this->negates) {
-            // todo: throw custom exception
-            throw new LogicException('A group can not be negated. Negate each individual statement.');
-        }
-
-        $stub = new self();
-        // Returning the builder is optional.
-        $builder($stub);
-        $this->subRule($stub);
-
-        return $this;
+        return $this->compile();
     }
 
     public function compile(): string
     {
-        $rule = [];
+        // loop over all attributes and build the query
+        $query = '';
 
-        foreach ($this->attributes as $attribute) {
-            $rule[] = $attribute->compile();
+        while (!$this->attributes->isEmpty()) {
+            $attribute = $this->attributes->pop();
+            $query     = $attribute->compile() . ' ' . $query;
         }
 
-        return implode(' ', array_reverse($rule));
+        return trim($query);
     }
 }

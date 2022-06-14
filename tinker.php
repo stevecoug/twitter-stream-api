@@ -18,8 +18,13 @@ $bearerToken = $_ENV['TWITTER_BEARER_TOKEN'];
 
 $stream = new FilteredStream();
 
-Rule::deleteBulk(...Rule::all());
-RuleBuilder::create('cats')->save();
+//Rule::deleteBulk(...Rule::all());
+//RuleBuilder::create('cats')->save();
+
+$connection = new Connection($bearerToken);
+$client = new \RWC\TwitterStream\TwitterClient($connection);
+
+dd($client->allRules());
 
 $stream
     ->listen(new Connection($bearerToken), function (object $tweet) {

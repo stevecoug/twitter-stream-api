@@ -11,7 +11,6 @@ it('works', function (int $backfill, array $fields, array $expansions, string $e
         ->expansions(...$expansions)
         ->toURL();
 
-    dump(func_get_args());
     expect($url)->toBe('https://api.twitter.com/2/tweets/search/stream?' . str_replace(',', '%2C', $expected));
 })->with([
     [
