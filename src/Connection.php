@@ -32,10 +32,12 @@ class Connection
         return $this->request($method, $uri, $options);
     }
 
-    public function request(string $method, string $uri = '', array $options = []): ResponseInterface
+    public function request(string $method, string $uri = '', array $body = []): ResponseInterface
     {
         try {
-            return $this->client->request($method, $uri, $options);
+            return $this->client->request($method, $uri, [
+                'body' => json_encode($body),
+            ]);
         } catch (ClientException $exception) {
             TwitterException::fromClientException($exception);
         }

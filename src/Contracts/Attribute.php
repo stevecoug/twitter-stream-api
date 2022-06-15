@@ -6,5 +6,5 @@ interface Attribute
 {
     public function compile(): string;
 
-    public function compileNegated(): string;
+    public function markAsNegated(): self;
 }

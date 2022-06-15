@@ -1,11 +1,10 @@
 <?php
 
-namespace RWC\TwitterStream\Contracts;
+namespace RWC\TwitterStream;
 
 use JsonCollectionParser\Parser;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use RWC\TwitterStream\Connection;
 
 abstract class TwitterStream
 {

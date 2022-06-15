@@ -2,8 +2,6 @@
 
 namespace RWC\TwitterStream;
 
-use RWC\TwitterStream\Contracts\TwitterStream;
-
 class FilteredStream extends TwitterStream
 {
     public function endpoint(): string

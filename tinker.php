@@ -3,13 +3,12 @@
 use NunoMaduro\Collision\Provider;
 use RWC\TwitterStream\Connection;
 use RWC\TwitterStream\FilteredStream;
-use RWC\TwitterStream\Rule;
 use RWC\TwitterStream\RuleBuilder;
-use RWC\TwitterStream\TwitterStream;
+use RWC\TwitterStream\RuleManager;
 
 require __DIR__ . '/vendor/autoload.php';
 
-(new Provider)->register();
+(new Provider())->register();
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -18,20 +17,24 @@ $bearerToken = $_ENV['TWITTER_BEARER_TOKEN'];
 
 $stream = new FilteredStream();
 
-//Rule::deleteBulk(...Rule::all());
-//RuleBuilder::create('cats')->save();
+// Rule::deleteBulk(...Rule::all());
+// RuleBuilder::create('cats')->save();
 
 $connection = new Connection($bearerToken);
-$client = new \RWC\TwitterStream\TwitterClient($connection);
+$client     = new RuleManager($connection);
 
-dd($client->allRules());
+$compiled = RuleBuilder::create('cats')
+    ->not->has('images')
+    ->has('videos')
+    ->compile();
 
-$stream
-    ->listen(new Connection($bearerToken), function (object $tweet) {
-        dump($tweet);
-    });
-
+dd($compiled);
 //
-//foreach ($twitterStream->filteredTweets() as $tweet) {
+// $stream
+//    ->listen(new Connection($bearerToken), function (object $tweet) {
+//        dump($tweet);
+//    });
+//
+// foreach ($twitterStream->filteredTweets() as $tweet) {
 //    dump($tweet);
-//}
+// }

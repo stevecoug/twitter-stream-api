@@ -2,33 +2,28 @@
 
 namespace RWC\TwitterStream\Attributes;
 
+use RWC\TwitterStream\Attributes\Concerns\CanBeNegated;
 use RWC\TwitterStream\Contracts\Attribute;
+use RWC\TwitterStream\Contracts\NegatableAttribute;
 
-class GroupAttribute implements Attribute
+class GroupAttribute implements Attribute, NegatableAttribute
 {
+    use CanBeNegated;
+
     public function __construct(public array $attributes)
     {
     }
 
     public function compile(): string
     {
-        return sprintf(
-            '(%s)',
-            implode(
-                ' ',
-                array_map(fn (Attribute $attribute) => $attribute->compile(), $this->attributes)
-            )
-        );
-    }
+        $children = array_map(function (Attribute $attribute) {
+            if (!$this->negated || !$attribute instanceof NegatableAttribute) {
+                return $attribute->compile();
+            }
 
-    public function compileNegated(): string
-    {
-        return sprintf(
-            '(%s)',
-            implode(
-                ' ',
-                array_map(fn (Attribute $attribute) => $attribute->compileNegated(), $this->attributes)
-            )
-        );
+            return $attribute->markAsNegated()->compile();
+        }, $this->attributes);
+
+        return sprintf('(%s)', implode(' ', $children));
     }
 }
