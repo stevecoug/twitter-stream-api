@@ -20,7 +20,7 @@ abstract class TwitterStream
 
     public function listen(Connection $connection, callable $callback): void
     {
-        $this->response = $connection->stream('GET', $this->toURL());
+        $this->response = $connection->request('GET', $this->toURL(), ['stream' => true]);
         $this->stream   = $this->response->getBody();
 
         $parser = new Parser();

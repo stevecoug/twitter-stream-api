@@ -9,7 +9,7 @@ use RWC\TwitterStream\Exceptions\TwitterException;
 
 class Connection
 {
-    private Client $client;
+    protected Client $client;
 
     public function __construct(string $bearerToken)
     {
@@ -20,27 +20,10 @@ class Connection
         ]);
     }
 
+
     public function client(): Client
     {
         return $this->client;
-    }
-
-    public function stream(string $method, string $uri = '', array $options = []): ResponseInterface
-    {
-        $options['stream'] = true;
-
-        return $this->request($method, $uri, $options);
-    }
-
-    public function request(string $method, string $uri = '', array $body = []): ResponseInterface
-    {
-        try {
-            return $this->client->request($method, $uri, [
-                'body' => json_encode($body),
-            ]);
-        } catch (ClientException $exception) {
-            TwitterException::fromClientException($exception);
-        }
     }
 
     public function json(string $method, string $uri = '', array $options = []): array
@@ -49,5 +32,25 @@ class Connection
         $decoded  = json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR);
 
         return $decoded['data'] ?? [];
+    }
+
+    public function request(string $method, string $uri = '', array $options = []): ResponseInterface
+    {
+        if (is_array($options['body'])) {
+            $options['body'] = json_encode($options['body']);
+        }
+
+        try {
+            return $this->client->request($method, $uri, $options);
+        } catch (ClientException $exception) {
+            throw TwitterException::fromClientException($exception);
+        }
+    }
+
+    public function setClient(Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
     }
 }

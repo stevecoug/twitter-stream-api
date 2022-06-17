@@ -1,98 +1,79 @@
 <?php
 
-use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Response;
+use RWC\TwitterStream\Connection;
 use RWC\TwitterStream\Rule;
-//function useHttpClient(array $responses, &$container): Client
-//{
-//    $mock = new MockHandler(
-//        array_map(
-//            fn($response) => new Response(200, ['Content-Type' => 'application/json'], is_array($response) ? json_encode($response) : $response),
-//            $responses
-//        )
-//    );
-//    $history = Middleware::history($container);
-//    $handlerStack = HandlerStack::create($mock);
-//    $handlerStack->push($history);
-//    return new Client(['handler' => $handlerStack]);
-//}
-//
-//test('setters and getters', function () {
-//    Rule::useBearerToken('some token');
-//    $rule = new Rule('rule', 'tag');
-//    $rule->withId('1234');
-//    expect($rule->getValue())->toBe('rule');
-//    expect($rule->getTag())->toBe('tag');
-//    expect($rule->getId())->toBe('1234');
-//});
-//
-//it('can add a rule', function () {
-//    $requestsSent = [];
-//    $client = useHttpClient([
-//        $returnedPayload = [
-//            'data' => [
-//                '0' => [
-//                    'value' => 'cats has:links',
-//                    'tag' => 'cats with links',
-//                    'id' => '1390687625925824521'
-//                ]
-//            ],
-//            'meta' => [
-//                'sent' => (new DateTime())->format(DateTimeImmutable::RFC3339),
-//                'summary' => [
-//                    'created' => 1,
-//                    'not_created' => 0,
-//                    'valid' => 1,
-//                    'invalid' => 0
-//                ]
-//            ]
-//        ]
-//    ], $requestsSent);
-//    Rule::useHttpClient($client);
-//
-//    $rule = new Rule('cats has:images', 'cats with images');
-//    $response = $rule->save();
-//    /** @var Request $sentRequest */
-//    $sentRequest = $requestsSent[0]['request'];
-//
-//    expect($sentRequest->getMethod())->toBe('POST');
-//    expect((string)$sentRequest->getUri())->toBe('https://api.twitter.com/2/tweets/search/stream/rules');
-//    expect($sentRequest->getBody()->getContents())->toBe(json_encode(['add' => [['value' => 'cats has:images', 'tag' => 'cats with images']]]));
-//    expect($response)->toBe($returnedPayload);
-//});
-//
-//it('can delete a rule', function () {
-//    $requestsSent = [];
-//    $client = useHttpClient([
-//        [
-//            'data' => [
-//                '0' => [
-//                    'value' => 'cats has:links',
-//                    'tag' => 'cats with links',
-//                    'id' => '1390687625925824521'
-//                ]
-//            ],
-//            'meta' => [
-//                'sent' => (new DateTime())->format(DateTimeImmutable::RFC3339),
-//                'summary' => [
-//                    'created' => 1,
-//                    'not_created' => 0,
-//                    'valid' => 1,
-//                    'invalid' => 0
-//                ]
-//            ]
-//        ],
-//        ['stub' => true]
-//    ], $requestsSent);
-//    Rule::useHttpClient($client);
-//
-//    $rule = new Rule('cats has:images', 'cats with images');
-//    $rule->save();
-//    $rule->delete();
-//    /** @var Request $sentRequest */
-//    $sentRequest = $requestsSent[1]['request'];
-//
-//    expect($sentRequest->getMethod())->toBe('POST');
-//    expect((string)$sentRequest->getUri())->toBe('https://api.twitter.com/2/tweets/search/stream/rules');
-//    expect($sentRequest->getBody()->getContents())->toBe(json_encode(['delete' => ['ids' => ['1390687625925824521']]]));
-//});
+use RWC\TwitterStream\RuleManager;
+
+function mockTwitter(&$container): RuleManager
+{
+    $mock = new MockHandler([
+        new Response(200, ['Content-Type' => 'application/json'], '[]'),
+    ]);
+    $history = Middleware::history($container);
+    $handlerStack = HandlerStack::create($mock);
+    $handlerStack->push($history);
+
+    $client = new Client(['handler' => $handlerStack]);
+
+    $connection = new Connection('some token');
+    $connection->setClient($client);
+
+    return new RuleManager($connection);
+}
+
+it('can create a rule', function () {
+    $requests = [];
+    $manager = mockTwitter($requests);
+
+    $manager->create('cats has:links', 'cats with links');
+
+    expect($requests[0]['request'])
+        ->getMethod()->toBe('POST')
+        ->getUri()->__toString()->toBe('https://api.twitter.com/2/tweets/search/stream/rules')
+        ->getBody()->getContents()->toBe('{"add":[{"value":"cats has:links","tag":"cats with links"}]}');
+});
+
+it('can create many rules', function () {
+    $requests = [];
+    $manager = mockTwitter($requests);
+
+    $manager->createMany([
+        new Rule('cats has:links', 'cats with links'),
+        new Rule('dogs has:links', 'dogs with links'),
+    ]);
+
+    expect($requests[0]['request'])
+        ->getMethod()->toBe('POST')
+        ->getUri()->__toString()->toBe('https://api.twitter.com/2/tweets/search/stream/rules')
+        ->getBody()->getContents()->toBe('{"add":[{"value":"cats has:links","tag":"cats with links"},{"value":"dogs has:links","tag":"dogs with links"}]}');
+});
+
+it('can delete a rule', function () {
+    $requests = [];
+    $manager = mockTwitter($requests);
+
+    $manager->delete('1234');
+
+    expect($requests[0]['request'])
+        ->getMethod()->toBe('POST')
+        ->getUri()->__toString()->toBe('https://api.twitter.com/2/tweets/search/stream/rules')
+        ->getBody()->getContents()->toBe('{"delete":{"ids":["1234"]}}');
+});
+
+it('can delete many rules', function () {
+    $requests = [];
+    $manager = mockTwitter($requests);
+
+    $manager->deleteMany(['1234', '5678']);
+
+    expect($requests[0]['request'])
+        ->getMethod()->toBe('POST')
+        ->getUri()->__toString()->toBe('https://api.twitter.com/2/tweets/search/stream/rules')
+        ->getBody()->getContents()->toBe('{"delete":{"ids":["1234","5678"]}}');
+});
 

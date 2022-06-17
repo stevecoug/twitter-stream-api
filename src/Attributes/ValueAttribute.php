@@ -5,6 +5,7 @@ namespace RWC\TwitterStream\Attributes;
 use RWC\TwitterStream\Attributes\Concerns\CanBeNegated;
 use RWC\TwitterStream\Contracts\Attribute;
 use RWC\TwitterStream\Contracts\NegatableAttribute;
+use RWC\TwitterStream\Support\Arr;
 
 class ValueAttribute implements Attribute, NegatableAttribute
 {
@@ -13,25 +14,23 @@ class ValueAttribute implements Attribute, NegatableAttribute
     public function __construct(
         public string $name,
         public array $values,
+        public bool $parameterized = true
     ) {
     }
 
     public function compile(): string
     {
+        $values   = Arr::flatten($this->values);
         $buffer   = '';
         $negation = $this->negated ? '-' : '';
 
-        foreach ($this->values as $index => $value) {
-            if (is_array($value)) {
-                $value = $value[0];
-            }
-
-            if ($index === 0) {
+        foreach ($values as $i => $value) {
+            if ($i === 0) {
                 $buffer .= sprintf('%s%s:%s', $negation, $this->name, $value);
                 continue;
             }
 
-            $buffer .= sprintf(' OR %s%s:%s', $negation, $this->name, $value);
+            $buffer .= sprintf(' %s%s%s:%s', $this->parameterized ? 'OR ' : '', $negation, $this->name, $value);
         }
 
         return $buffer;

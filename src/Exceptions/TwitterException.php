@@ -16,12 +16,12 @@ class TwitterException extends Exception
         parent::__construct($message);
     }
 
-    public static function fromClientException(ClientException $exception): void
+    public static function fromClientException(ClientException $exception): TwitterException
     {
         $response = json_decode($exception->getResponse()->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 
         $error = $response['errors'][0];
 
-        throw new self($error['message']);
+        return new self($error['message']);
     }
 }

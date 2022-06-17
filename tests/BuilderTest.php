@@ -56,7 +56,44 @@ it('can compile a query with an and group', function () {
     })->compile())->toBe('cats has:images and (lang:en or has:videos)');
 });
 
-    //
+it('can compile a point radius attribute', function () {
+    expect(RuleBuilder::create('dogs')->pointRadius('42', '-42', '4.2')->compile())
+        ->toBe('dogs point_radius:[42 -42 4.2]');
+});
+
+it('can compile a bounding box attribute', function () {
+    expect(RuleBuilder::create('dogs')->boundingBox('1', '2', '3', '4')->compile())
+        ->toBe('dogs bounding_box:[1 2 3 4]');
+});
+
+it('can compile a has attribute passed as a string', function () {
+    expect(RuleBuilder::create('dogs')->has('images')->compile())
+        ->toBe('dogs has:images');
+});
+
+it('can compile many has attributes passed as strings', function () {
+    expect(RuleBuilder::create('dogs')->has('images')->has('videos')->compile())
+        ->toBe('dogs has:images has:videos');
+});
+
+it('can compile a has attribute passed as an array', function () {
+    expect(RuleBuilder::create('dogs')->has(['images', 'videos'])->compile())
+        ->toBe('dogs has:images has:videos');
+});
+
+it('can compile many has attributes passed as arrays', function () {
+    expect(RuleBuilder::create('dogs')->has(['images', 'videos'])->has(['geo', 'links'])->compile())
+        ->toBe('dogs has:images has:videos has:geo has:links');
+});
+
+it('fails if you access an undefined property', function () {
+    RuleBuilder::create('php')->foo;
+})->throws(ErrorException::class, 'Undefined property: RWC\TwitterStream\RuleBuilder::$foo');
+
+
+
+
+//
 
 // it('can build a rule', function () {
 //    $builder = RuleBuilder::create('#php')

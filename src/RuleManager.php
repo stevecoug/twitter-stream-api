@@ -32,7 +32,9 @@ class RuleManager
     public function createMany(array $rules): self
     {
         $this->connection->request('POST', 'https://api.twitter.com/2/tweets/search/stream/rules', [
-            'add' => array_map(fn ($rule) => ['value' => $rule->value, 'tag' => $rule->tag], $rules),
+            'body' => [
+                'add' => array_map(fn ($rule) => ['value' => $rule->value, 'tag' => $rule->tag], $rules),
+            ],
         ]);
 
         return $this;
@@ -46,7 +48,9 @@ class RuleManager
     public function deleteMany(array $ids): self
     {
         $this->connection->request('POST', 'https://api.twitter.com/2/tweets/search/stream/rules', [
-            'delete' => ['ids' => $ids],
+            'body' => [
+                'delete' => ['ids' => $ids],
+            ],
         ]);
 
         return $this;
