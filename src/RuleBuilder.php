@@ -11,6 +11,7 @@ use SplStack;
 /**
  * @property static $and
  * @property static $or
+ * @property static $not
  *
  * @method self from(string|array $value)
  * @method self to(string|array $value)
@@ -63,12 +64,6 @@ class RuleBuilder
         return $this;
     }
 
-    public static function create(string $query = ''): static
-    {
-        /* @phpstan-ignore-next-line */
-        return new static($query);
-    }
-
     /** @return self|void */
     public function __get(string $name)
     {
@@ -119,6 +114,7 @@ class RuleBuilder
             'pointRadius' => new ManyParametersAttribute('point_radius', $arguments),
             'boundingBox' => new ManyParametersAttribute('bounding_box', $arguments),
             'has', 'is' => new ValueAttribute($name, $arguments, parameterized: false),
+            'raw'   => new RawAttribute($arguments[0] ?? ''),
             default => new ValueAttribute($name, $arguments, parameterized: true),
         });
 

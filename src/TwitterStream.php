@@ -82,14 +82,14 @@ abstract class TwitterStream
 
     public function expansions(string ...$expansions): self
     {
-        $this->expansions = $expansions;
+        $this->expansions = [...$this->expansions, ...$expansions];
 
         return $this;
     }
 
     public function fields(string ...$fields): self
     {
-        $this->fields = $fields;
+        $this->fields = [...$this->fields, ...$fields];
 
         return $this;
     }

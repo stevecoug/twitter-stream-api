@@ -13,27 +13,27 @@ class RuleManager
     {
         $rules = $this->connection->json('GET', 'https://api.twitter.com/2/tweets/search/stream/rules');
 
-        return array_map(fn (array $rule) => new Rule(
+        return array_map(fn(array $rule) => new Rule(
             $rule['value'],
             $rule['tag'] ?? null,
             $rule['id'] ?? null,
         ), $rules);
     }
 
-    public function create(Rule|string $value, ?string $tag = null): self
+    public function save(Rule|string $value, ?string $tag = null): self
     {
         if ($value instanceof Rule) {
-            return $this->createMany([$value]);
+            return $this->saveMany([$value]);
         }
 
-        return $this->createMany([new Rule($value, $tag)]);
+        return $this->saveMany([new Rule($value, $tag)]);
     }
 
-    public function createMany(array $rules): self
+    public function saveMany(array $rules): self
     {
         $this->connection->request('POST', 'https://api.twitter.com/2/tweets/search/stream/rules', [
             'body' => [
-                'add' => array_map(fn ($rule) => ['value' => $rule->value, 'tag' => $rule->tag], $rules),
+                'add' => array_map(fn($rule) => ['value' => $rule->value, 'tag' => $rule->tag], $rules),
             ],
         ]);
 
@@ -54,5 +54,10 @@ class RuleManager
         ]);
 
         return $this;
+    }
+
+    public function query(string $query): RuleBuilder
+    {
+        return new RuleBuilder($query);
     }
 }

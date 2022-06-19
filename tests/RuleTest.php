@@ -30,7 +30,7 @@ it('can create a rule', function () {
     $requests = [];
     $manager = mockTwitter($requests);
 
-    $manager->create('cats has:links', 'cats with links');
+    $manager->save('cats has:links', 'cats with links');
 
     expect($requests[0]['request'])
         ->getMethod()->toBe('POST')
@@ -42,7 +42,7 @@ it('can create many rules', function () {
     $requests = [];
     $manager = mockTwitter($requests);
 
-    $manager->createMany([
+    $manager->saveMany([
         new Rule('cats has:links', 'cats with links'),
         new Rule('dogs has:links', 'dogs with links'),
     ]);

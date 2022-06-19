@@ -3,7 +3,6 @@
 use NunoMaduro\Collision\Provider;
 use RWC\TwitterStream\Connection;
 use RWC\TwitterStream\FilteredStream;
-use RWC\TwitterStream\RuleBuilder;
 use RWC\TwitterStream\RuleManager;
 
 require __DIR__ . '/vendor/autoload.php';
@@ -21,14 +20,15 @@ $stream = new FilteredStream();
 // RuleBuilder::create('cats')->save();
 
 $connection = new Connection($bearerToken);
-$client     = new RuleManager($connection);
+$rule     = new RuleManager($connection);
+$rule->save(
+    $rule->query('cats')
+        ->not->has('images')
+        ->has('videos'),
+    'dogs without images but with videos'
+);
 
-$compiled = RuleBuilder::create('cats')
-    ->not->has('images')
-    ->has('videos')
-    ->compile();
-
-dd($compiled);
+dd($rule->all());
 //
 // $stream
 //    ->listen(new Connection($bearerToken), function (object $tweet) {

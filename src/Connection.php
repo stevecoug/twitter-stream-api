@@ -20,7 +20,6 @@ class Connection
         ]);
     }
 
-
     public function client(): Client
     {
         return $this->client;
@@ -36,8 +35,9 @@ class Connection
 
     public function request(string $method, string $uri = '', array $options = []): ResponseInterface
     {
-        if (is_array($options['body'])) {
-            $options['body'] = json_encode($options['body']);
+        if (is_array($options['body'] ?? null)) {
+            $options['headers']['Content-Type'] = 'application/json';
+            $options['body']                    = json_encode($options['body']);
         }
 
         try {
