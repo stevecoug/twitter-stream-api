@@ -13,7 +13,7 @@ class RuleManager
     {
         $rules = $this->connection->json('GET', 'https://api.twitter.com/2/tweets/search/stream/rules');
 
-        return array_map(fn(array $rule) => new Rule(
+        return array_map(fn (array $rule) => new Rule(
             $rule['value'],
             $rule['tag'] ?? null,
             $rule['id'] ?? null,
@@ -33,7 +33,7 @@ class RuleManager
     {
         $this->connection->request('POST', 'https://api.twitter.com/2/tweets/search/stream/rules', [
             'body' => [
-                'add' => array_map(fn($rule) => ['value' => $rule->value, 'tag' => $rule->tag], $rules),
+                'add' => array_map(fn ($rule) => ['value' => $rule->value, 'tag' => $rule->tag], $rules),
             ],
         ]);
 
@@ -56,7 +56,7 @@ class RuleManager
         return $this;
     }
 
-    public function query(string $query): RuleBuilder
+    public function query(string $query = ''): RuleBuilder
     {
         return new RuleBuilder($query);
     }

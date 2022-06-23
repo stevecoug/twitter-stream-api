@@ -5,7 +5,6 @@ namespace RWC\TwitterStream\Support;
 /** @internal */
 class Arr
 {
-
     public static function flatten(mixed $array): array
     {
         if (!is_array($array)) {

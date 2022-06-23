@@ -3,15 +3,16 @@
 namespace RWC\TwitterStream;
 
 use RWC\TwitterStream\Attributes\ManyParametersAttribute;
+use RWC\TwitterStream\Attributes\QuotedRawAttribute;
 use RWC\TwitterStream\Attributes\RawAttribute;
 use RWC\TwitterStream\Attributes\ValueAttribute;
 use RWC\TwitterStream\Contracts\Attribute;
 use SplStack;
 
 /**
- * @property static $and
- * @property static $or
- * @property static $not
+ * @property RuleBuilder $and
+ * @property RuleBuilder $or
+ * @property RuleBuilder $not
  *
  * @method self from(string|array $value)
  * @method self to(string|array $value)
@@ -27,13 +28,35 @@ use SplStack;
  * @method self placeCountry(string|array $value)
  * @method self pointRadius(string $longitude, string $latitude, string $radius)
  * @method self boundingBox(string $westLongitude, string $southLatitude, string $eastLongitude, string $northLatitude)
+ *
+ * @method self hasHashtags()
+ * @method self hasCashtags()
+ * @method self hasLinks()
+ * @method self hasMentions()
+ * @method self hasMedia()
+ * @method self hasVideos()
+ * @method self hasGeo()
+ * @method self hasNotHashtags()
+ * @method self hasNotCashtags()
+ * @method self hasNotLinks()
+ * @method self hasNotMentions()
+ * @method self hasNotMedia()
+ * @method self hasNotVideos()
+ * @method self hasNotGeo()
+ *
  * @method self isRetweet()
  * @method self isReply()
  * @method self isQuote()
  * @method self isVerified()
- * @method self isNotNullCast()
+ * @method self isNotRetweet()
+ * @method self isNotReply()
+ * @method self isNotQuote()
+ * @method self isNotVerified()
+ * @method self notNullCast()
+ *
  * @method self has(string|array $properties)
- * @method self hasGeolocation()
+ * @method self raw(string|array $raws)
+ * @method self quoted(string|array $quotes)
  * @method self sample(int $percent)
  * @method self lang(string $lang)
  */
@@ -51,8 +74,12 @@ class RuleBuilder
         );
     }
 
-    public function push(Attribute $attribute): self
+    public function push(Attribute|callable $attribute): self
     {
+        if (is_callable($attribute)) {
+            $attribute = $attribute();
+        }
+
         if ($this->negateNextAttribute) {
             $attribute->markAsNegated();
 
@@ -110,15 +137,43 @@ class RuleBuilder
 
     public function __call(string $name, array $arguments): static
     {
-        $this->push(match ($name) {
+        return $this->push(match ($name) {
+            'notNullCast' => new RawAttribute('-is:nullcast'),
             'pointRadius' => new ManyParametersAttribute('point_radius', $arguments),
             'boundingBox' => new ManyParametersAttribute('bounding_box', $arguments),
             'has', 'is' => new ValueAttribute($name, $arguments, parameterized: false),
-            'raw'   => new RawAttribute($arguments[0] ?? ''),
-            default => new ValueAttribute($name, $arguments, parameterized: true),
-        });
+            'raw'    => new RawAttribute($arguments[0] ?? ''),
+            'quoted' => new QuotedRawAttribute($arguments[0] ?? ''),
+            default  => function () use ($name, $arguments) {
+                foreach (['has', 'is'] as $operator) {
+                    if (!str_starts_with($name, $operator)) {
+                        continue;
+                    }
 
-        return $this;
+                    $negated = false;
+
+                    if (str_starts_with($name, $operator . 'Not')) {
+                        $negated = true;
+                    }
+
+                    $attribute = new ValueAttribute(
+                        $operator,
+                        [
+                            // poor man's camel to pascal case convertor
+                            strtolower(preg_replace(
+                                '/(?<!^)[A-Z]/',
+                                '_$0',
+                                substr($name, strlen($operator) + ($negated ? 3 : 0))
+                            )),
+                        ]
+                    );
+
+                    return $negated ? $attribute->markAsNegated() : $attribute;
+                }
+
+                return new ValueAttribute($name, $arguments, parameterized: true);
+            },
+        });
     }
 
     public function __toString(): string
