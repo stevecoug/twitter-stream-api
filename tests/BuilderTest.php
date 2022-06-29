@@ -4,7 +4,7 @@ use RWC\TwitterStream\RuleBuilder;
 
 function query(string $q = '')
 {
-    return new RuleBuilder($q);
+    return (new RuleBuilder())->raw($q);
 }
 
 it('can compile a query', function () {
@@ -20,15 +20,15 @@ it('can compile a query with many attributes', function () {
 });
 
 it('can compile a query with a negated attribute', function () {
-    expect(query('php')->not->has('images')->compile())->toBe('php -has:images');
+    expect(query('php')->hasNot('images')->compile())->toBe('php -has:images');
 });
 
 it('can compile a query with many negated attributes', function () {
-    expect(query('php')->not->has('images')->not->has('videos')->compile())->toBe('php -has:images -has:videos');
+    expect(query('php')->hasNot('images')->hasNot('videos')->compile())->toBe('php -has:images -has:videos');
 });
 
 it('can compile a query with mixed negated and non-negated attributes', function () {
-    expect(query('php')->not->has('images')->lang('en')->not->has('videos')->compile())->toBe('php -has:images lang:en -has:videos');
+    expect(query('php')->hasNot('images')->lang('en')->hasNot('videos')->compile())->toBe('php -has:images lang:en -has:videos');
 });
 
 it('can compile a query with attributes linked by OR', function () {
@@ -50,13 +50,13 @@ it('can compile a query with a group', function () {
 });
 
 it('can compile a query with an or group', function () {
-    expect(query('cats')->has('images')->orGroup(function (RuleBuilder $b) {
+    expect(query('cats')->has('images')->or->group(function (RuleBuilder $b) {
         return $b->lang('en')->and->has('videos');
     })->compile())->toBe('cats has:images or (lang:en and has:videos)');
 });
 
 it('can compile a query with an and group', function () {
-    expect(query('cats')->has('images')->andGroup(function (RuleBuilder $b) {
+    expect(query('cats')->has('images')->and->group(function (RuleBuilder $b) {
         return $b->lang('en')->or->has('videos');
     })->compile())->toBe('cats has:images and (lang:en or has:videos)');
 });
@@ -104,11 +104,9 @@ it('can compile an is attribute', function () {
     expect(query('doggo')->is('quote')->compile())->toBe('doggo is:quote');
 });
 
-
 it('can compile many is attribute', function () {
     expect(query('doggo')->is('quote')->is('reply')->compile())->toBe('doggo is:quote is:reply');
 });
-
 
 it('can compile an is attribute passed as an array', function () {
     expect(query('dogs')->is(['images', 'videos'])->compile())
@@ -120,7 +118,6 @@ it('can compile many is attributes passed as arrays', function () {
         ->toBe('dogs is:images is:videos is:geo is:links');
 });
 
-
 it('can compile has attribute using the shorthand method', function () {
     expect(query('pig')->isVerified()->isQuote()->isVerified()->compile())
         ->toBe('pig is:verified is:quote is:verified');
@@ -131,16 +128,19 @@ it('can pass raw strings to be compiled as is', function () {
 });
 
 it('can compile a negated nullcast attribute', function () {
-    expect(query('mobile games')->isNotNullcast()->compile())->toBe('mobile games -is:nullcast');
+    expect(query('mobile games')->notNullCast()->compile())->toBe('"mobile games" -is:nullcast');
 });
 
 it('can compile quoted raw attributes', function () {
-    expect(query()->quoted('mobile games')->compile())->toBe('"mobile games"');
+    expect(query()->raw('mobile games')->compile())->toBe('"mobile games"');
 });
-
 
 it('can compile many quoted raw attributes', function () {
-    expect(query()->quoted('mobile games')->quoted('something else')->compile())->toBe('"mobile games" "something else"');
+    expect(query()->raw('mobile games')->raw('something else')->compile())->toBe('"mobile games" "something else"');
 });
 
-
+it('compiles', function ($method, $arguments, $expected) {
+    expect((new RuleBuilder())->{$method}(...$arguments)->compile())->toBe($expected);
+})->with([
+    ['orNotFrom', ['a', 'b'], '-from:a or -from:b'],
+]);
