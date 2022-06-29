@@ -4,7 +4,9 @@ namespace RWC\TwitterStream\Contracts;
 
 interface Attribute
 {
+    // import constants from Attribute
     public function compile(): string;
 
-    public function markAsNegated(): self;
+    public function flags(): int;
+
 }
