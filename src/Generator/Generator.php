@@ -4,13 +4,13 @@ namespace RWC\TwitterStream\Generator;
 
 class Generator
 {
-    // excluded here: sample, bouding_box, point_radius
+    // excluded here: sample, bounding_box, point_radius
     public const PARAMETERIZED_OPERATORS = ['from', 'to', 'url', 'retweetsOf', 'context', 'entity', 'conversationId', 'bio', 'bioName', 'bioLocation', 'place', 'placeCountry', 'lang'];
 
     public const STANDALONE_OPERATORS = [
         // excluded here, -is:nullcast
         'is'  => ['retweet', 'reply', 'quote', 'verified'],
-        'has' => ['hashtags', 'cashtags', 'links', 'mentions', 'media', 'videos', 'geo'],
+        'has' => ['hashtags', 'cashtags', 'links', 'mentions', 'media', 'images', 'videos', 'geo'],
     ];
 
     public static function tests(): array

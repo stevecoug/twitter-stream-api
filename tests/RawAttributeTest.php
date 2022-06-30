@@ -3,7 +3,7 @@
 use RWC\TwitterStream\Operators\RawOperator;
 
 it('can compile', function () {
-    $attribute = new RawOperator(['someThing']);
+    $operator = new RawOperator(['someThing']);
 
-    expect($attribute->compile())->toBe('someThing');
+    expect($operator->compile())->toBe('someThing');
 });

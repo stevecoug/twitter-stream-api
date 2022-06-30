@@ -4,7 +4,6 @@ namespace RWC\TwitterStream;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use Psr\Http\Message\ResponseInterface;
 use RWC\TwitterStream\Exceptions\TwitterException;
 
 class Connection
@@ -25,15 +24,7 @@ class Connection
         return $this->client;
     }
 
-    public function json(string $method, string $uri = '', array $options = []): array
-    {
-        $response = $this->request($method, $uri, $options);
-        $decoded  = json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR);
-
-        return $decoded['data'] ?? [];
-    }
-
-    public function request(string $method, string $uri = '', array $options = []): ResponseInterface
+    public function request(string $method, string $uri = '', array $options = []): TwitterResponse
     {
         if (is_array($options['body'] ?? null)) {
             $options['headers']['Content-Type'] = 'application/json';
@@ -41,9 +32,11 @@ class Connection
         }
 
         try {
-            return $this->client->request($method, $uri, $options);
+            return new TwitterResponse(
+                $this->client->request($method, $uri, $options)
+            );
         } catch (ClientException $exception) {
-            throw TwitterException::fromClientException($exception);
+            throw TwitterException::fromResponse($exception->getResponse());
         }
     }
 

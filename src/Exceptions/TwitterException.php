@@ -3,7 +3,7 @@
 namespace RWC\TwitterStream\Exceptions;
 
 use Exception;
-use GuzzleHttp\Exception\ClientException;
+use Psr\Http\Message\ResponseInterface;
 
 class TwitterException extends Exception
 {
@@ -16,12 +16,30 @@ class TwitterException extends Exception
         parent::__construct($message);
     }
 
-    public static function fromClientException(ClientException $exception): TwitterException
+    public static function fromResponse(ResponseInterface $response): TwitterException
     {
-        $response = json_decode($exception->getResponse()->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
+        $response = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 
         $error = $response['errors'][0];
 
-        return new self($error['message']);
+        return new self($error['message'], $response);
+    }
+
+    public static function fromPayload(array $payload): TwitterException
+    {
+        $buffer = '';
+
+        foreach ($payload['errors'] as $error) {
+            // For errors like DuplicateRule, no details are provided.
+            // For most errors related to rule creation, details are provided.
+            $hasDetails = array_key_exists('details', $error);
+
+            $buffer .= sprintf("[%s] %s %s [%s]\n", $error['title'], $error['value'], $hasDetails ? ': ' . implode('; ', $error['details']) : '', $error['id']);
+        }
+
+        return new self(
+            $buffer,
+            $payload
+        );
     }
 }

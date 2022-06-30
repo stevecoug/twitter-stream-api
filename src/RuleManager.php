@@ -2,6 +2,8 @@
 
 namespace RWC\TwitterStream;
 
+use Psr\Http\Message\ResponseInterface;
+
 class RuleManager
 {
     public function __construct(public Connection $connection)
@@ -17,10 +19,10 @@ class RuleManager
             $rule['value'],
             $rule['tag'] ?? null,
             $rule['id'] ?? null,
-        ), $rules);
+        ), $rules['data'] ?? []);
     }
 
-    public function save(Rule|string $value, ?string $tag = null): self
+    public function save(Rule|string $value, ?string $tag = null): ResponseInterface
     {
         if ($value instanceof Rule) {
             return $this->saveMany([$value]);
@@ -29,35 +31,31 @@ class RuleManager
         return $this->saveMany([new Rule($value, $tag)]);
     }
 
-    public function saveMany(array $rules): self
+    public function saveMany(array $rules): TwitterResponse
     {
-        $this->connection->request('POST', 'https://api.twitter.com/2/tweets/search/stream/rules', [
+        return $this->connection->request('POST', 'https://api.twitter.com/2/tweets/search/stream/rules', [
             'body' => [
                 'add' => array_map(fn ($rule) => ['value' => $rule->value, 'tag' => $rule->tag], $rules),
             ],
         ]);
-
-        return $this;
     }
 
-    public function delete(string $id): self
+    public function delete(string $id): ResponseInterface
     {
         return $this->deleteMany([$id]);
     }
 
-    public function deleteMany(array $ids): self
+    public function deleteMany(array $ids): ResponseInterface
     {
-        $this->connection->request('POST', 'https://api.twitter.com/2/tweets/search/stream/rules', [
+        return $this->connection->request('POST', 'https://api.twitter.com/2/tweets/search/stream/rules', [
             'body' => [
                 'delete' => ['ids' => $ids],
             ],
         ]);
-
-        return $this;
     }
 
-    public function query(string $query = ''): RuleBuilder
+    public function new(string $tag = ''): RuleBuilder
     {
-        return new RuleBuilder($query);
+        return new RuleBuilder($this, $tag);
     }
 }

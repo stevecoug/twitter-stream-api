@@ -18,6 +18,7 @@ class StandaloneOperator
         return [
             [$this->name . $this->valueAsMethodName, [], "{$this->name}:{$this->value}"],
             ["{$this->name}Not{$this->valueAsMethodName}", [], "-{$this->name}:{$this->value}"],
+            ["{$this->name}Not{$this->valueAsMethodName}", [], "-{$this->name}:{$this->value}"],
             ["or{$this->nameAsMethodName}{$this->valueAsMethodName}", [], "or {$this->name}:{$this->value}"],
             ["or{$this->nameAsMethodName}Not{$this->valueAsMethodName}", [], "or -{$this->name}:{$this->value}"],
             ["and{$this->nameAsMethodName}{$this->valueAsMethodName}", [], "and {$this->name}:{$this->value}"],

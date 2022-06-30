@@ -2,6 +2,7 @@
 
 namespace RWC\TwitterStream;
 
+use Psr\Http\Message\ResponseInterface;
 use RWC\TwitterStream\Operators\GroupOperator;
 use RWC\TwitterStream\Operators\NamedOperator;
 use RWC\TwitterStream\Operators\Operator;
@@ -15,6 +16,7 @@ use SplStack;
 /**
  * @property RuleBuilder $and
  * @property RuleBuilder $or
+ * @property RuleBuilder $not
  *
  * @method self sample(int $percent)
  * @method self pointRadius(string $longitude, string $latitude, string $radius)
@@ -27,16 +29,19 @@ use SplStack;
 class RuleBuilder extends _RuleBuilder
 {
     protected const OPERATORS_FLAGS = [
-        'or'  => OperatorContract::OR_OPERATOR,
-        'and' => OperatorContract::AND_OPERATOR,
-        'is'  => OperatorContract::IS_OPERATOR,
-        'has' => OperatorContract::HAS_OPERATOR,
-        'not' => OperatorContract::NOT_OPERATOR,
+        'or'     => OperatorContract::OR_OPERATOR,
+        'and'    => OperatorContract::AND_OPERATOR,
+        'is'     => OperatorContract::IS_OPERATOR,
+        'has'    => OperatorContract::HAS_OPERATOR,
+        'not'    => OperatorContract::NOT_OPERATOR,
+        'except' => OperatorContract::NOT_OPERATOR,
     ];
 
     public function __construct(
-        /** @var SplStack<OperatorContract> $attributes */
-        public SplStack $operators = new SplStack()
+        public ?RuleManager $manager = null,
+        public ?string      $tag = null,
+        /** @var SplStack<OperatorContract> $operators */
+        public SplStack     $operators = new SplStack()
     ) {
     }
 
@@ -45,6 +50,7 @@ class RuleBuilder extends _RuleBuilder
         match ($name) {
             'and' => $this->push(new RawOperator(['and'])),
             'or'  => $this->push(new RawOperator(['or'])),
+            'not' => $this->push(new RawOperator(['not'])),
             /* @see https://wiki.php.net/rfc/undefined_property_error_promotion */
             default => trigger_error('Undefined property: ' . static::class . '::$' . $name, PHP_MAJOR_VERSION === 8 ? E_USER_WARNING : E_USER_ERROR)
         };
@@ -52,9 +58,9 @@ class RuleBuilder extends _RuleBuilder
         return $this;
     }
 
-    public function push(OperatorContract $attribute): self
+    public function push(OperatorContract $operator): self
     {
-        $this->operators->push($attribute);
+        $this->operators->push($operator);
 
         return $this;
     }
@@ -82,7 +88,7 @@ class RuleBuilder extends _RuleBuilder
         $name = Str::snake($name);
 
         if (Flag::hasAny($kind, [Operator::IS_OPERATOR, Operator::HAS_OPERATOR])) {
-            // Methods like is, hasNot will be empty with the flags IS_ATTRIBUTE, NOT_ATTRIBUTE... set.
+            // Methods like is, hasNot will be empty with the flags IS_OPERATOR, NOT_OPERATOR... set.
             // If that's the case, then it means the caller looks like x([...]) or y('...')
             // so we just pass in the normalized arguments.
             $arguments = $name === '' ? $arguments : [lcfirst($name)];
@@ -95,8 +101,8 @@ class RuleBuilder extends _RuleBuilder
         }
 
         return $this->push(match ($name) {
-            // notNullCast will be transformed to null_cast with a NOT_ATTRIBUTE flag
-            // This technically means that calling $this->NullCast() would work the same as $this->notNullCast().
+            // notNullCast will be transformed to null_cast with a NOT_OPERATOR flag
+            // This means that calling $this->NullCast() or $this->null_cast() would work the same as $this->notNullCast().
             'null_cast'    => new RawOperator(['-is:nullcast']),
             'sample'       => new RawOperator(['sample:' . $arguments[0]]),
             'point_radius' => new ParameterizedOperator($kind, 'point_radius', $arguments),
@@ -156,5 +162,10 @@ class RuleBuilder extends _RuleBuilder
         }
 
         return trim($query);
+    }
+
+    public function save(): ResponseInterface
+    {
+     return  $this->manager->save($this->compile(), $this->tag);
     }
 }
