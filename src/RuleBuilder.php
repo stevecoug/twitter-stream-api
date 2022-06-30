@@ -28,20 +28,21 @@ use SplStack;
  */
 class RuleBuilder extends _RuleBuilder
 {
+    // Be careful, the order matters here.
     protected const OPERATORS_FLAGS = [
         'or'     => OperatorContract::OR_OPERATOR,
         'and'    => OperatorContract::AND_OPERATOR,
         'is'     => OperatorContract::IS_OPERATOR,
         'has'    => OperatorContract::HAS_OPERATOR,
+        'except' => OperatorContract::IS_OPERATOR | OperatorContract::NOT_OPERATOR,
         'not'    => OperatorContract::NOT_OPERATOR,
-        'except' => OperatorContract::NOT_OPERATOR,
     ];
 
     public function __construct(
         public ?RuleManager $manager = null,
-        public ?string      $tag = null,
+        public ?string $tag = null,
         /** @var SplStack<OperatorContract> $operators */
-        public SplStack     $operators = new SplStack()
+        public SplStack $operators = new SplStack()
     ) {
     }
 
@@ -77,7 +78,7 @@ class RuleBuilder extends _RuleBuilder
                 continue;
             }
 
-            $kind |= $id;
+            $kind ^= $id;
             $name = substr($name, strlen($flag));
         }
 
@@ -166,6 +167,6 @@ class RuleBuilder extends _RuleBuilder
 
     public function save(): ResponseInterface
     {
-     return  $this->manager->save($this->compile(), $this->tag);
+        return $this->manager->save($this->compile(), $this->tag);
     }
 }
