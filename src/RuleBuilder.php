@@ -2,178 +2,144 @@
 
 namespace RWC\TwitterStream;
 
-use RWC\TwitterStream\Attributes\ManyParametersAttribute;
-use RWC\TwitterStream\Attributes\QuotedRawAttribute;
-use RWC\TwitterStream\Attributes\RawAttribute;
-use RWC\TwitterStream\Attributes\ValueAttribute;
-use RWC\TwitterStream\Contracts\Attribute;
+use RWC\TwitterStream\Contracts\Operator as OperatorContract;
+use RWC\TwitterStream\Operators\GroupOperator;
+use RWC\TwitterStream\Operators\Operator;
+use RWC\TwitterStream\Operators\ParameterizedOperator;
+use RWC\TwitterStream\Operators\RawOperator;
+use RWC\TwitterStream\Support\Flag;
+use RWC\TwitterStream\Support\Str;
 use SplStack;
 
 /**
  * @property RuleBuilder $and
  * @property RuleBuilder $or
- * @property RuleBuilder $not
  *
- * @method self from(string|array $value)
- * @method self to(string|array $value)
- * @method self url(string|array $value)
- * @method self retweetsOf(string|array $value)
- * @method self context(string|array $value)
- * @method self entity(string|array $value)
- * @method self conversationId(string|array $value)
- * @method self bio(string|array $value)
- * @method self bioName(string|array $value)
- * @method self bioLocation(string|array $value)
- * @method self place(string|array $value)
- * @method self placeCountry(string|array $value)
  * @method self pointRadius(string $longitude, string $latitude, string $radius)
  * @method self boundingBox(string $westLongitude, string $southLatitude, string $eastLongitude, string $northLatitude)
- *
- * @method self hasHashtags()
- * @method self hasCashtags()
- * @method self hasLinks()
- * @method self hasMentions()
- * @method self hasMedia()
- * @method self hasVideos()
- * @method self hasGeo()
- * @method self hasNotHashtags()
- * @method self hasNotCashtags()
- * @method self hasNotLinks()
- * @method self hasNotMentions()
- * @method self hasNotMedia()
- * @method self hasNotVideos()
- * @method self hasNotGeo()
- *
- * @method self isRetweet()
- * @method self isReply()
- * @method self isQuote()
- * @method self isVerified()
- * @method self isNotRetweet()
- * @method self isNotReply()
- * @method self isNotQuote()
- * @method self isNotVerified()
  * @method self notNullCast()
- *
  * @method self has(string|array $properties)
  * @method self raw(string|array $raws)
- * @method self quoted(string|array $quotes)
  * @method self sample(int $percent)
- * @method self lang(string $lang)
  */
 class RuleBuilder
 {
-    /** @var SplStack<Attribute> */
-    protected SplStack $attributes;
-    private bool $negateNextAttribute = false;
+    protected const OPERATORS_FLAGS = [
+        'or'  => OperatorContract::OR_OPERATOR,
+        'and' => OperatorContract::AND_OPERATOR,
+        'is'  => OperatorContract::IS_OPERATOR,
+        'has' => OperatorContract::HAS_OPERATOR,
+        'not' => OperatorContract::NOT_OPERATOR,
+    ];
 
-    public function __construct(string $query = '')
-    {
-        $this->attributes = new SplStack();
-        $this->push(
-            new RawAttribute($query)
-        );
+    public function __construct(
+        /** @var SplStack<OperatorContract> $attributes */
+        public SplStack $attributes = new SplStack()
+    ) {
     }
 
-    public function push(Attribute|callable $attribute): self
+    public function __get(string $name): self
     {
-        if (is_callable($attribute)) {
-            $attribute = $attribute();
-        }
+        match ($name) {
+            'and' => $this->push(new RawOperator(['and'])),
+            'or'  => $this->push(new RawOperator(['or'])),
+            /* @see https://wiki.php.net/rfc/undefined_property_error_promotion */
+            default => trigger_error('Undefined property: ' . static::class . '::$' . $name, PHP_MAJOR_VERSION === 8 ? E_USER_WARNING : E_USER_ERROR)
+        };
 
-        if ($this->negateNextAttribute) {
-            $attribute->markAsNegated();
+        return $this;
+    }
 
-            $this->negateNextAttribute = false;
-        }
-
+    public function push(OperatorContract $attribute): self
+    {
         $this->attributes->push($attribute);
 
         return $this;
     }
 
-    /** @return self|void */
-    public function __get(string $name)
-    {
-        if ($name === 'not') {
-            $this->negateNextAttribute = true;
-
-            return $this;
-        }
-
-        if ($name === 'and') {
-            $this->push(new RawAttribute('and'));
-
-            return $this;
-        }
-
-        if ($name === 'or') {
-            $this->push(new RawAttribute('or'));
-
-            return $this;
-        }
-
-        /* @see https://wiki.php.net/rfc/undefined_property_error_promotion */
-        trigger_error('Undefined property: ' . static::class . '::$' . $name, PHP_MAJOR_VERSION === 8 ? E_USER_WARNING : E_USER_ERROR);
-    }
-
-    public function orGroup(callable $builder): static
-    {
-        return $this->or->group($builder);
-    }
-
-    public function group(callable $builder): static
-    {
-        $stub = new self();
-        $builder($stub);
-        $this->push(new RawAttribute('(' . $stub . ')'));
-
-        return $this;
-    }
-
-    public function andGroup(callable $builder): static
-    {
-        return $this->and->group($builder);
-    }
-
     public function __call(string $name, array $arguments): static
     {
+        $kind      = 0;
+        $arguments = self::flattenArgumentsAndQuoteStrings($arguments);
+
+        foreach (self::OPERATORS_FLAGS as $flag => $id) {
+            // if the name is the flag, skip, that's to handle calls like is([...]) and has([...])
+            // if the flag (or, and, not....) is not found, skip
+            if ($name === $flag || !str_starts_with(strtolower($name), $flag)) {
+                continue;
+            }
+
+            $kind |= $id;
+            $name = substr($name, strlen($flag));
+        }
+
+        if ($name === 'group') {
+            return $this->group($arguments[0] ?? null, $kind);
+        }
+
+        $name = Str::snake($name);
+
+        if (Flag::hasAny($kind, [Operator::IS_OPERATOR, Operator::HAS_OPERATOR])) {
+            // Methods like is, hasNot will be empty with the flags IS_ATTRIBUTE, NOT_ATTRIBUTE... set.
+            // If that's the case, then it means the caller looks like x([...]) or y('...')
+            // so we just pass in the normalized arguments.
+            $arguments = $name === '' ? $arguments : [lcfirst($name)];
+
+            return $this->push(new Operator(
+                $kind,
+                Flag::has($kind, Operator::IS_OPERATOR) ? 'is' : 'has',
+                $arguments,
+            ));
+        }
+
         return $this->push(match ($name) {
-            'notNullCast' => new RawAttribute('-is:nullcast'),
-            'pointRadius' => new ManyParametersAttribute('point_radius', $arguments),
-            'boundingBox' => new ManyParametersAttribute('bounding_box', $arguments),
-            'has', 'is' => new ValueAttribute($name, $arguments, parameterized: false),
-            'raw'    => new RawAttribute($arguments[0] ?? ''),
-            'quoted' => new QuotedRawAttribute($arguments[0] ?? ''),
-            default  => function () use ($name, $arguments) {
-                foreach (['has', 'is'] as $operator) {
-                    if (!str_starts_with($name, $operator)) {
-                        continue;
-                    }
-
-                    $negated = false;
-
-                    if (str_starts_with($name, $operator . 'Not')) {
-                        $negated = true;
-                    }
-
-                    $attribute = new ValueAttribute(
-                        $operator,
-                        [
-                            // poor man's camel to pascal case convertor
-                            strtolower(preg_replace(
-                                '/(?<!^)[A-Z]/',
-                                '_$0',
-                                substr($name, strlen($operator) + ($negated ? 3 : 0))
-                            )),
-                        ]
-                    );
-
-                    return $negated ? $attribute->markAsNegated() : $attribute;
-                }
-
-                return new ValueAttribute($name, $arguments, parameterized: true);
-            },
+            // notNullCast will be transformed to null_cast with a NOT_ATTRIBUTE flag
+            // This technically means that calling $this->NullCast() would work the same as $this->notNullCast().
+            'null_cast'    => new RawOperator(['-is:nullcast']),
+            'point_radius' => new ParameterizedOperator($kind, 'point_radius', $arguments),
+            'bounding_box' => new ParameterizedOperator($kind, 'bounding_box', $arguments),
+            'raw', 'query' => new RawOperator($arguments),
+            // As the method is in camelCase, we need to lowercase the first letter after the 'is' or 'has'
+            default => new Operator($kind, lcfirst($name), $arguments)
         });
+    }
+
+    /**
+     * A very descriptive name! This method recursively flattens an array.
+     * If a string with spaces is found within the array, it quotes it.
+     * Given a string, it simply wraps it in an array and quotes it (if needed).
+     */
+    private static function flattenArgumentsAndQuoteStrings(array|string $array): array
+    {
+        if (!is_array($array)) {
+            return [self::quote($array)];
+        }
+
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $result = array_merge($result, self::flattenArgumentsAndQuoteStrings($value));
+            } else {
+                $result[$key] = self::quote($value);
+            }
+        }
+
+        return $result;
+    }
+
+    private static function quote(mixed $value): mixed
+    {
+        if (!is_string($value)) {
+            return $value;
+        }
+
+        return !str_contains($value, ' ') ? $value : '"' . $value . '"';
+    }
+
+    public function group(callable $builder, int $flags = 0)
+    {
+        return $this->push(new GroupOperator($flags, $builder));
     }
 
     public function __toString(): string

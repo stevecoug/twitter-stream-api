@@ -1,11 +1,11 @@
 <?php
 
-namespace RWC\TwitterStream\Attributes;
+namespace RWC\TwitterStream\Operators;
 
-use RWC\TwitterStream\Contracts\Attribute as AttributeContract;
+use RWC\TwitterStream\Contracts\Operator as OperatorContract;
 use RWC\TwitterStream\Support\Flag;
 
-class ParameterizedAttribute implements AttributeContract
+class ParameterizedOperator implements OperatorContract
 {
     public function __construct(
         public int $flags,
@@ -22,7 +22,7 @@ class ParameterizedAttribute implements AttributeContract
     public function compile(): string
     {
         return sprintf('%s%s:[%s]',
-            Flag::has($this->flags, Attribute::NOT_ATTRIBUTE) ? '-' : '',
+            Flag::has($this->flags, self::NOT_OPERATOR) ? '-' : '',
             $this->name,
             implode(' ', $this->values),
         );

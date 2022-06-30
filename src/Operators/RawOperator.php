@@ -1,10 +1,10 @@
 <?php
 
-namespace RWC\TwitterStream\Attributes;
+namespace RWC\TwitterStream\Operators;
 
-use RWC\TwitterStream\Contracts\Attribute;
+use RWC\TwitterStream\Contracts\Operator;
 
-class RawAttribute implements Attribute
+class RawOperator implements Operator
 {
     public function __construct(
         public array $raw

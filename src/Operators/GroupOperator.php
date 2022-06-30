@@ -1,10 +1,10 @@
 <?php
 
-namespace RWC\TwitterStream\Attributes;
+namespace RWC\TwitterStream\Operators;
 
 use RWC\TwitterStream\RuleBuilder;
 
-class GroupAttribute implements \RWC\TwitterStream\Contracts\Attribute
+class GroupOperator implements \RWC\TwitterStream\Contracts\Operator
 {
     /** @var callable */
     private $builder;
@@ -26,11 +26,11 @@ class GroupAttribute implements \RWC\TwitterStream\Contracts\Attribute
         $stub = new RuleBuilder();
         ($this->builder)($stub);
 
-        if (($this->flags & Attribute::NOT_ATTRIBUTE) === Attribute::NOT_ATTRIBUTE) {
+        if (($this->flags & Operator::NOT_OPERATOR) === Operator::NOT_OPERATOR) {
             foreach ($stub->attributes as $attribute) {
                 if (property_exists($attribute, 'kind')) {
                     // toggle the attribute
-                    $attribute->kind ^= Attribute::NOT_ATTRIBUTE;
+                    $attribute->kind ^= Operator::NOT_OPERATOR;
                 }
             }
         }

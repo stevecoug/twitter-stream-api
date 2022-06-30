@@ -1,21 +1,12 @@
 <?php
 
-namespace RWC\TwitterStream\Attributes;
+namespace RWC\TwitterStream\Operators;
 
-use RWC\TwitterStream\Contracts\Attribute as BaseAttribute;
+use RWC\TwitterStream\Contracts\Operator as BaseAttribute;
+use RWC\TwitterStream\Support\Flag;
 
-class Attribute implements BaseAttribute
+class Operator implements BaseAttribute
 {
-    public const OR_ATTRIBUTE  = 1 << 0;
-    public const AND_ATTRIBUTE = 1 << 1;
-    public const NOT_ATTRIBUTE = 1 << 2;
-    public const IS_ATTRIBUTE  = 1 << 3;
-    public const HAS_ATTRIBUTE = 1 << 4;
-
-    public const JOIN_SPACE = ' ';
-    public const JOIN_AND   = ' and ';
-    public const JOIN_OR    = ' or ';
-
     public function __construct(
         public int $kind,
         public string $name,
@@ -30,21 +21,20 @@ class Attribute implements BaseAttribute
 
     public function compile(): string
     {
-        $buffer = '';
-
         $join = match (true) {
-            ($this->kind & self::OR_ATTRIBUTE) === self::OR_ATTRIBUTE   => self::JOIN_OR,
-            ($this->kind & self::AND_ATTRIBUTE) === self::AND_ATTRIBUTE => self::JOIN_AND,
-            default                                                     => self::JOIN_SPACE,
+            Flag::has($this->kind, self::OR_OPERATOR) => ' or ',
+            Flag::has($this->kind, self::AND_OPERATOR) => ' and ',
+            default => ' ',
         };
-        $negation = (($this->kind & self::NOT_ATTRIBUTE) === self::NOT_ATTRIBUTE) ? '-' : '';
+        $negation = Flag::has($this->kind, self::NOT_OPERATOR) ? '-' : '';
+        $buffer   = array_reduce(
+            $this->values,
+            fn (string $_, string $value) => $_ . sprintf('%s%s%s:%s', $join, $negation, $this->name, $value),
+            ''
+        );
 
-        foreach ($this->values as $value) {
-            if (str_contains($value, ' ')) {
-                $value = sprintf('"%s"', $value);
-            }
-
-            $buffer .= sprintf('%s%s%s:%s', $join, $negation, $this->name, $value);
+        if (count($this->values) === 1 && $join !== ' ') {
+            return $buffer;
         }
 
         // remove the leading join character and return
