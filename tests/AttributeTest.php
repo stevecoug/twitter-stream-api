@@ -1,6 +1,6 @@
 <?php
 
-use RWC\TwitterStream\Operators\Operator;
+use RWC\TwitterStream\Operators\DefaultOperator;
 
 //it('works', function (){
 //    $b = (new \RWC\TwitterStream\RuleBuilder('#laravel'))->notFrom(['@spatie_be', '@spatie_fr']);

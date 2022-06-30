@@ -2,42 +2,27 @@
 
 namespace RWC\TwitterStream\Operators;
 
-use RWC\TwitterStream\Contracts\Operator as BaseAttribute;
-use RWC\TwitterStream\Support\Flag;
-
-class Operator implements BaseAttribute
+abstract class Operator
 {
-    public function __construct(
-        public int $kind,
-        public string $name,
-        public array $values,
-    ) {
-    }
+    public const OR_OPERATOR  = 1 << 0;
+    public const AND_OPERATOR = 1 << 1;
+    public const NOT_OPERATOR = 1 << 2;
+    public const IS_OPERATOR  = 1 << 3;
+    public const HAS_OPERATOR = 1 << 4;
+
+    protected int $flags;
+
+    abstract public function compile(): string;
 
     public function flags(): int
     {
-        return $this->kind;
+        return $this->flags;
     }
 
-    public function compile(): string
+    public function setFlags(int $flag): self
     {
-        $join = match (true) {
-            Flag::has($this->kind, self::OR_OPERATOR) => ' or ',
-            Flag::has($this->kind, self::AND_OPERATOR) => ' and ',
-            default => ' ',
-        };
-        $negation = Flag::has($this->kind, self::NOT_OPERATOR) ? '-' : '';
-        $buffer   = array_reduce(
-            $this->values,
-            fn (string $_, string $value) => $_ . sprintf('%s%s%s:%s', $join, $negation, $this->name, $value),
-            ''
-        );
+        $this->flags = $flag;
 
-        if (count($this->values) === 1 && $join !== ' ') {
-            return $buffer;
-        }
-
-        // remove the leading join character and return
-        return substr($buffer, strlen($join));
+        return $this;
     }
 }

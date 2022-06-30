@@ -2,9 +2,9 @@
 
 namespace RWC\TwitterStream;
 
-use RWC\TwitterStream\Contracts\Operator as OperatorContract;
+use RWC\TwitterStream\Operators\DefaultOperator;
 use RWC\TwitterStream\Operators\GroupOperator;
-use RWC\TwitterStream\Operators\Operator;
+use RWC\TwitterStream\Operators\Operator as OperatorContract;
 use RWC\TwitterStream\Operators\ParameterizedOperator;
 use RWC\TwitterStream\Operators\RawOperator;
 use RWC\TwitterStream\Support\Flag;
@@ -34,7 +34,7 @@ class RuleBuilder
 
     public function __construct(
         /** @var SplStack<OperatorContract> $attributes */
-        public SplStack $attributes = new SplStack()
+        public SplStack $operators = new SplStack()
     ) {
     }
 
@@ -52,7 +52,7 @@ class RuleBuilder
 
     public function push(OperatorContract $attribute): self
     {
-        $this->attributes->push($attribute);
+        $this->operators->push($attribute);
 
         return $this;
     }
@@ -79,15 +79,15 @@ class RuleBuilder
 
         $name = Str::snake($name);
 
-        if (Flag::hasAny($kind, [Operator::IS_OPERATOR, Operator::HAS_OPERATOR])) {
+        if (Flag::hasAny($kind, [DefaultOperator::IS_OPERATOR, DefaultOperator::HAS_OPERATOR])) {
             // Methods like is, hasNot will be empty with the flags IS_ATTRIBUTE, NOT_ATTRIBUTE... set.
             // If that's the case, then it means the caller looks like x([...]) or y('...')
             // so we just pass in the normalized arguments.
             $arguments = $name === '' ? $arguments : [lcfirst($name)];
 
-            return $this->push(new Operator(
+            return $this->push(new DefaultOperator(
                 $kind,
-                Flag::has($kind, Operator::IS_OPERATOR) ? 'is' : 'has',
+                Flag::has($kind, DefaultOperator::IS_OPERATOR) ? 'is' : 'has',
                 $arguments,
             ));
         }
@@ -100,7 +100,7 @@ class RuleBuilder
             'bounding_box' => new ParameterizedOperator($kind, 'bounding_box', $arguments),
             'raw', 'query' => new RawOperator($arguments),
             // As the method is in camelCase, we need to lowercase the first letter after the 'is' or 'has'
-            default => new Operator($kind, lcfirst($name), $arguments)
+            default => new DefaultOperator($kind, lcfirst($name), $arguments)
         });
     }
 
@@ -152,8 +152,8 @@ class RuleBuilder
         // loop over all attributes and build the query
         $query = '';
 
-        while (!$this->attributes->isEmpty()) {
-            $attribute = $this->attributes->pop();
+        while (!$this->operators->isEmpty()) {
+            $attribute = $this->operators->pop();
             $query     = $attribute->compile() . ' ' . $query;
         }
 
