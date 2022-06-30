@@ -139,8 +139,10 @@ it('can compile many quoted raw attributes', function () {
     expect(query()->raw('mobile games')->raw('something else')->compile())->toBe('"mobile games" "something else"');
 });
 
-it('compiles', function ($method, $arguments, $expected) {
-    expect((new RuleBuilder())->{$method}(...$arguments)->compile())->toBe($expected);
-})->with([
-    ['orNotFrom', ['a', 'b'], '-from:a or -from:b'],
-]);
+it('can quote values', function () {
+    $rule = query()
+        ->bio(['some thing', 'this', 'that too'])
+        ->compile();
+
+    expect($rule)->toBe('bio:"some thing" bio:this bio:"that too"');
+});

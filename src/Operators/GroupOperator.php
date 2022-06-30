@@ -4,6 +4,7 @@ namespace RWC\TwitterStream\Operators;
 
 use RWC\TwitterStream\RuleBuilder;
 use RWC\TwitterStream\Support\Flag;
+use SplStack;
 
 class GroupOperator extends Operator
 {
@@ -23,9 +24,15 @@ class GroupOperator extends Operator
         ($this->builder)($stub);
 
         if (Flag::has($this->flags, self::NOT_OPERATOR)) {
-            foreach ($stub->operators as $operator) {
-                $operator->setFlag($operator->flags() ^ self::NOT_OPERATOR);
+            $negatedStack = new SplStack();
+
+            while (!$stub->operators->isEmpty()) {
+                $op = $stub->operators->pop();
+                $op->setFlags($op->flags() === 0 ? self::NOT_OPERATOR : $op->flags() ^ self::NOT_OPERATOR);
+                $negatedStack->unshift($op);
             }
+
+            $stub->operators = $negatedStack;
         }
 
         return '(' . $stub->compile() . ')';

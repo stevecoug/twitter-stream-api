@@ -10,7 +10,7 @@ abstract class Operator
     public const IS_OPERATOR  = 1 << 3;
     public const HAS_OPERATOR = 1 << 4;
 
-    protected int $flags;
+    protected int $flags = 0;
 
     abstract public function compile(): string;
 

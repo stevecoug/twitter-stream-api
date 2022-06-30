@@ -2,8 +2,9 @@
 
 namespace RWC\TwitterStream;
 
-use RWC\TwitterStream\Operators\DefaultOperator;
 use RWC\TwitterStream\Operators\GroupOperator;
+use RWC\TwitterStream\Operators\NamedOperator;
+use RWC\TwitterStream\Operators\Operator;
 use RWC\TwitterStream\Operators\Operator as OperatorContract;
 use RWC\TwitterStream\Operators\ParameterizedOperator;
 use RWC\TwitterStream\Operators\RawOperator;
@@ -15,14 +16,15 @@ use SplStack;
  * @property RuleBuilder $and
  * @property RuleBuilder $or
  *
+ * @method self sample(int $percent)
  * @method self pointRadius(string $longitude, string $latitude, string $radius)
  * @method self boundingBox(string $westLongitude, string $southLatitude, string $eastLongitude, string $northLatitude)
  * @method self notNullCast()
  * @method self has(string|array $properties)
- * @method self raw(string|array $raws)
- * @method self sample(int $percent)
+ * @method self raw(string|array $property)
+ * @method self query(string|array $query)
  */
-class RuleBuilder
+class RuleBuilder extends _RuleBuilder
 {
     protected const OPERATORS_FLAGS = [
         'or'  => OperatorContract::OR_OPERATOR,
@@ -79,15 +81,15 @@ class RuleBuilder
 
         $name = Str::snake($name);
 
-        if (Flag::hasAny($kind, [DefaultOperator::IS_OPERATOR, DefaultOperator::HAS_OPERATOR])) {
+        if (Flag::hasAny($kind, [Operator::IS_OPERATOR, Operator::HAS_OPERATOR])) {
             // Methods like is, hasNot will be empty with the flags IS_ATTRIBUTE, NOT_ATTRIBUTE... set.
             // If that's the case, then it means the caller looks like x([...]) or y('...')
             // so we just pass in the normalized arguments.
             $arguments = $name === '' ? $arguments : [lcfirst($name)];
 
-            return $this->push(new DefaultOperator(
+            return $this->push(new NamedOperator(
                 $kind,
-                Flag::has($kind, DefaultOperator::IS_OPERATOR) ? 'is' : 'has',
+                Flag::has($kind, Operator::IS_OPERATOR) ? 'is' : 'has',
                 $arguments,
             ));
         }
@@ -96,11 +98,12 @@ class RuleBuilder
             // notNullCast will be transformed to null_cast with a NOT_ATTRIBUTE flag
             // This technically means that calling $this->NullCast() would work the same as $this->notNullCast().
             'null_cast'    => new RawOperator(['-is:nullcast']),
+            'sample'       => new RawOperator(['sample:' . $arguments[0]]),
             'point_radius' => new ParameterizedOperator($kind, 'point_radius', $arguments),
             'bounding_box' => new ParameterizedOperator($kind, 'bounding_box', $arguments),
             'raw', 'query' => new RawOperator($arguments),
             // As the method is in camelCase, we need to lowercase the first letter after the 'is' or 'has'
-            default => new DefaultOperator($kind, lcfirst($name), $arguments)
+            default => new NamedOperator($kind, lcfirst($name), $arguments)
         });
     }
 
@@ -112,7 +115,7 @@ class RuleBuilder
     private static function flattenArgumentsAndQuoteStrings(array|string $array): array
     {
         if (!is_array($array)) {
-            return [self::quote($array)];
+            return [Str::quote($array)];
         }
 
         $result = [];
@@ -121,20 +124,11 @@ class RuleBuilder
             if (is_array($value)) {
                 $result = array_merge($result, self::flattenArgumentsAndQuoteStrings($value));
             } else {
-                $result[$key] = self::quote($value);
+                $result[$key] = Str::quote($value);
             }
         }
 
         return $result;
-    }
-
-    private static function quote(mixed $value): mixed
-    {
-        if (!is_string($value)) {
-            return $value;
-        }
-
-        return !str_contains($value, ' ') ? $value : '"' . $value . '"';
     }
 
     public function group(callable $builder, int $flags = 0)
@@ -153,8 +147,12 @@ class RuleBuilder
         $query = '';
 
         while (!$this->operators->isEmpty()) {
-            $attribute = $this->operators->pop();
-            $query     = $attribute->compile() . ' ' . $query;
+            $compiled = $this->operators->pop()->compile();
+            if (!str_starts_with($compiled, ' ')) {
+                $compiled = ' ' . $compiled;
+            }
+
+            $query = $compiled . $query;
         }
 
         return trim($query);

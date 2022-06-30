@@ -4,10 +4,10 @@ namespace RWC\TwitterStream\Operators;
 
 use RWC\TwitterStream\Support\Flag;
 
-class DefaultOperator extends Operator
+class NamedOperator extends Operator
 {
     public function __construct(
-        protected int $kind,
+        protected int $flags,
         protected string $name,
         protected array $values,
     ) {
@@ -16,11 +16,11 @@ class DefaultOperator extends Operator
     public function compile(): string
     {
         $join = match (true) {
-            Flag::has($this->kind, self::OR_OPERATOR) => ' or ',
-            Flag::has($this->kind, self::AND_OPERATOR) => ' and ',
+            Flag::has($this->flags, self::OR_OPERATOR) => ' or ',
+            Flag::has($this->flags, self::AND_OPERATOR) => ' and ',
             default => ' ',
         };
-        $negation = Flag::has($this->kind, self::NOT_OPERATOR) ? '-' : '';
+        $negation = Flag::has($this->flags, self::NOT_OPERATOR) ? '-' : '';
         $buffer   = array_reduce(
             $this->values,
             fn (string $_, string $value) => $_ . sprintf('%s%s%s:%s', $join, $negation, $this->name, $value),
