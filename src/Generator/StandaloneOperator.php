@@ -2,6 +2,11 @@
 
 namespace RWC\TwitterStream\Generator;
 
+/**
+ * @codeCoverageIgnore (internal tool)
+ *
+ * @internal
+ */
 class StandaloneOperator
 {
     public string $valueAsMethodName;

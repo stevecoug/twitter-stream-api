@@ -1,6 +1,8 @@
 <?php
 
+use GuzzleHttp\Psr7\Response;
 use RWC\TwitterStream\RuleBuilder;
+use RWC\TwitterStream\RuleManager;
 
 function query(string $q = '')
 {
@@ -147,3 +149,51 @@ it('can quote values', function () {
     expect($rule)->toBe('bio:"some thing" bio:this bio:"that too"');
 });
 
+it('can group operators', function () {
+    $rule = query()
+        ->orGroup(function (RuleBuilder $b) {
+            return $b->raw('cats')->raw('dogs');
+        })->compile();
+
+    expect($rule)->toBe('(cats or dogs)');
+
+    $rule = query()
+        ->andGroup(function (RuleBuilder $b) {
+            return $b->raw('cats')->raw('dogs');
+        })->compile();
+
+    expect($rule)->toBe('(cats and dogs)');
+
+    $rule = query()
+        ->andNotGroup(function (RuleBuilder $b) {
+            return $b->raw('cats')->raw('dogs')->isQuote();
+        })->compile();
+
+    expect($rule)->toBe('(cats and dogs and -is:quote)');
+});
+
+it('can compile a sample operator', function () {
+    $rule = query()->sample(42)->compile();
+
+    expect($rule)->toBe('sample:42');
+
+    $rule = query()->notSample(42)->compile();
+    expect($rule)->toBe('sample:42'); // not a typo
+});
+
+it('can be translated to a string', function () {
+    expect((string) query('dogs')->isNotQuote())->toBe('dogs -is:quote');
+});
+
+it('can create the rule', function () {
+    $mock = mock(RuleManager::class)
+        ->shouldReceive('save')
+        ->with('dogs is:quote', 'my-rule')
+        ->andReturn(new Response())
+        ->getMock();
+
+    $rule = new RuleBuilder($mock, 'my-rule');
+    $rule->raw('dogs')->isQuote();
+
+    $rule->save();
+});

@@ -51,7 +51,6 @@ class RuleBuilder extends _RuleBuilder
         match ($name) {
             'and' => $this->push(new RawOperator(['and'])),
             'or'  => $this->push(new RawOperator(['or'])),
-            'not' => $this->push(new RawOperator(['not'])),
             /* @see https://wiki.php.net/rfc/undefined_property_error_promotion */
             default => trigger_error('Undefined property: ' . static::class . '::$' . $name, PHP_MAJOR_VERSION === 8 ? E_USER_WARNING : E_USER_ERROR)
         };
@@ -68,7 +67,7 @@ class RuleBuilder extends _RuleBuilder
 
     public function __call(string $name, array $arguments): static
     {
-        $kind      = 0;
+        $flags     = 0;
         $arguments = self::flattenArgumentsAndQuoteStrings($arguments);
 
         foreach (self::OPERATORS_FLAGS as $flag => $id) {
@@ -78,25 +77,25 @@ class RuleBuilder extends _RuleBuilder
                 continue;
             }
 
-            $kind ^= $id;
+            $flags ^= $id;
             $name = substr($name, strlen($flag));
-        }
-
-        if ($name === 'group') {
-            return $this->group($arguments[0] ?? null, $kind);
         }
 
         $name = Str::snake($name);
 
-        if (Flag::hasAny($kind, [Operator::IS_OPERATOR, Operator::HAS_OPERATOR])) {
+        if ($name === 'group') {
+            return $this->group($arguments[0] ?? null, $flags);
+        }
+
+        if (Flag::hasAny($flags, [Operator::IS_OPERATOR, Operator::HAS_OPERATOR])) {
             // Methods like is, hasNot will be empty with the flags IS_OPERATOR, NOT_OPERATOR... set.
             // If that's the case, then it means the caller looks like x([...]) or y('...')
             // so we just pass in the normalized arguments.
             $arguments = $name === '' ? $arguments : [lcfirst($name)];
 
             return $this->push(new NamedOperator(
-                $kind,
-                Flag::has($kind, Operator::IS_OPERATOR) ? 'is' : 'has',
+                $flags,
+                Flag::has($flags, Operator::IS_OPERATOR) ? 'is' : 'has',
                 $arguments,
             ));
         }
@@ -106,25 +105,20 @@ class RuleBuilder extends _RuleBuilder
             // This means that calling $this->NullCast() or $this->null_cast() would work the same as $this->notNullCast().
             'null_cast'    => new RawOperator(['-is:nullcast']),
             'sample'       => new RawOperator(['sample:' . $arguments[0]]),
-            'point_radius' => new ParameterizedOperator($kind, 'point_radius', $arguments),
-            'bounding_box' => new ParameterizedOperator($kind, 'bounding_box', $arguments),
+            'point_radius' => new ParameterizedOperator($flags, 'point_radius', $arguments),
+            'bounding_box' => new ParameterizedOperator($flags, 'bounding_box', $arguments),
             'raw', 'query' => new RawOperator($arguments),
             // As the method is in camelCase, we need to lowercase the first letter after the 'is' or 'has'
-            default => new NamedOperator($kind, lcfirst($name), $arguments)
+            default => new NamedOperator($flags, lcfirst($name), $arguments)
         });
     }
 
     /**
      * A very descriptive name! This method recursively flattens an array.
      * If a string with spaces is found within the array, it quotes it.
-     * Given a string, it simply wraps it in an array and quotes it (if needed).
      */
-    private static function flattenArgumentsAndQuoteStrings(array|string $array): array
+    private static function flattenArgumentsAndQuoteStrings(array $array): array
     {
-        if (!is_array($array)) {
-            return [Str::quote($array)];
-        }
-
         $result = [];
 
         foreach ($array as $key => $value) {
@@ -150,7 +144,7 @@ class RuleBuilder extends _RuleBuilder
 
     public function compile(): string
     {
-        // loop over all attributes and build the query
+        // loop over all operatorss and build the query
         $query = '';
 
         while (!$this->operators->isEmpty()) {
@@ -168,5 +162,18 @@ class RuleBuilder extends _RuleBuilder
     public function save(): ResponseInterface
     {
         return $this->manager->save($this->compile(), $this->tag);
+    }
+
+    /**
+     * @codeCoverageIgnore Hard to test, not much to gain from testing. Skipping.
+     */
+    public function dd()
+    {
+        if (function_exists('dd')) {
+            dd($this->compile());
+        }
+
+        var_dump($this->compile());
+        exit();
     }
 }

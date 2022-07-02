@@ -2,6 +2,11 @@
 
 namespace RWC\TwitterStream\Generator;
 
+/**
+ * @codeCoverageIgnore (internal tool)
+ *
+ * @internal
+ */
 class Generator
 {
     // excluded here: sample, bounding_box, point_radius

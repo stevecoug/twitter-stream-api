@@ -10,6 +10,8 @@ abstract class Operator
     public const IS_OPERATOR  = 1 << 3;
     public const HAS_OPERATOR = 1 << 4;
 
+    public const OPERATORS = [self::OR_OPERATOR, self::AND_OPERATOR, self::NOT_OPERATOR, self::IS_OPERATOR, self::HAS_OPERATOR];
+
     protected int $flags = 0;
 
     abstract public function compile(): string;

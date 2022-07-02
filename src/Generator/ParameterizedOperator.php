@@ -4,6 +4,11 @@ namespace RWC\TwitterStream\Generator;
 
 use RWC\TwitterStream\Support\Str;
 
+/**
+ * @codeCoverageIgnore (internal tool)
+ *
+ * @internal
+ */
 class ParameterizedOperator
 {
     public string $snakeCasedName;
