@@ -39,9 +39,9 @@ $rule->new(tag: 'cat_filter_1')
 
 $twitterStream
     ->backfill(2) // for "academic research" accounts only
-    ->expansions(['author_id'])
-    ->fields(['media.duration_ms', 'media.height'])
-    ->fields(['place.full_name', 'place.geo', 'place.id'])
+    ->expansions('author_id')
+    ->fields('media.duration_ms', 'media.height')
+    ->fields('place.full_name', 'place.geo', 'place.id')
     ->listen($connection, function (array $tweet) {
         echo $tweet['data']['text'];
         
@@ -59,7 +59,7 @@ Tweets your stream receives. Rules are saved by Twitter and are persistent.
 ### Client
 
 ```php
-use RWC\TwitterStream\RuleBuilder;
+use RWC\TwitterStream\RuleManager;
 
 $rules = new RuleManager($connection);
 ```
@@ -142,8 +142,9 @@ You can also group operators together :
 
 ```php
 use RWC\TwitterStream\RuleBuilder;
+
 $rules->query('#laravel')
-    ->group(function (RluleBuilder $builder) {
+    ->group(function (RuleBuilder $builder) {
         $builder->raw('tip')->or->raw('tips')->or->raw('🔥');
     });
 
