@@ -56,6 +56,7 @@ class ParameterizedOperator
 
         foreach ($doubles as $value) {
             $first  = is_array($value[0]) ? $value[0][0] : $value[0];
+            /**@phpstan-ignore-next-line */
             $second = is_array($value[0]) ? $value[0][1] : $value[1];
 
             $buffer = [

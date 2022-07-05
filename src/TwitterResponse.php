@@ -80,6 +80,8 @@ class TwitterResponse implements ResponseInterface
     public function withoutHeader($name)
     {
         $this->response->withoutHeader($name);
+
+        return $this;
     }
 
     public function withBody(StreamInterface $body)

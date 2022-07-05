@@ -13,13 +13,13 @@ class RuleManager
     /** @return Rule[] */
     public function all(): array
     {
-        $rules = $this->connection->json('GET', 'https://api.twitter.com/2/tweets/search/stream/rules');
+        $rules = $this->connection->request('GET', 'https://api.twitter.com/2/tweets/search/stream/rules');
 
         return array_map(fn (array $rule) => new Rule(
             $rule['value'],
             $rule['tag'] ?? null,
             $rule['id'] ?? null,
-        ), $rules['data'] ?? []);
+        ), $rules->getPayload()['data'] ?? []);
     }
 
     public function save(Rule|string $value, ?string $tag = null): ResponseInterface

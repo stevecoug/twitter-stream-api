@@ -65,7 +65,7 @@ class RuleBuilder extends _RuleBuilder
         return $this;
     }
 
-    public function __call(string $name, array $arguments): static
+    public function __call(string $name, array $arguments): self
     {
         $flags     = 0;
         $arguments = self::flattenArgumentsAndQuoteStrings($arguments);
@@ -132,7 +132,7 @@ class RuleBuilder extends _RuleBuilder
         return $result;
     }
 
-    public function group(callable $builder, int $flags = 0)
+    public function group(callable $builder, int $flags = 0): self
     {
         return $this->push(new GroupOperator($flags, $builder));
     }
@@ -159,15 +159,15 @@ class RuleBuilder extends _RuleBuilder
         return trim($query);
     }
 
-    public function save(): ResponseInterface
+    public function save(): ?ResponseInterface
     {
-        return $this->manager->save($this->compile(), $this->tag);
+        return $this->manager?->save($this->compile(), $this->tag);
     }
 
     /**
      * @codeCoverageIgnore Hard to test, not much to gain from testing. Skipping.
      */
-    public function dd()
+    public function dd(): never
     {
         if (function_exists('dd')) {
             dd($this->compile());
