@@ -34,33 +34,33 @@ it('can compile a query with mixed negated and non-negated operators', function 
 });
 
 it('can compile a query with operators linked by OR', function () {
-    expect(query('php')->lang('en')->or->has('images')->compile())->toBe('php lang:en or has:images');
+    expect(query('php')->lang('en')->or->has('images')->compile())->toBe('php lang:en OR has:images');
 });
 
 it('can compile a query with operators linked by AND', function () {
-    expect(query('php')->lang('en')->and->has('images')->compile())->toBe('php lang:en and has:images');
+    expect(query('php')->lang('en')->and->has('images')->compile())->toBe('php lang:en AND has:images');
 });
 
 it('can compile a query with operators linked by OR and AND', function () {
-    expect(query('php')->lang('en')->or->has('images')->and->has('videos')->compile())->toBe('php lang:en or has:images and has:videos');
+    expect(query('php')->lang('en')->or->has('images')->and->has('videos')->compile())->toBe('php lang:en OR has:images AND has:videos');
 });
 
 it('can compile a query with a group', function () {
     expect(query('php')->group(function (RuleBuilder $b) {
         $b->lang('en')->and->has('images');
-    })->compile())->toBe('php (lang:en and has:images)');
+    })->compile())->toBe('php (lang:en AND has:images)');
 });
 
 it('can compile a query with an or group', function () {
     expect(query('cats')->has('images')->or->group(function (RuleBuilder $b) {
         return $b->lang('en')->and->has('videos');
-    })->compile())->toBe('cats has:images or (lang:en and has:videos)');
+    })->compile())->toBe('cats has:images OR (lang:en AND has:videos)');
 });
 
 it('can compile a query with an and group', function () {
     expect(query('cats')->has('images')->and->group(function (RuleBuilder $b) {
         return $b->lang('en')->or->has('videos');
-    })->compile())->toBe('cats has:images and (lang:en or has:videos)');
+    })->compile())->toBe('cats has:images AND (lang:en OR has:videos)');
 });
 
 it('can compile a point radius operator', function () {
@@ -155,21 +155,21 @@ it('can group operators', function () {
             return $b->raw('cats')->raw('dogs');
         })->compile();
 
-    expect($rule)->toBe('(cats or dogs)');
+    expect($rule)->toBe('(cats OR dogs)');
 
     $rule = query()
         ->andGroup(function (RuleBuilder $b) {
             return $b->raw('cats')->raw('dogs');
         })->compile();
 
-    expect($rule)->toBe('(cats and dogs)');
+    expect($rule)->toBe('(cats AND dogs)');
 
     $rule = query()
         ->andNotGroup(function (RuleBuilder $b) {
             return $b->raw('cats')->raw('dogs')->isQuote();
         })->compile();
 
-    expect($rule)->toBe('(cats and dogs and -is:quote)');
+    expect($rule)->toBe('(cats AND dogs AND -is:quote)');
 });
 
 it('can compile a sample operator', function () {

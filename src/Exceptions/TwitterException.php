@@ -34,7 +34,7 @@ class TwitterException extends Exception
             // For most errors related to rule creation, details are provided.
             $hasDetails = array_key_exists('details', $error);
 
-            $errorIdOrType = $error['id'] ?? ($error['type'] ?? '');
+            $errorIdOrType = $error['id'] ?? ($error['type'] ?? 'Generic Problem');
 
             $buffer .= sprintf("[%s] %s %s [%s]\n", $error['title'], $error['value'], $hasDetails ? ': ' . implode('; ', $error['details']) : '', $errorIdOrType);
         }
