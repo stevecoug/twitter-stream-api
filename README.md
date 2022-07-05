@@ -31,10 +31,11 @@ $connection     = new Connection(
 );
 $rule           = new RuleManager($connection);
 
-$rule->new('cat_filter_1')
+$rule->new(tag: 'cat_filter_1')
     ->query('cats')
     ->hasImages()
     ->andHasGeo()
+    ->save()
 
 $twitterStream
     ->backfill(2) // for "academic research" accounts only
@@ -112,7 +113,8 @@ $rules->deleteMany([
 ```php
 use RWC\TwitterStream\RuleBuilder;
 
-$builder = $client->query('php')
+$builder = $client->new()
+    ->query('php')
     ->group(fn (RuleBuilder $builder) => $builder->raw('tip')->or->raw('🔥'))
     ->isRetweets()
     ->hasImages()
@@ -126,7 +128,8 @@ You can negate an operator using the magic property `not`.
 ```php
 use RWC\TwitterStream\RuleBuilder;
 
-$rules->query('#php')
+$rules->new()
+    ->query('#php')
     ->exceptRetweets() 
     ->hasLinks()
     ->compile()
