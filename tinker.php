@@ -22,20 +22,17 @@ $stream = new FilteredStream();
 
 $connection = new Connection($bearerToken);
 $rule       = new RuleManager($connection);
+foreach($rule->all() as $r) {
+    $rule->delete($r->id);
+}
 $res = $rule->new('cat videos but no images')
-    ->group(fn (RuleBuilder $builder) => $builder->query('cats'))
-    ->hasVideos()
+    ->query('cat')
     ->save();
 
-dd($res->getBody()->getContents(), $res->getStatusCode());
 
 
-//
-// $stream
-//    ->listen(new Connection($bearerToken), function (object $tweet) {
-//        dump($tweet);
-//    });
-//
-// foreach ($twitterStream->filteredTweets() as $tweet) {
-//    dump($tweet);
-// }
+
+$stream
+   ->listen(new Connection($bearerToken), function (object $tweet) {
+       dump($tweet);
+   });

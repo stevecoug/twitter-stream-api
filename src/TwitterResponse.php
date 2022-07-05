@@ -2,16 +2,22 @@
 
 namespace RWC\TwitterStream;
 
+use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use RWC\TwitterStream\Exceptions\TwitterException;
 
 class TwitterResponse implements ResponseInterface
 {
-    protected array $payload;
+    protected array $payload = [];
 
     public function __construct(protected ResponseInterface $response)
     {
+        // The response is a stream.
+        if ($response->getBody()->getMetadata('wrapper_type') === 'http') {
+            return;
+        }
+
         $payload = json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR);
 
         if (array_key_exists('errors', $payload)) {

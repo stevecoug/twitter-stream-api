@@ -20,16 +20,16 @@ abstract class TwitterStream
 
     public function listen(Connection $connection, callable $callback): void
     {
-        $this->response = $connection->request('GET', $this->toURL(), ['stream' => true]);
-        $this->stream   = $this->response->getBody();
-
-        $parser = new Parser();
+        $response = $connection->request('GET', $this->toURL(), ['stream' => true]);
+        $parser   = new Parser();
         $parser->parseAsObjects(
-            $this->stream,
-            function () use ($callback) {
+            $response->getBody(),
+            function (object $item) use ($callback) {
                 $this->received++;
 
-                $callback(...)->call($this, ...func_get_args());
+                dump('here');
+
+                $callback(...)->call($this, $item);
             }
         );
     }
