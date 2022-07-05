@@ -35,7 +35,7 @@ class GroupOperator extends Operator
                 }
 
                 $stack->add($index, new RawOperator([
-                    Flag::has($this->flags, self::OR_OPERATOR) ? 'or' : 'and',
+                    Flag::has($this->flags, self::OR_OPERATOR) ? 'OR' : 'AND',
                 ]));
             }
 

@@ -49,8 +49,8 @@ class RuleBuilder extends _RuleBuilder
     public function __get(string $name): self
     {
         match ($name) {
-            'and' => $this->push(new RawOperator(['and'])),
-            'or'  => $this->push(new RawOperator(['or'])),
+            'and' => $this->push(new RawOperator(['AND'])),
+            'or'  => $this->push(new RawOperator(['OR'])),
             /* @see https://wiki.php.net/rfc/undefined_property_error_promotion */
             default => trigger_error('Undefined property: ' . static::class . '::$' . $name, PHP_MAJOR_VERSION === 8 ? E_USER_WARNING : E_USER_ERROR)
         };
