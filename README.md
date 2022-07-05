@@ -23,9 +23,13 @@ composer require redwebcreation/twitter-stream-api
 
 ```php
 use RWC\TwitterStream\Connection;
-use RWC\TwitterStream\TwitterStream;
+use RWC\TwitterStream\FilteredStream;
+use RWC\TwitterStream\VolumeStream;
 
-$twitterStream  = new TwitterStream();
+$twitterStream  = new FilteredStream();
+// or
+$twitterStream  = new VolumeStream();
+
 $connection     = new Connection(
    bearerToken: '...'
 );
