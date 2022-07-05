@@ -11,7 +11,7 @@ This package is the spiritual successor of `fennb/phirehose`.
 
 ## Getting started
 
-> Requires [PHP 8.0+](https://www.php.net/releases/)
+> Requires [PHP 8.1+](https://www.php.net/releases/)
 
 You can install the package via composer:
 
@@ -31,12 +31,10 @@ $connection     = new Connection(
 );
 $rule           = new RuleManager($connection);
 
-$rule->save(
-    $rule->query('cats')
-        ->not->has('images')
-        ->has('videos'),
-    'dogs without images but with videos'
-);
+$rule->new('cat_filter_1')
+    ->query('cats')
+    ->hasImages()
+    ->andHasGeo()
 
 $twitterStream
     ->backfill(2) // for "academic research" accounts only
@@ -78,7 +76,7 @@ use RWC\TwitterStream\Rule;
 
 $rules->save(
   'cat has:image',
-  'cat with an image'
+  'tweet with an image of a cat'
 )
 
 // Using saveMany to create many rules is more efficient than using save
@@ -115,10 +113,10 @@ $rules->deleteMany([
 use RWC\TwitterStream\RuleBuilder;
 
 $builder = $client->query('php')
-    ->group(fn (RuleBuilder $builder) => $builder->raw('tip')->or()->raw('🔥'))
-    ->is('retweets')
-    ->has('images')
-    ->not->has('links');
+    ->group(fn (RuleBuilder $builder) => $builder->raw('tip')->or->raw('🔥'))
+    ->isRetweets()
+    ->hasImages()
+    ->hasNotLinks();
 
 // Produces #php (tip OR 🔥) is:retweet has:images -has:links
 ```
@@ -129,8 +127,8 @@ You can negate an operator using the magic property `not`.
 use RWC\TwitterStream\RuleBuilder;
 
 $rules->query('#php')
-    ->not->isRetweets() // or, is('retweets')
-    ->hasLinks() // or, has('links')
+    ->exceptRetweets() 
+    ->hasLinks()
     ->compile()
 
 // Produces: #php -is:retweet has:links
@@ -142,7 +140,7 @@ You can also group operators together :
 use RWC\TwitterStream\RuleBuilder;
 $rules->query('#laravel')
     ->group(function (RluleBuilder $builder) {
-        $builder->raw('tip')->or()->raw('tips')->or()->raw('🔥');
+        $builder->raw('tip')->or->raw('tips')->or->raw('🔥');
     });
 
 // Produces: #laravel (tip OR tips OR 🔥)
