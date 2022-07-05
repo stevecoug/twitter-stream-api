@@ -113,12 +113,13 @@ $rules->deleteMany([
 ```php
 use RWC\TwitterStream\RuleBuilder;
 
-$builder = $client->new()
+$rules->new()
     ->query('php')
     ->group(fn (RuleBuilder $builder) => $builder->raw('tip')->or->raw('🔥'))
     ->isRetweets()
     ->hasImages()
-    ->hasNotLinks();
+    ->hasNotLinks()
+    ->save();
 
 // Produces #php (tip OR 🔥) is:retweet has:images -has:links
 ```
@@ -132,7 +133,7 @@ $rules->new()
     ->query('#php')
     ->exceptRetweets() 
     ->hasLinks()
-    ->compile()
+    ->save()
 
 // Produces: #php -is:retweet has:links
 ```
