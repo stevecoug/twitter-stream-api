@@ -46,8 +46,8 @@ $twitterStream
     ->expansions('author_id')
     ->fields('media.duration_ms', 'media.height')
     ->fields('place.full_name', 'place.geo', 'place.id')
-    ->listen($connection, function (array $tweet) {
-        echo $tweet['data']['text'];
+    ->listen($connection, function (object $tweet) {
+        echo $tweet->data->text;
         
         if ($this->received >= 100) {
             $this->stopListening();
