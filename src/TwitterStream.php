@@ -27,7 +27,7 @@ abstract class TwitterStream
             function (object $item) use ($callback) {
                 $this->received++;
 
-                dump('here');
+
 
                 $callback(...)->call($this, $item);
             }
