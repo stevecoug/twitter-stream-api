@@ -16,8 +16,8 @@ class NamedOperator extends Operator
     public function compile(): string
     {
         $join = match (true) {
-            Flag::has($this->flags, self::OR_OPERATOR) => ' or ',
-            Flag::has($this->flags, self::AND_OPERATOR) => ' and ',
+            Flag::has($this->flags, self::OR_OPERATOR) => ' OR ',
+            Flag::has($this->flags, self::AND_OPERATOR) => ' AND ',
             default => ' ',
         };
         $negation = Flag::has($this->flags, self::NOT_OPERATOR) ? '-' : '';
