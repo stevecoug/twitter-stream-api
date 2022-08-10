@@ -36,7 +36,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or is:retweet',
+    2 => 'OR is:retweet',
   ),
   4 => 
   array (
@@ -44,7 +44,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -is:retweet',
+    2 => 'OR -is:retweet',
   ),
   5 => 
   array (
@@ -52,7 +52,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and is:retweet',
+    2 => 'AND is:retweet',
   ),
   6 => 
   array (
@@ -60,7 +60,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -is:retweet',
+    2 => 'AND -is:retweet',
   ),
   7 => 
   array (
@@ -84,7 +84,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -is:retweet',
+    2 => 'OR -is:retweet',
   ),
   10 => 
   array (
@@ -92,7 +92,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or is:retweet',
+    2 => 'OR is:retweet',
   ),
   11 => 
   array (
@@ -100,7 +100,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -is:retweet',
+    2 => 'AND -is:retweet',
   ),
   12 => 
   array (
@@ -108,7 +108,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and is:retweet',
+    2 => 'AND is:retweet',
   ),
   13 => 
   array (
@@ -140,7 +140,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or is:reply',
+    2 => 'OR is:reply',
   ),
   17 => 
   array (
@@ -148,7 +148,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -is:reply',
+    2 => 'OR -is:reply',
   ),
   18 => 
   array (
@@ -156,7 +156,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and is:reply',
+    2 => 'AND is:reply',
   ),
   19 => 
   array (
@@ -164,7 +164,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -is:reply',
+    2 => 'AND -is:reply',
   ),
   20 => 
   array (
@@ -188,7 +188,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -is:reply',
+    2 => 'OR -is:reply',
   ),
   23 => 
   array (
@@ -196,7 +196,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or is:reply',
+    2 => 'OR is:reply',
   ),
   24 => 
   array (
@@ -204,7 +204,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -is:reply',
+    2 => 'AND -is:reply',
   ),
   25 => 
   array (
@@ -212,7 +212,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and is:reply',
+    2 => 'AND is:reply',
   ),
   26 => 
   array (
@@ -244,7 +244,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or is:quote',
+    2 => 'OR is:quote',
   ),
   30 => 
   array (
@@ -252,7 +252,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -is:quote',
+    2 => 'OR -is:quote',
   ),
   31 => 
   array (
@@ -260,7 +260,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and is:quote',
+    2 => 'AND is:quote',
   ),
   32 => 
   array (
@@ -268,7 +268,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -is:quote',
+    2 => 'AND -is:quote',
   ),
   33 => 
   array (
@@ -292,7 +292,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -is:quote',
+    2 => 'OR -is:quote',
   ),
   36 => 
   array (
@@ -300,7 +300,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or is:quote',
+    2 => 'OR is:quote',
   ),
   37 => 
   array (
@@ -308,7 +308,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -is:quote',
+    2 => 'AND -is:quote',
   ),
   38 => 
   array (
@@ -316,7 +316,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and is:quote',
+    2 => 'AND is:quote',
   ),
   39 => 
   array (
@@ -348,7 +348,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or is:verified',
+    2 => 'OR is:verified',
   ),
   43 => 
   array (
@@ -356,7 +356,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -is:verified',
+    2 => 'OR -is:verified',
   ),
   44 => 
   array (
@@ -364,7 +364,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and is:verified',
+    2 => 'AND is:verified',
   ),
   45 => 
   array (
@@ -372,7 +372,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -is:verified',
+    2 => 'AND -is:verified',
   ),
   46 => 
   array (
@@ -396,7 +396,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -is:verified',
+    2 => 'OR -is:verified',
   ),
   49 => 
   array (
@@ -404,7 +404,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or is:verified',
+    2 => 'OR is:verified',
   ),
   50 => 
   array (
@@ -412,7 +412,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -is:verified',
+    2 => 'AND -is:verified',
   ),
   51 => 
   array (
@@ -420,7 +420,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and is:verified',
+    2 => 'AND is:verified',
   ),
   52 => 
   array (
@@ -452,7 +452,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or has:hashtags',
+    2 => 'OR has:hashtags',
   ),
   56 => 
   array (
@@ -460,7 +460,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -has:hashtags',
+    2 => 'OR -has:hashtags',
   ),
   57 => 
   array (
@@ -468,7 +468,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and has:hashtags',
+    2 => 'AND has:hashtags',
   ),
   58 => 
   array (
@@ -476,7 +476,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -has:hashtags',
+    2 => 'AND -has:hashtags',
   ),
   59 => 
   array (
@@ -508,7 +508,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or has:cashtags',
+    2 => 'OR has:cashtags',
   ),
   63 => 
   array (
@@ -516,7 +516,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -has:cashtags',
+    2 => 'OR -has:cashtags',
   ),
   64 => 
   array (
@@ -524,7 +524,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and has:cashtags',
+    2 => 'AND has:cashtags',
   ),
   65 => 
   array (
@@ -532,7 +532,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -has:cashtags',
+    2 => 'AND -has:cashtags',
   ),
   66 => 
   array (
@@ -564,7 +564,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or has:links',
+    2 => 'OR has:links',
   ),
   70 => 
   array (
@@ -572,7 +572,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -has:links',
+    2 => 'OR -has:links',
   ),
   71 => 
   array (
@@ -580,7 +580,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and has:links',
+    2 => 'AND has:links',
   ),
   72 => 
   array (
@@ -588,7 +588,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -has:links',
+    2 => 'AND -has:links',
   ),
   73 => 
   array (
@@ -620,7 +620,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or has:mentions',
+    2 => 'OR has:mentions',
   ),
   77 => 
   array (
@@ -628,7 +628,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -has:mentions',
+    2 => 'OR -has:mentions',
   ),
   78 => 
   array (
@@ -636,7 +636,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and has:mentions',
+    2 => 'AND has:mentions',
   ),
   79 => 
   array (
@@ -644,7 +644,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -has:mentions',
+    2 => 'AND -has:mentions',
   ),
   80 => 
   array (
@@ -676,7 +676,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or has:media',
+    2 => 'OR has:media',
   ),
   84 => 
   array (
@@ -684,7 +684,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -has:media',
+    2 => 'OR -has:media',
   ),
   85 => 
   array (
@@ -692,7 +692,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and has:media',
+    2 => 'AND has:media',
   ),
   86 => 
   array (
@@ -700,7 +700,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -has:media',
+    2 => 'AND -has:media',
   ),
   87 => 
   array (
@@ -732,7 +732,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or has:images',
+    2 => 'OR has:images',
   ),
   91 => 
   array (
@@ -740,7 +740,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -has:images',
+    2 => 'OR -has:images',
   ),
   92 => 
   array (
@@ -748,7 +748,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and has:images',
+    2 => 'AND has:images',
   ),
   93 => 
   array (
@@ -756,7 +756,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -has:images',
+    2 => 'AND -has:images',
   ),
   94 => 
   array (
@@ -788,7 +788,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or has:videos',
+    2 => 'OR has:videos',
   ),
   98 => 
   array (
@@ -796,7 +796,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -has:videos',
+    2 => 'OR -has:videos',
   ),
   99 => 
   array (
@@ -804,7 +804,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and has:videos',
+    2 => 'AND has:videos',
   ),
   100 => 
   array (
@@ -812,7 +812,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -has:videos',
+    2 => 'AND -has:videos',
   ),
   101 => 
   array (
@@ -844,7 +844,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or has:geo',
+    2 => 'OR has:geo',
   ),
   105 => 
   array (
@@ -852,7 +852,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'or -has:geo',
+    2 => 'OR -has:geo',
   ),
   106 => 
   array (
@@ -860,7 +860,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and has:geo',
+    2 => 'AND has:geo',
   ),
   107 => 
   array (
@@ -868,7 +868,7 @@ it('compiles', function ($value, $arguments, $expected) {
     1 => 
     array (
     ),
-    2 => 'and -has:geo',
+    2 => 'AND -has:geo',
   ),
   108 => 
   array (
@@ -895,7 +895,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or from:a',
+    2 => 'OR from:a',
   ),
   111 => 
   array (
@@ -904,7 +904,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -from:a',
+    2 => 'OR -from:a',
   ),
   112 => 
   array (
@@ -913,7 +913,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and from:a',
+    2 => 'AND from:a',
   ),
   113 => 
   array (
@@ -922,7 +922,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -from:a',
+    2 => 'AND -from:a',
   ),
   114 => 
   array (
@@ -958,7 +958,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or from:b',
+    2 => 'OR from:b',
   ),
   117 => 
   array (
@@ -970,7 +970,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -from:b',
+    2 => 'OR -from:b',
   ),
   118 => 
   array (
@@ -982,7 +982,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and from:b',
+    2 => 'AND from:b',
   ),
   119 => 
   array (
@@ -994,7 +994,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -from:b',
+    2 => 'AND -from:b',
   ),
   120 => 
   array (
@@ -1024,7 +1024,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'from:a or from:b',
+    2 => 'from:a OR from:b',
   ),
   123 => 
   array (
@@ -1034,7 +1034,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-from:a or -from:b',
+    2 => '-from:a OR -from:b',
   ),
   124 => 
   array (
@@ -1044,7 +1044,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'from:a and from:b',
+    2 => 'from:a AND from:b',
   ),
   125 => 
   array (
@@ -1054,7 +1054,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-from:a and -from:b',
+    2 => '-from:a AND -from:b',
   ),
   126 => 
   array (
@@ -1093,7 +1093,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'from:a or from:b',
+    2 => 'from:a OR from:b',
   ),
   129 => 
   array (
@@ -1106,7 +1106,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-from:a or -from:b',
+    2 => '-from:a OR -from:b',
   ),
   130 => 
   array (
@@ -1119,7 +1119,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'from:a and from:b',
+    2 => 'from:a AND from:b',
   ),
   131 => 
   array (
@@ -1132,7 +1132,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-from:a and -from:b',
+    2 => '-from:a AND -from:b',
   ),
   132 => 
   array (
@@ -1159,7 +1159,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or to:a',
+    2 => 'OR to:a',
   ),
   135 => 
   array (
@@ -1168,7 +1168,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -to:a',
+    2 => 'OR -to:a',
   ),
   136 => 
   array (
@@ -1177,7 +1177,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and to:a',
+    2 => 'AND to:a',
   ),
   137 => 
   array (
@@ -1186,7 +1186,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -to:a',
+    2 => 'AND -to:a',
   ),
   138 => 
   array (
@@ -1222,7 +1222,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or to:b',
+    2 => 'OR to:b',
   ),
   141 => 
   array (
@@ -1234,7 +1234,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -to:b',
+    2 => 'OR -to:b',
   ),
   142 => 
   array (
@@ -1246,7 +1246,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and to:b',
+    2 => 'AND to:b',
   ),
   143 => 
   array (
@@ -1258,7 +1258,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -to:b',
+    2 => 'AND -to:b',
   ),
   144 => 
   array (
@@ -1288,7 +1288,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'to:a or to:b',
+    2 => 'to:a OR to:b',
   ),
   147 => 
   array (
@@ -1298,7 +1298,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-to:a or -to:b',
+    2 => '-to:a OR -to:b',
   ),
   148 => 
   array (
@@ -1308,7 +1308,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'to:a and to:b',
+    2 => 'to:a AND to:b',
   ),
   149 => 
   array (
@@ -1318,7 +1318,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-to:a and -to:b',
+    2 => '-to:a AND -to:b',
   ),
   150 => 
   array (
@@ -1357,7 +1357,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'to:a or to:b',
+    2 => 'to:a OR to:b',
   ),
   153 => 
   array (
@@ -1370,7 +1370,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-to:a or -to:b',
+    2 => '-to:a OR -to:b',
   ),
   154 => 
   array (
@@ -1383,7 +1383,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'to:a and to:b',
+    2 => 'to:a AND to:b',
   ),
   155 => 
   array (
@@ -1396,7 +1396,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-to:a and -to:b',
+    2 => '-to:a AND -to:b',
   ),
   156 => 
   array (
@@ -1423,7 +1423,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or url:a',
+    2 => 'OR url:a',
   ),
   159 => 
   array (
@@ -1432,7 +1432,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -url:a',
+    2 => 'OR -url:a',
   ),
   160 => 
   array (
@@ -1441,7 +1441,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and url:a',
+    2 => 'AND url:a',
   ),
   161 => 
   array (
@@ -1450,7 +1450,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -url:a',
+    2 => 'AND -url:a',
   ),
   162 => 
   array (
@@ -1486,7 +1486,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or url:b',
+    2 => 'OR url:b',
   ),
   165 => 
   array (
@@ -1498,7 +1498,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -url:b',
+    2 => 'OR -url:b',
   ),
   166 => 
   array (
@@ -1510,7 +1510,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and url:b',
+    2 => 'AND url:b',
   ),
   167 => 
   array (
@@ -1522,7 +1522,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -url:b',
+    2 => 'AND -url:b',
   ),
   168 => 
   array (
@@ -1552,7 +1552,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'url:a or url:b',
+    2 => 'url:a OR url:b',
   ),
   171 => 
   array (
@@ -1562,7 +1562,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-url:a or -url:b',
+    2 => '-url:a OR -url:b',
   ),
   172 => 
   array (
@@ -1572,7 +1572,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'url:a and url:b',
+    2 => 'url:a AND url:b',
   ),
   173 => 
   array (
@@ -1582,7 +1582,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-url:a and -url:b',
+    2 => '-url:a AND -url:b',
   ),
   174 => 
   array (
@@ -1621,7 +1621,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'url:a or url:b',
+    2 => 'url:a OR url:b',
   ),
   177 => 
   array (
@@ -1634,7 +1634,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-url:a or -url:b',
+    2 => '-url:a OR -url:b',
   ),
   178 => 
   array (
@@ -1647,7 +1647,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'url:a and url:b',
+    2 => 'url:a AND url:b',
   ),
   179 => 
   array (
@@ -1660,7 +1660,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-url:a and -url:b',
+    2 => '-url:a AND -url:b',
   ),
   180 => 
   array (
@@ -1687,7 +1687,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or retweets_of:a',
+    2 => 'OR retweets_of:a',
   ),
   183 => 
   array (
@@ -1696,7 +1696,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -retweets_of:a',
+    2 => 'OR -retweets_of:a',
   ),
   184 => 
   array (
@@ -1705,7 +1705,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and retweets_of:a',
+    2 => 'AND retweets_of:a',
   ),
   185 => 
   array (
@@ -1714,7 +1714,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -retweets_of:a',
+    2 => 'AND -retweets_of:a',
   ),
   186 => 
   array (
@@ -1750,7 +1750,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or retweets_of:b',
+    2 => 'OR retweets_of:b',
   ),
   189 => 
   array (
@@ -1762,7 +1762,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -retweets_of:b',
+    2 => 'OR -retweets_of:b',
   ),
   190 => 
   array (
@@ -1774,7 +1774,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and retweets_of:b',
+    2 => 'AND retweets_of:b',
   ),
   191 => 
   array (
@@ -1786,7 +1786,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -retweets_of:b',
+    2 => 'AND -retweets_of:b',
   ),
   192 => 
   array (
@@ -1816,7 +1816,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'retweets_of:a or retweets_of:b',
+    2 => 'retweets_of:a OR retweets_of:b',
   ),
   195 => 
   array (
@@ -1826,7 +1826,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-retweets_of:a or -retweets_of:b',
+    2 => '-retweets_of:a OR -retweets_of:b',
   ),
   196 => 
   array (
@@ -1836,7 +1836,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'retweets_of:a and retweets_of:b',
+    2 => 'retweets_of:a AND retweets_of:b',
   ),
   197 => 
   array (
@@ -1846,7 +1846,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-retweets_of:a and -retweets_of:b',
+    2 => '-retweets_of:a AND -retweets_of:b',
   ),
   198 => 
   array (
@@ -1885,7 +1885,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'retweets_of:a or retweets_of:b',
+    2 => 'retweets_of:a OR retweets_of:b',
   ),
   201 => 
   array (
@@ -1898,7 +1898,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-retweets_of:a or -retweets_of:b',
+    2 => '-retweets_of:a OR -retweets_of:b',
   ),
   202 => 
   array (
@@ -1911,7 +1911,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'retweets_of:a and retweets_of:b',
+    2 => 'retweets_of:a AND retweets_of:b',
   ),
   203 => 
   array (
@@ -1924,7 +1924,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-retweets_of:a and -retweets_of:b',
+    2 => '-retweets_of:a AND -retweets_of:b',
   ),
   204 => 
   array (
@@ -1951,7 +1951,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or context:a',
+    2 => 'OR context:a',
   ),
   207 => 
   array (
@@ -1960,7 +1960,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -context:a',
+    2 => 'OR -context:a',
   ),
   208 => 
   array (
@@ -1969,7 +1969,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and context:a',
+    2 => 'AND context:a',
   ),
   209 => 
   array (
@@ -1978,7 +1978,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -context:a',
+    2 => 'AND -context:a',
   ),
   210 => 
   array (
@@ -2014,7 +2014,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or context:b',
+    2 => 'OR context:b',
   ),
   213 => 
   array (
@@ -2026,7 +2026,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -context:b',
+    2 => 'OR -context:b',
   ),
   214 => 
   array (
@@ -2038,7 +2038,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and context:b',
+    2 => 'AND context:b',
   ),
   215 => 
   array (
@@ -2050,7 +2050,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -context:b',
+    2 => 'AND -context:b',
   ),
   216 => 
   array (
@@ -2080,7 +2080,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'context:a or context:b',
+    2 => 'context:a OR context:b',
   ),
   219 => 
   array (
@@ -2090,7 +2090,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-context:a or -context:b',
+    2 => '-context:a OR -context:b',
   ),
   220 => 
   array (
@@ -2100,7 +2100,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'context:a and context:b',
+    2 => 'context:a AND context:b',
   ),
   221 => 
   array (
@@ -2110,7 +2110,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-context:a and -context:b',
+    2 => '-context:a AND -context:b',
   ),
   222 => 
   array (
@@ -2149,7 +2149,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'context:a or context:b',
+    2 => 'context:a OR context:b',
   ),
   225 => 
   array (
@@ -2162,7 +2162,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-context:a or -context:b',
+    2 => '-context:a OR -context:b',
   ),
   226 => 
   array (
@@ -2175,7 +2175,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'context:a and context:b',
+    2 => 'context:a AND context:b',
   ),
   227 => 
   array (
@@ -2188,7 +2188,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-context:a and -context:b',
+    2 => '-context:a AND -context:b',
   ),
   228 => 
   array (
@@ -2215,7 +2215,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or entity:a',
+    2 => 'OR entity:a',
   ),
   231 => 
   array (
@@ -2224,7 +2224,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -entity:a',
+    2 => 'OR -entity:a',
   ),
   232 => 
   array (
@@ -2233,7 +2233,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and entity:a',
+    2 => 'AND entity:a',
   ),
   233 => 
   array (
@@ -2242,7 +2242,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -entity:a',
+    2 => 'AND -entity:a',
   ),
   234 => 
   array (
@@ -2278,7 +2278,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or entity:b',
+    2 => 'OR entity:b',
   ),
   237 => 
   array (
@@ -2290,7 +2290,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -entity:b',
+    2 => 'OR -entity:b',
   ),
   238 => 
   array (
@@ -2302,7 +2302,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and entity:b',
+    2 => 'AND entity:b',
   ),
   239 => 
   array (
@@ -2314,7 +2314,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -entity:b',
+    2 => 'AND -entity:b',
   ),
   240 => 
   array (
@@ -2344,7 +2344,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'entity:a or entity:b',
+    2 => 'entity:a OR entity:b',
   ),
   243 => 
   array (
@@ -2354,7 +2354,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-entity:a or -entity:b',
+    2 => '-entity:a OR -entity:b',
   ),
   244 => 
   array (
@@ -2364,7 +2364,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'entity:a and entity:b',
+    2 => 'entity:a AND entity:b',
   ),
   245 => 
   array (
@@ -2374,7 +2374,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-entity:a and -entity:b',
+    2 => '-entity:a AND -entity:b',
   ),
   246 => 
   array (
@@ -2413,7 +2413,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'entity:a or entity:b',
+    2 => 'entity:a OR entity:b',
   ),
   249 => 
   array (
@@ -2426,7 +2426,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-entity:a or -entity:b',
+    2 => '-entity:a OR -entity:b',
   ),
   250 => 
   array (
@@ -2439,7 +2439,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'entity:a and entity:b',
+    2 => 'entity:a AND entity:b',
   ),
   251 => 
   array (
@@ -2452,7 +2452,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-entity:a and -entity:b',
+    2 => '-entity:a AND -entity:b',
   ),
   252 => 
   array (
@@ -2479,7 +2479,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or conversation_id:a',
+    2 => 'OR conversation_id:a',
   ),
   255 => 
   array (
@@ -2488,7 +2488,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -conversation_id:a',
+    2 => 'OR -conversation_id:a',
   ),
   256 => 
   array (
@@ -2497,7 +2497,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and conversation_id:a',
+    2 => 'AND conversation_id:a',
   ),
   257 => 
   array (
@@ -2506,7 +2506,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -conversation_id:a',
+    2 => 'AND -conversation_id:a',
   ),
   258 => 
   array (
@@ -2542,7 +2542,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or conversation_id:b',
+    2 => 'OR conversation_id:b',
   ),
   261 => 
   array (
@@ -2554,7 +2554,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -conversation_id:b',
+    2 => 'OR -conversation_id:b',
   ),
   262 => 
   array (
@@ -2566,7 +2566,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and conversation_id:b',
+    2 => 'AND conversation_id:b',
   ),
   263 => 
   array (
@@ -2578,7 +2578,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -conversation_id:b',
+    2 => 'AND -conversation_id:b',
   ),
   264 => 
   array (
@@ -2608,7 +2608,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'conversation_id:a or conversation_id:b',
+    2 => 'conversation_id:a OR conversation_id:b',
   ),
   267 => 
   array (
@@ -2618,7 +2618,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-conversation_id:a or -conversation_id:b',
+    2 => '-conversation_id:a OR -conversation_id:b',
   ),
   268 => 
   array (
@@ -2628,7 +2628,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'conversation_id:a and conversation_id:b',
+    2 => 'conversation_id:a AND conversation_id:b',
   ),
   269 => 
   array (
@@ -2638,7 +2638,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-conversation_id:a and -conversation_id:b',
+    2 => '-conversation_id:a AND -conversation_id:b',
   ),
   270 => 
   array (
@@ -2677,7 +2677,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'conversation_id:a or conversation_id:b',
+    2 => 'conversation_id:a OR conversation_id:b',
   ),
   273 => 
   array (
@@ -2690,7 +2690,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-conversation_id:a or -conversation_id:b',
+    2 => '-conversation_id:a OR -conversation_id:b',
   ),
   274 => 
   array (
@@ -2703,7 +2703,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'conversation_id:a and conversation_id:b',
+    2 => 'conversation_id:a AND conversation_id:b',
   ),
   275 => 
   array (
@@ -2716,7 +2716,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-conversation_id:a and -conversation_id:b',
+    2 => '-conversation_id:a AND -conversation_id:b',
   ),
   276 => 
   array (
@@ -2743,7 +2743,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or bio:a',
+    2 => 'OR bio:a',
   ),
   279 => 
   array (
@@ -2752,7 +2752,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -bio:a',
+    2 => 'OR -bio:a',
   ),
   280 => 
   array (
@@ -2761,7 +2761,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and bio:a',
+    2 => 'AND bio:a',
   ),
   281 => 
   array (
@@ -2770,7 +2770,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -bio:a',
+    2 => 'AND -bio:a',
   ),
   282 => 
   array (
@@ -2806,7 +2806,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or bio:b',
+    2 => 'OR bio:b',
   ),
   285 => 
   array (
@@ -2818,7 +2818,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -bio:b',
+    2 => 'OR -bio:b',
   ),
   286 => 
   array (
@@ -2830,7 +2830,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and bio:b',
+    2 => 'AND bio:b',
   ),
   287 => 
   array (
@@ -2842,7 +2842,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -bio:b',
+    2 => 'AND -bio:b',
   ),
   288 => 
   array (
@@ -2872,7 +2872,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'bio:a or bio:b',
+    2 => 'bio:a OR bio:b',
   ),
   291 => 
   array (
@@ -2882,7 +2882,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-bio:a or -bio:b',
+    2 => '-bio:a OR -bio:b',
   ),
   292 => 
   array (
@@ -2892,7 +2892,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'bio:a and bio:b',
+    2 => 'bio:a AND bio:b',
   ),
   293 => 
   array (
@@ -2902,7 +2902,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-bio:a and -bio:b',
+    2 => '-bio:a AND -bio:b',
   ),
   294 => 
   array (
@@ -2941,7 +2941,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'bio:a or bio:b',
+    2 => 'bio:a OR bio:b',
   ),
   297 => 
   array (
@@ -2954,7 +2954,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-bio:a or -bio:b',
+    2 => '-bio:a OR -bio:b',
   ),
   298 => 
   array (
@@ -2967,7 +2967,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'bio:a and bio:b',
+    2 => 'bio:a AND bio:b',
   ),
   299 => 
   array (
@@ -2980,7 +2980,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-bio:a and -bio:b',
+    2 => '-bio:a AND -bio:b',
   ),
   300 => 
   array (
@@ -3007,7 +3007,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or bio_name:a',
+    2 => 'OR bio_name:a',
   ),
   303 => 
   array (
@@ -3016,7 +3016,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -bio_name:a',
+    2 => 'OR -bio_name:a',
   ),
   304 => 
   array (
@@ -3025,7 +3025,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and bio_name:a',
+    2 => 'AND bio_name:a',
   ),
   305 => 
   array (
@@ -3034,7 +3034,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -bio_name:a',
+    2 => 'AND -bio_name:a',
   ),
   306 => 
   array (
@@ -3070,7 +3070,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or bio_name:b',
+    2 => 'OR bio_name:b',
   ),
   309 => 
   array (
@@ -3082,7 +3082,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -bio_name:b',
+    2 => 'OR -bio_name:b',
   ),
   310 => 
   array (
@@ -3094,7 +3094,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and bio_name:b',
+    2 => 'AND bio_name:b',
   ),
   311 => 
   array (
@@ -3106,7 +3106,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -bio_name:b',
+    2 => 'AND -bio_name:b',
   ),
   312 => 
   array (
@@ -3136,7 +3136,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'bio_name:a or bio_name:b',
+    2 => 'bio_name:a OR bio_name:b',
   ),
   315 => 
   array (
@@ -3146,7 +3146,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-bio_name:a or -bio_name:b',
+    2 => '-bio_name:a OR -bio_name:b',
   ),
   316 => 
   array (
@@ -3156,7 +3156,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'bio_name:a and bio_name:b',
+    2 => 'bio_name:a AND bio_name:b',
   ),
   317 => 
   array (
@@ -3166,7 +3166,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-bio_name:a and -bio_name:b',
+    2 => '-bio_name:a AND -bio_name:b',
   ),
   318 => 
   array (
@@ -3205,7 +3205,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'bio_name:a or bio_name:b',
+    2 => 'bio_name:a OR bio_name:b',
   ),
   321 => 
   array (
@@ -3218,7 +3218,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-bio_name:a or -bio_name:b',
+    2 => '-bio_name:a OR -bio_name:b',
   ),
   322 => 
   array (
@@ -3231,7 +3231,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'bio_name:a and bio_name:b',
+    2 => 'bio_name:a AND bio_name:b',
   ),
   323 => 
   array (
@@ -3244,7 +3244,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-bio_name:a and -bio_name:b',
+    2 => '-bio_name:a AND -bio_name:b',
   ),
   324 => 
   array (
@@ -3271,7 +3271,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or bio_location:a',
+    2 => 'OR bio_location:a',
   ),
   327 => 
   array (
@@ -3280,7 +3280,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -bio_location:a',
+    2 => 'OR -bio_location:a',
   ),
   328 => 
   array (
@@ -3289,7 +3289,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and bio_location:a',
+    2 => 'AND bio_location:a',
   ),
   329 => 
   array (
@@ -3298,7 +3298,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -bio_location:a',
+    2 => 'AND -bio_location:a',
   ),
   330 => 
   array (
@@ -3334,7 +3334,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or bio_location:b',
+    2 => 'OR bio_location:b',
   ),
   333 => 
   array (
@@ -3346,7 +3346,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -bio_location:b',
+    2 => 'OR -bio_location:b',
   ),
   334 => 
   array (
@@ -3358,7 +3358,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and bio_location:b',
+    2 => 'AND bio_location:b',
   ),
   335 => 
   array (
@@ -3370,7 +3370,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -bio_location:b',
+    2 => 'AND -bio_location:b',
   ),
   336 => 
   array (
@@ -3400,7 +3400,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'bio_location:a or bio_location:b',
+    2 => 'bio_location:a OR bio_location:b',
   ),
   339 => 
   array (
@@ -3410,7 +3410,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-bio_location:a or -bio_location:b',
+    2 => '-bio_location:a OR -bio_location:b',
   ),
   340 => 
   array (
@@ -3420,7 +3420,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'bio_location:a and bio_location:b',
+    2 => 'bio_location:a AND bio_location:b',
   ),
   341 => 
   array (
@@ -3430,7 +3430,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-bio_location:a and -bio_location:b',
+    2 => '-bio_location:a AND -bio_location:b',
   ),
   342 => 
   array (
@@ -3469,7 +3469,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'bio_location:a or bio_location:b',
+    2 => 'bio_location:a OR bio_location:b',
   ),
   345 => 
   array (
@@ -3482,7 +3482,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-bio_location:a or -bio_location:b',
+    2 => '-bio_location:a OR -bio_location:b',
   ),
   346 => 
   array (
@@ -3495,7 +3495,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'bio_location:a and bio_location:b',
+    2 => 'bio_location:a AND bio_location:b',
   ),
   347 => 
   array (
@@ -3508,7 +3508,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-bio_location:a and -bio_location:b',
+    2 => '-bio_location:a AND -bio_location:b',
   ),
   348 => 
   array (
@@ -3535,7 +3535,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or place:a',
+    2 => 'OR place:a',
   ),
   351 => 
   array (
@@ -3544,7 +3544,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -place:a',
+    2 => 'OR -place:a',
   ),
   352 => 
   array (
@@ -3553,7 +3553,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and place:a',
+    2 => 'AND place:a',
   ),
   353 => 
   array (
@@ -3562,7 +3562,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -place:a',
+    2 => 'AND -place:a',
   ),
   354 => 
   array (
@@ -3598,7 +3598,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or place:b',
+    2 => 'OR place:b',
   ),
   357 => 
   array (
@@ -3610,7 +3610,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -place:b',
+    2 => 'OR -place:b',
   ),
   358 => 
   array (
@@ -3622,7 +3622,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and place:b',
+    2 => 'AND place:b',
   ),
   359 => 
   array (
@@ -3634,7 +3634,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -place:b',
+    2 => 'AND -place:b',
   ),
   360 => 
   array (
@@ -3664,7 +3664,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'place:a or place:b',
+    2 => 'place:a OR place:b',
   ),
   363 => 
   array (
@@ -3674,7 +3674,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-place:a or -place:b',
+    2 => '-place:a OR -place:b',
   ),
   364 => 
   array (
@@ -3684,7 +3684,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'place:a and place:b',
+    2 => 'place:a AND place:b',
   ),
   365 => 
   array (
@@ -3694,7 +3694,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-place:a and -place:b',
+    2 => '-place:a AND -place:b',
   ),
   366 => 
   array (
@@ -3733,7 +3733,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'place:a or place:b',
+    2 => 'place:a OR place:b',
   ),
   369 => 
   array (
@@ -3746,7 +3746,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-place:a or -place:b',
+    2 => '-place:a OR -place:b',
   ),
   370 => 
   array (
@@ -3759,7 +3759,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'place:a and place:b',
+    2 => 'place:a AND place:b',
   ),
   371 => 
   array (
@@ -3772,7 +3772,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-place:a and -place:b',
+    2 => '-place:a AND -place:b',
   ),
   372 => 
   array (
@@ -3799,7 +3799,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or place_country:a',
+    2 => 'OR place_country:a',
   ),
   375 => 
   array (
@@ -3808,7 +3808,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -place_country:a',
+    2 => 'OR -place_country:a',
   ),
   376 => 
   array (
@@ -3817,7 +3817,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and place_country:a',
+    2 => 'AND place_country:a',
   ),
   377 => 
   array (
@@ -3826,7 +3826,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -place_country:a',
+    2 => 'AND -place_country:a',
   ),
   378 => 
   array (
@@ -3862,7 +3862,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or place_country:b',
+    2 => 'OR place_country:b',
   ),
   381 => 
   array (
@@ -3874,7 +3874,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -place_country:b',
+    2 => 'OR -place_country:b',
   ),
   382 => 
   array (
@@ -3886,7 +3886,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and place_country:b',
+    2 => 'AND place_country:b',
   ),
   383 => 
   array (
@@ -3898,7 +3898,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -place_country:b',
+    2 => 'AND -place_country:b',
   ),
   384 => 
   array (
@@ -3928,7 +3928,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'place_country:a or place_country:b',
+    2 => 'place_country:a OR place_country:b',
   ),
   387 => 
   array (
@@ -3938,7 +3938,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-place_country:a or -place_country:b',
+    2 => '-place_country:a OR -place_country:b',
   ),
   388 => 
   array (
@@ -3948,7 +3948,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'place_country:a and place_country:b',
+    2 => 'place_country:a AND place_country:b',
   ),
   389 => 
   array (
@@ -3958,7 +3958,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-place_country:a and -place_country:b',
+    2 => '-place_country:a AND -place_country:b',
   ),
   390 => 
   array (
@@ -3997,7 +3997,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'place_country:a or place_country:b',
+    2 => 'place_country:a OR place_country:b',
   ),
   393 => 
   array (
@@ -4010,7 +4010,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-place_country:a or -place_country:b',
+    2 => '-place_country:a OR -place_country:b',
   ),
   394 => 
   array (
@@ -4023,7 +4023,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'place_country:a and place_country:b',
+    2 => 'place_country:a AND place_country:b',
   ),
   395 => 
   array (
@@ -4036,7 +4036,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-place_country:a and -place_country:b',
+    2 => '-place_country:a AND -place_country:b',
   ),
   396 => 
   array (
@@ -4063,7 +4063,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or lang:a',
+    2 => 'OR lang:a',
   ),
   399 => 
   array (
@@ -4072,7 +4072,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'or -lang:a',
+    2 => 'OR -lang:a',
   ),
   400 => 
   array (
@@ -4081,7 +4081,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and lang:a',
+    2 => 'AND lang:a',
   ),
   401 => 
   array (
@@ -4090,7 +4090,7 @@ it('compiles', function ($value, $arguments, $expected) {
     array (
       0 => 'a',
     ),
-    2 => 'and -lang:a',
+    2 => 'AND -lang:a',
   ),
   402 => 
   array (
@@ -4126,7 +4126,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or lang:b',
+    2 => 'OR lang:b',
   ),
   405 => 
   array (
@@ -4138,7 +4138,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'or -lang:b',
+    2 => 'OR -lang:b',
   ),
   406 => 
   array (
@@ -4150,7 +4150,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and lang:b',
+    2 => 'AND lang:b',
   ),
   407 => 
   array (
@@ -4162,7 +4162,7 @@ it('compiles', function ($value, $arguments, $expected) {
         0 => 'b',
       ),
     ),
-    2 => 'and -lang:b',
+    2 => 'AND -lang:b',
   ),
   408 => 
   array (
@@ -4192,7 +4192,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'lang:a or lang:b',
+    2 => 'lang:a OR lang:b',
   ),
   411 => 
   array (
@@ -4202,7 +4202,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-lang:a or -lang:b',
+    2 => '-lang:a OR -lang:b',
   ),
   412 => 
   array (
@@ -4212,7 +4212,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => 'lang:a and lang:b',
+    2 => 'lang:a AND lang:b',
   ),
   413 => 
   array (
@@ -4222,7 +4222,7 @@ it('compiles', function ($value, $arguments, $expected) {
       0 => 'a',
       1 => 'b',
     ),
-    2 => '-lang:a and -lang:b',
+    2 => '-lang:a AND -lang:b',
   ),
   414 => 
   array (
@@ -4261,7 +4261,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'lang:a or lang:b',
+    2 => 'lang:a OR lang:b',
   ),
   417 => 
   array (
@@ -4274,7 +4274,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-lang:a or -lang:b',
+    2 => '-lang:a OR -lang:b',
   ),
   418 => 
   array (
@@ -4287,7 +4287,7 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => 'lang:a and lang:b',
+    2 => 'lang:a AND lang:b',
   ),
   419 => 
   array (
@@ -4300,6 +4300,6 @@ it('compiles', function ($value, $arguments, $expected) {
         1 => 'b',
       ),
     ),
-    2 => '-lang:a and -lang:b',
+    2 => '-lang:a AND -lang:b',
   ),
 ));

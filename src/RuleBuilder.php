@@ -174,6 +174,6 @@ class RuleBuilder extends _RuleBuilder
         }
 
         var_dump($this->compile());
-        exit();
+        exit;
     }
 }

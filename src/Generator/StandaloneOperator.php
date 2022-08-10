@@ -24,10 +24,10 @@ class StandaloneOperator
             [$this->name . $this->valueAsMethodName, [], "{$this->name}:{$this->value}"],
             ["{$this->name}Not{$this->valueAsMethodName}", [], "-{$this->name}:{$this->value}"],
             ["{$this->name}Not{$this->valueAsMethodName}", [], "-{$this->name}:{$this->value}"],
-            ["or{$this->nameAsMethodName}{$this->valueAsMethodName}", [], "or {$this->name}:{$this->value}"],
-            ["or{$this->nameAsMethodName}Not{$this->valueAsMethodName}", [], "or -{$this->name}:{$this->value}"],
-            ["and{$this->nameAsMethodName}{$this->valueAsMethodName}", [], "and {$this->name}:{$this->value}"],
-            ["and{$this->nameAsMethodName}Not{$this->valueAsMethodName}", [], "and -{$this->name}:{$this->value}"],
+            ["or{$this->nameAsMethodName}{$this->valueAsMethodName}", [], "OR {$this->name}:{$this->value}"],
+            ["or{$this->nameAsMethodName}Not{$this->valueAsMethodName}", [], "OR -{$this->name}:{$this->value}"],
+            ["and{$this->nameAsMethodName}{$this->valueAsMethodName}", [], "AND {$this->name}:{$this->value}"],
+            ["and{$this->nameAsMethodName}Not{$this->valueAsMethodName}", [], "AND -{$this->name}:{$this->value}"],
         ];
 
         if ($this->name === 'is') {
@@ -35,10 +35,10 @@ class StandaloneOperator
                 ...$tests,
                 ["except{$this->valueAsMethodName}", [], "-{$this->name}:{$this->value}"],
                 ["exceptNot{$this->valueAsMethodName}", [], "{$this->name}:{$this->value}"],
-                ["orExcept{$this->valueAsMethodName}", [], "or -{$this->name}:{$this->value}"],
-                ["orExceptNot{$this->valueAsMethodName}", [], "or {$this->name}:{$this->value}"],
-                ["andExcept{$this->valueAsMethodName}", [], "and -{$this->name}:{$this->value}"],
-                ["andExceptNot{$this->valueAsMethodName}", [], "and {$this->name}:{$this->value}"],
+                ["orExcept{$this->valueAsMethodName}", [], "OR -{$this->name}:{$this->value}"],
+                ["orExceptNot{$this->valueAsMethodName}", [], "OR {$this->name}:{$this->value}"],
+                ["andExcept{$this->valueAsMethodName}", [], "AND -{$this->name}:{$this->value}"],
+                ["andExceptNot{$this->valueAsMethodName}", [], "AND {$this->name}:{$this->value}"],
             ];
         }
 

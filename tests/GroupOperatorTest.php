@@ -10,7 +10,7 @@ it('can compile', function () {
         fn (RuleBuilder $builder) => $builder->from('me')->orFrom('you'),
     );
 
-    expect($op->compile())->toBe('(from:me or from:you)');
+    expect($op->compile())->toBe('(from:me OR from:you)');
 });
 it('negates each operator', function () {
     $op = new GroupOperator(
@@ -18,5 +18,5 @@ it('negates each operator', function () {
         fn (RuleBuilder $builder) => $builder->from('me')->orFrom('you'),
     );
 
-    expect($op->compile())->toBe('(-from:me or -from:you)');
+    expect($op->compile())->toBe('(-from:me OR -from:you)');
 });

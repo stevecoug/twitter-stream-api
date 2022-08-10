@@ -47,10 +47,10 @@ class ParameterizedOperator
                 ...$buffer,
                 [$this->name, $value, "{$this->snakeCasedName}:{$compiled}"],
                 ["not{$this->nameAsMethodName}", $value, "-{$this->snakeCasedName}:{$compiled}"],
-                ["or{$this->nameAsMethodName}", $value, "or {$this->snakeCasedName}:{$compiled}"],
-                ["orNot{$this->nameAsMethodName}", $value, "or -{$this->snakeCasedName}:{$compiled}"],
-                ["and{$this->nameAsMethodName}", $value, "and {$this->snakeCasedName}:{$compiled}"],
-                ["andNot{$this->nameAsMethodName}", $value, "and -{$this->snakeCasedName}:{$compiled}"],
+                ["or{$this->nameAsMethodName}", $value, "OR {$this->snakeCasedName}:{$compiled}"],
+                ["orNot{$this->nameAsMethodName}", $value, "OR -{$this->snakeCasedName}:{$compiled}"],
+                ["and{$this->nameAsMethodName}", $value, "AND {$this->snakeCasedName}:{$compiled}"],
+                ["andNot{$this->nameAsMethodName}", $value, "AND -{$this->snakeCasedName}:{$compiled}"],
             ];
         }
 
@@ -63,10 +63,10 @@ class ParameterizedOperator
                 ...$buffer,
                 [$this->name, $value, "{$this->snakeCasedName}:{$first} {$this->snakeCasedName}:{$second}"],
                 ["not{$this->nameAsMethodName}", $value, "-{$this->snakeCasedName}:{$first} -{$this->snakeCasedName}:{$second}"],
-                ["or{$this->nameAsMethodName}", $value, "{$this->snakeCasedName}:{$first} or {$this->snakeCasedName}:{$second}"],
-                ["orNot{$this->nameAsMethodName}", $value, "-{$this->snakeCasedName}:{$first} or -{$this->snakeCasedName}:{$second}"],
-                ["and{$this->nameAsMethodName}", $value, "{$this->snakeCasedName}:{$first} and {$this->snakeCasedName}:{$second}"],
-                ["andNot{$this->nameAsMethodName}", $value, "-{$this->snakeCasedName}:{$first} and -{$this->snakeCasedName}:{$second}"],
+                ["or{$this->nameAsMethodName}", $value, "{$this->snakeCasedName}:{$first} OR {$this->snakeCasedName}:{$second}"],
+                ["orNot{$this->nameAsMethodName}", $value, "-{$this->snakeCasedName}:{$first} OR -{$this->snakeCasedName}:{$second}"],
+                ["and{$this->nameAsMethodName}", $value, "{$this->snakeCasedName}:{$first} AND {$this->snakeCasedName}:{$second}"],
+                ["andNot{$this->nameAsMethodName}", $value, "-{$this->snakeCasedName}:{$first} AND -{$this->snakeCasedName}:{$second}"],
             ];
         }
 
