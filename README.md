@@ -41,17 +41,16 @@ $rule->new(tag: 'cat_filter_1')
     ->andHasGeo()
     ->save()
 
-$twitterStream
-    ->backfill(2) // for "academic research" accounts only
-    ->expansions('author_id')
-    ->fields('media.duration_ms', 'media.height')
-    ->fields('place.full_name', 'place.geo', 'place.id')
-    ->listen($connection, function (object $tweet) {
-        echo $tweet->data->text;
+$twitterStream->listen($connection, function (object $tweet) {
+   echo $tweet->data->text;
         
-        if ($this->received >= 100) {
-            $this->stopListening();
-        }
+   if ($this->received >= 100) {
+      $this->stopListening();
+   Total Downloads
+
+Consume the Twitter Stream API v2 in real-time.
+
+This package is the spiritual successor of fennb/phirehose.}
 });
 ```
 
