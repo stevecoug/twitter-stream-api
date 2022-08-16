@@ -150,8 +150,6 @@ $rules->query('#laravel')
 // Produces: #laravel (tip OR tips OR 🔥)
 ```
 
-### Available methods
-
 ## Testing
 
 ```bash
