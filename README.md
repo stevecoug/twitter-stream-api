@@ -46,11 +46,7 @@ $twitterStream->listen($connection, function (object $tweet) {
         
    if ($this->received >= 100) {
       $this->stopListening();
-   Total Downloads
-
-Consume the Twitter Stream API v2 in real-time.
-
-This package is the spiritual successor of fennb/phirehose.}
+   }
 });
 ```
 
