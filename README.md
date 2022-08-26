@@ -74,9 +74,9 @@ $rules->save(
 // Using saveMany to create many rules is more efficient than using save
 // as it only sends one request to Twitter as opposed to sending one request per rule.
 $rules->saveMany([
-    new Rule('cat has:image', 'cat with an image'),
-    new Rule('cat has:video', 'cat with a video'),
-    new Rule ('dog -has:image', 'dog without an image'),
+    new Rule('cat has:images', 'cat with one or many images'),
+    new Rule('cat has:videos', 'cat with one or many videos'),
+    new Rule ('dog -has:images', 'dog without any image'),
 ])
 ```
 
