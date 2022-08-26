@@ -29,23 +29,16 @@ use Felix\TwitterStream\Streams\FilteredStream;
 use Felix\TwitterStream\Streams\VolumeStream;
 
 $twitterStream  = new FilteredStream();
-// or
-$twitterStream  = new VolumeStream();
 $connection     = new TwitterConnection(bearerToken: '...');
 $rule           = new RuleManager($connection);
 
-$rule->new(tag: 'cat_filter_1')
+$rule->new(tag: 'images of cats')
     ->query('cats')
     ->hasImages()
-    ->andHasGeo()
     ->save()
 
-$twitterStream->listen($connection, function (object $tweet) {
-   echo $tweet->data->text;
-        
-   if ($this->received >= 100) {
-      $this->stopListening();
-   }
+$twitterStream->withTweetLimit(100)->listen($connection, function (object $tweet) {
+   echo $tweet->data->text . PHP_EOL;     
 });
 ```
 
