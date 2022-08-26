@@ -35,7 +35,7 @@ class TwitterConnection
         }
 
         try {
-            return new TwitterResponse(
+            return TwitterResponse::fromPsrResponse(
                 $this->client->request($method, $uri, $options)
             );
         } catch (ClientException $exception) {

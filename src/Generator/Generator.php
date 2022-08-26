@@ -41,15 +41,4 @@ class Generator
             yield new ParameterizedOperator($name);
         }
     }
-
-    public static function methods(): array
-    {
-        $methods = [];
-
-        foreach (self::cases() as $case) {
-            $methods = [...$methods, $case->methods()];
-        }
-
-        return $methods;
-    }
 }

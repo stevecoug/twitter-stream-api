@@ -12,11 +12,20 @@ class TwitterResponse implements ResponseInterface
     /** @var mixed[] */
     protected array $payload = [];
 
-    public function __construct(protected ResponseInterface $response)
+    public static function empty(): self {
+        return new self(new Response(body: '{}'));
+    }
+
+    protected function __construct(protected ResponseInterface $response, array $payload = [])
+    {
+
+    }
+
+    public static function fromPsrResponse(ResponseInterface $response): self
     {
         // Is the response a stream?
         if ($response->getBody()->getMetadata('wrapper_type') === 'http') {
-            return;
+            return new self($response, []);
         }
 
         $payload = json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR);
@@ -25,7 +34,7 @@ class TwitterResponse implements ResponseInterface
             throw TwitterException::fromPayload($payload);
         }
 
-        $this->payload = $payload ?? [];
+        return new self($response, $payload);
     }
 
     public function getBody()

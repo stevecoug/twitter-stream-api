@@ -3,7 +3,6 @@
 use Felix\TwitterStream\Rule\RuleBuilder;
 use Felix\TwitterStream\Rule\RuleManager;
 use Felix\TwitterStream\TwitterResponse;
-use GuzzleHttp\Psr7\Response;
 
 function query(string $q = '')
 {
@@ -183,18 +182,50 @@ it('can compile a sample operator', function () {
 });
 
 it('can be translated to a string', function () {
-    expect((string)query('dogs')->isNotQuote())->toBe('dogs -is:quote');
+    expect((string) query('dogs')->isNotQuote())->toBe('dogs -is:quote');
 });
 
 it('can create the rule', function () {
     $mock = mock(RuleManager::class)
         ->shouldReceive('save')
         ->with('dogs is:quote', 'my-rule')
-        ->andReturn(new TwitterResponse(new Response(body: '{}')))
+        ->andReturn(TwitterResponse::empty())
         ->getMock();
 
     $rule = new RuleBuilder($mock, 'my-rule');
     $rule->raw('dogs')->isQuote();
 
     $rule->save();
+});
+
+it('can validate a rule without creating it', function () {
+    $mock = mock(RuleManager::class)
+        ->shouldReceive('validate')
+        ->with('dogs is:quote')
+        ->andReturn([])
+        ->getMock();
+
+    $rule = new RuleBuilder($mock);
+    $rule->raw('dogs')->isQuote();
+
+    $rule->validate();
+});
+
+it('can return a Rule object', function () {
+    $rule  = new RuleBuilder(null, 'my tag');
+    $built = $rule->raw('tip')->isVerified()->build();
+
+    expect($built->value)->toBe('tip is:verified');
+    expect($built->tag)->toBe('my tag');
+});
+
+// regressions
+test('ensure raw string with negated spaces are quoted correctly', function () {
+    expect(query('-hello world')->compile())->toBe('-"hello world"');
+    expect(query('-"hello world"')->compile())->toBe('-"hello world"');
+});
+
+test('ensure quoted string are not quoted again', function () {
+    expect(query('hello world')->compile())->toBe('"hello world"');
+    expect(query('"hello world"')->compile())->toBe('"hello world"');
 });

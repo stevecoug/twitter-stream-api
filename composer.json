@@ -32,8 +32,8 @@
       "@test:types",
       "@test:unit"
     ],
-    "gen:doc": "php generate_phpdoc.php > src/Rule/_RuleBuilder.php",
-    "gen:tests": "php generate_tests.php > tests/GeneratedTests.php"
+    "gen:doc": "php scripts/generate_phpdoc.php > src/Rule/_RuleBuilder.php",
+    "gen:tests": "php scripts/generate_tests.php > tests/GeneratedTests.php"
   },
   "require-dev": {
     "symfony/var-dumper": "^5.2",

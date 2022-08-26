@@ -11,20 +11,46 @@ use Psr\Http\Message\StreamInterface;
 
 abstract class TwitterStream implements StreamManager
 {
-    protected int $received                   = 0;
-    protected ?ResponseInterface $response    = null;
-    protected ?StreamInterface $stream        = null;
-    private int $tweetLimit                   = PHP_INT_MAX;
-    private int $backfill                     = 0;
-    private array $fields                     = [];
-    private array $expansions                 = [];
+    private int $received                = 0;
+    private ?ResponseInterface $response = null;
+    private ?StreamInterface $stream     = null;
+    private int $tweetLimit              = PHP_INT_MAX;
+    private int $backfill                = 0;
+    private array $fields                = [];
+    private array $expansions            = [];
     private int $createdAt;
     private ?Parser $parser = null;
     private int $bufferSize = 85;
 
+    public function response(): ResponseInterface
+    {
+        // If used wrong, this could be null.
+        /* @phpstan-ignore-next-line */
+        return $this->response;
+    }
+
+    public function stream(): StreamInterface
+    {
+        // If used wrong, this could be null.
+        /* @phpstan-ignore-next-line */
+        return $this->stream;
+    }
+
+    public function jsonParser(): Parser
+    {
+        // If used wrong, this could be null.
+        /* @phpstan-ignore-next-line */
+        return $this->parser;
+    }
+
     public function createdAt(): int
     {
         return $this->createdAt;
+    }
+
+    public function tweetsReceived(): int
+    {
+        return $this->received;
     }
 
     public function withBufferSize(int $size): static

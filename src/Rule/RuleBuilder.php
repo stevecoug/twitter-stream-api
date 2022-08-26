@@ -22,10 +22,17 @@ use SplStack;
  * @method self sample(int $percent)
  * @method self pointRadius(string $longitude, string $latitude, string $radius)
  * @method self boundingBox(string $westLongitude, string $southLatitude, string $eastLongitude, string $northLatitude)
- * @method self notNullCast()
+ * @method self is(string|array $properties)
  * @method self has(string|array $properties)
  * @method self raw(string|array $property)
- * @method self query(string|array $query)
+ * @method self orRaw(string|array $property)
+ * @method self andRaw(string|array $property)
+ * @method self query(string|array $properties)
+ * @method self andQuery(string|array $properties)
+ * @method self orQuery(string|array $properties)
+ * @method self notNullcast()
+ * @method self andNotNullcast()
+ * @method self orNotNullcast()
  */
 class RuleBuilder extends _RuleBuilder
 {
@@ -50,8 +57,8 @@ class RuleBuilder extends _RuleBuilder
     public function __get(string $name): self
     {
         match ($name) {
-            'and' => $this->push(new RawOperator(['AND'])),
-            'or'  => $this->push(new RawOperator(['OR'])),
+            'and' => $this->push(new RawOperator(0, ['AND'])),
+            'or'  => $this->push(new RawOperator(0, ['OR'])),
             /* @see https://wiki.php.net/rfc/undefined_property_error_promotion */
             default => trigger_error('Undefined property: ' . static::class . '::$' . $name, PHP_MAJOR_VERSION === 8 ? E_USER_WARNING : E_USER_ERROR)
         };
@@ -105,11 +112,11 @@ class RuleBuilder extends _RuleBuilder
         return $this->push(match ($name) {
             // notNullCast will be transformed to null_cast with a NOT_OPERATOR flag
             // This means that calling $this->NullCast() or $this->null_cast() would work the same as $this->notNullCast().
-            'null_cast'    => new RawOperator(['-is:nullcast']),
-            'sample'       => new RawOperator(['sample:' . $arguments[0]]),
+            'null_cast'    => new RawOperator($flags, ['-is:nullcast']),
+            'sample'       => new RawOperator(0, ['sample:' . $arguments[0]]),
             'point_radius' => new ParameterizedOperator($flags, 'point_radius', $arguments),
             'bounding_box' => new ParameterizedOperator($flags, 'bounding_box', $arguments),
-            'raw', 'query' => new RawOperator($arguments),
+            'raw', 'query' => new RawOperator($flags, $arguments),
             // As the method is in camelCase, we need to lowercase the first letter after the 'is' or 'has'
             default => new NamedOperator($flags, lcfirst($name), $arguments)
         });
@@ -178,5 +185,10 @@ class RuleBuilder extends _RuleBuilder
     public function validate(): array
     {
         return $this->manager?->validate($this->compile()) ?? throw new TwitterException('Manager not set in the rule builder. Are you using it correctly?');
+    }
+
+    public function build(): Rule
+    {
+        return new Rule($this->compile(), $this->tag);
     }
 }
