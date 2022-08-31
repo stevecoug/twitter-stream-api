@@ -1,20 +1,35 @@
-* todo: groups
-* raw -> content `cat` (NOT AN ARRAY)
-* negated raw operator `-cat`  (NOT AN ARRAY)
-* quoted operator `"cat"` (NOT AN ARRAY)
-* kv operator `key:value` (MAY BE AN ARRAY)
-* kv operator 
-* sample operator `sample:value` 
-* not Nullcast operator `-is:nullcast`
-* has operator (MAY BE AN ARRAY)
-* is operator (MAY BE AN ARRAY)
-* context operator
-* point radius / bouding box operator ("array" operators)
+[//]: # (* todo: groups)
 
-`andFrom('value')` -> raw operator `AND` + kv operator `from:value`
-`andNotFrom('value')` -> raw operator `AND` + kv operator `-from:value`
-`withTweetsCount($min = 0, $max = null)`
-* `notFrom(['a', 'b'])`
+[//]: # (* raw -> content `cat` &#40;NOT AN ARRAY&#41;)
+
+[//]: # (* negated raw operator `-cat`  &#40;NOT AN ARRAY&#41;)
+
+[//]: # (* quoted operator `"cat"` &#40;NOT AN ARRAY&#41;)
+
+[//]: # (* kv operator `key:value` &#40;MAY BE AN ARRAY&#41;)
+
+[//]: # (* kv operator )
+
+[//]: # (* sample operator `sample:value` )
+
+[//]: # (* not Nullcast operator `-is:nullcast`)
+
+[//]: # (* has operator &#40;MAY BE AN ARRAY&#41;)
+
+[//]: # (* is operator &#40;MAY BE AN ARRAY&#41;)
+
+[//]: # (* context operator)
+
+[//]: # (* point radius / bouding box operator &#40;"array" operators&#41;)
+
+[//]: # ()
+[//]: # (`andFrom&#40;'value'&#41;` -> raw operator `AND` + kv operator `from:value`)
+
+[//]: # (`andNotFrom&#40;'value'&#41;` -> raw operator `AND` + kv operator `-from:value`)
+
+[//]: # (`withTweetsCount&#40;$min = 0, $max = null&#41;`)
+
+[//]: # (* `notFrom&#40;['a', 'b']&#41;`)
 # Twitter Stream API (v2)
 
 [![Tests](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/tests.yml)
