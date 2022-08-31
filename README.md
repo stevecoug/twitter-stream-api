@@ -1,3 +1,20 @@
+* todo: groups
+* raw -> content `cat` (NOT AN ARRAY)
+* negated raw operator `-cat`  (NOT AN ARRAY)
+* quoted operator `"cat"` (NOT AN ARRAY)
+* kv operator `key:value` (MAY BE AN ARRAY)
+* kv operator 
+* sample operator `sample:value` 
+* not Nullcast operator `-is:nullcast`
+* has operator (MAY BE AN ARRAY)
+* is operator (MAY BE AN ARRAY)
+* context operator
+* point radius / bouding box operator ("array" operators)
+
+`andFrom('value')` -> raw operator `AND` + kv operator `from:value`
+`andNotFrom('value')` -> raw operator `AND` + kv operator `-from:value`
+`withTweetsCount($min = 0, $max = null)`
+* `notFrom(['a', 'b'])`
 # Twitter Stream API (v2)
 
 [![Tests](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/tests.yml)
@@ -12,6 +29,7 @@ This package is the spiritual successor of `fennb/phirehose`.
 ## Getting started
 
 > Requires [PHP 8.1+](https://www.php.net/releases/)
+
 
 You can install the package via composer:
 

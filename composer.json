@@ -36,7 +36,7 @@
     "gen:tests": "php scripts/generate_tests.php > tests/GeneratedTests.php"
   },
   "require-dev": {
-    "symfony/var-dumper": "^5.2",
+    "symfony/var-dumper": "^6.1",
     "pestphp/pest": "^1.1",
     "friendsofphp/php-cs-fixer": "^3",
     "phpstan/phpstan": "^1",

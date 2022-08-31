@@ -2,14 +2,13 @@
 
 namespace Felix\TwitterStream\Rule;
 
+use BadMethodCallException;
 use Felix\TwitterStream\Exceptions\TwitterException;
-use Felix\TwitterStream\Rule\Operators\GroupOperator;
-use Felix\TwitterStream\Rule\Operators\NamedOperator;
+use Felix\TwitterStream\Rule\Operators\CountOperator;
+use Felix\TwitterStream\Rule\Operators\KeyValueOperator;
 use Felix\TwitterStream\Rule\Operators\Operator;
-use Felix\TwitterStream\Rule\Operators\Operator as OperatorContract;
-use Felix\TwitterStream\Rule\Operators\ParameterizedOperator;
 use Felix\TwitterStream\Rule\Operators\RawOperator;
-use Felix\TwitterStream\Support\Flag;
+use Felix\TwitterStream\Support\Flags;
 use Felix\TwitterStream\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 use SplStack;
@@ -19,127 +18,144 @@ use SplStack;
  * @property RuleBuilder $or
  * @property RuleBuilder $not
  *
- * @method self sample(int $percent)
+ * @method self sample(int $percentage)
  * @method self pointRadius(string $longitude, string $latitude, string $radius)
  * @method self boundingBox(string $westLongitude, string $southLatitude, string $eastLongitude, string $northLatitude)
- * @method self is(string|array $properties)
- * @method self has(string|array $properties)
- * @method self raw(string|array $property)
  * @method self orRaw(string|array $property)
  * @method self andRaw(string|array $property)
  * @method self query(string|array $properties)
  * @method self andQuery(string|array $properties)
  * @method self orQuery(string|array $properties)
- * @method self notNullcast()
  * @method self andNotNullcast()
  * @method self orNotNullcast()
  */
 class RuleBuilder extends _RuleBuilder
 {
-    // Be careful, the order matters here.
-    protected const OPERATORS_FLAGS = [
-        'or'     => OperatorContract::OR_OPERATOR,
-        'and'    => OperatorContract::AND_OPERATOR,
-        'is'     => OperatorContract::IS_OPERATOR,
-        'has'    => OperatorContract::HAS_OPERATOR,
-        'except' => OperatorContract::IS_OPERATOR | OperatorContract::NOT_OPERATOR,
-        'not'    => OperatorContract::NOT_OPERATOR,
+    public const KEY_VALUE_OPERATORS = [
+        'from'            => 'from',
+        'to'              => 'to',
+        'url'             => 'url',
+        'retweets_of'     => 'retweets_of',
+        'context'         => 'context',
+        'entity'          => 'entity',
+        'conversation_id' => 'conversation_id',
+        'bio'             => 'bio',
+        'bio_name'        => 'bio_name',
+        'bio_location'    => 'bio_location',
+        'place'           => 'place',
+        'place_country'   => 'place_country',
+        // skipping bounding_box and point_radius
+        'lang'                  => 'lang',
+        'url_title'             => 'url_title',
+        'url_description'       => 'url_description',
+        'url_contains'          => 'url_contains',
+        'source'                => 'source',
+        'in_reply_to_tweet_id'  => 'in_reply_to_tweet_id',
+        'retweets_of_tweet_id:' => 'retweets_of_tweet_id',
+    ];
+    public const IS_OPERATORS = [
+        'retweet'  => 'retweet',
+        'reply'    => 'reply',
+        'quote'    => 'quote',
+        'verified' => 'verified',
+    ];
+    public const HAS_OPERATORS = [
+        'hashtags' => 'hashtags',
+        'cashtags' => 'cashtags',
+        'links'    => 'links',
+        'mentions' => 'mentions',
+        'media'    => 'media',
+        'images'   => 'images',
+        'videos'   => 'videos',
+        'geo'      => 'geo',
+    ];
+    public const COUNT_OPERATOR = [
+        'followers' => 'followers',
+        'tweets'    => 'tweets',
+        'following' => 'following',
+        'listed'    => 'listed',
+    ];
+    public const CUSTOM_OPERATORS = [
+        'sample'       => 'addSampleOperator',
+        'null_cast'    => 'addNotNullCastOperator',
+        'bounding_box' => 'addBoundingBoxOperator',
+        'point_radius' => 'addPointRadiusOperator',
     ];
 
+    /** @param SplStack<Operator> $operators */
     public function __construct(
         public ?RuleManager $manager = null,
         public ?string $tag = null,
-        /** @var SplStack<OperatorContract> $operators */
         public SplStack $operators = new SplStack()
     ) {
     }
 
     public function __get(string $name): self
     {
-        match ($name) {
-            'and' => $this->push(new RawOperator(0, ['AND'])),
-            'or'  => $this->push(new RawOperator(0, ['OR'])),
-            /* @see https://wiki.php.net/rfc/undefined_property_error_promotion */
-            default => trigger_error('Undefined property: ' . static::class . '::$' . $name, PHP_MAJOR_VERSION === 8 ? E_USER_WARNING : E_USER_ERROR)
-        };
+        if ($name === 'and') {
+            return $this;
+        }
 
-        return $this;
+        if ($name === 'or') {
+            return $this->push(new RawOperator('OR'));
+        }
+
+        trigger_error('Undefined property: ' . static::class . '::$' . $name, PHP_MAJOR_VERSION === 8 ? E_USER_WARNING : E_USER_ERROR);
     }
 
-    public function push(OperatorContract $operator): self
+    public function push(Operator $operator): self
     {
         $this->operators->push($operator);
 
         return $this;
     }
 
-    /** @param mixed[] $arguments */
-    public function __call(string $name, array $arguments): self
+    public function __call(string $methodName, array $arguments)
     {
-        $flags     = 0;
-        $arguments = self::flattenArgumentsAndQuoteStrings($arguments);
+        [$name, $flags] = $this->getNameAndFlags($methodName);
 
-        foreach (self::OPERATORS_FLAGS as $flag => $id) {
-            // if the name is the flag, skip, that's to handle calls like is([...]) and has([...])
-            // if the flag (or, and, not....) is not found, skip
-            if ($name === $flag || !str_starts_with(strtolower($name), $flag)) {
-                continue;
-            }
-
-            $flags ^= $id;
-            $name = substr($name, strlen($flag));
+        if (array_key_exists($name, self::CUSTOM_OPERATORS)) {
+            return $this->{self::CUSTOM_OPERATORS[$name]}($flags, ...$arguments);
         }
 
-        $name = Str::snake($name);
+        return $this->push(match (true) {
+            array_key_exists($name, self::KEY_VALUE_OPERATORS) => new KeyValueOperator($flags, $name, ...$arguments),
 
-        if ($name === 'group') {
-            return $this->group($arguments[0] ?? null, $flags);
-        }
+            $flags->has(Operator::IS_FLAG) && array_key_exists($name, self::IS_OPERATORS) => new KeyValueOperator($flags, 'is', $name),
+            $flags->has(Operator::IS_FLAG) && $name === '' => new KeyValueOperator($flags, 'is', ...$arguments),
 
-        if (Flag::hasAny($flags, [Operator::IS_OPERATOR, Operator::HAS_OPERATOR])) {
-            // Methods like is, hasNot will be empty with the flags IS_OPERATOR, NOT_OPERATOR... set.
-            // If that's the case, then it means the caller looks like x([...]) or y('...')
-            // so we just pass in the normalized arguments.
-            $arguments = $name === '' ? $arguments : [lcfirst($name)];
+            $flags->has(Operator::HAS_FLAG) && array_key_exists($name, self::HAS_OPERATORS) => new KeyValueOperator($flags, 'has', $name),
+            $flags->has(Operator::HAS_FLAG) && $name === '' => new KeyValueOperator($flags, 'has', ...$arguments),
 
-            return $this->push(new NamedOperator(
-                $flags,
-                Flag::has($flags, Operator::IS_OPERATOR) ? 'is' : 'has',
-                $arguments,
-            ));
-        }
-
-        return $this->push(match ($name) {
-            // notNullCast will be transformed to null_cast with a NOT_OPERATOR flag
-            // This means that calling $this->NullCast() or $this->null_cast() would work the same as $this->notNullCast().
-            'null_cast'    => new RawOperator($flags, ['-is:nullcast']),
-            'sample'       => new RawOperator(0, ['sample:' . $arguments[0]]),
-            'point_radius' => new ParameterizedOperator($flags, 'point_radius', $arguments),
-            'bounding_box' => new ParameterizedOperator($flags, 'bounding_box', $arguments),
-            'raw', 'query' => new RawOperator($flags, $arguments),
-            // As the method is in camelCase, we need to lowercase the first letter after the 'is' or 'has'
-            default => new NamedOperator($flags, lcfirst($name), $arguments)
+            $flags->has(Operator::COUNT_FLAG) && array_key_exists($name, self::COUNT_OPERATOR) => new CountOperator($flags, $name, ...$arguments),
+            true => throw new BadMethodCallException(sprintf('Call to undefined method %s::%s()', static::class, $methodName))
         });
     }
 
-    private static function flattenArgumentsAndQuoteStrings(array $array): array
+    private function getNameAndFlags(string $name): array
     {
-        $result = [];
+        $name  = Str::snake($name);
+        $flags = new Flags(0);
 
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $result = array_merge($result, self::flattenArgumentsAndQuoteStrings($value));
-            } else {
-                $result[$key] = Str::quote($value);
+        foreach (Operator::OPERATORS as $operator => $flag) {
+            if (str_starts_with($name, $operator)) {
+                $flags->toggle($flag);
+                $name = substr($name, strlen($operator . '_'));
+            } elseif (str_ends_with($name, $operator)) {
+                $flags->toggle($flag);
+                $name = substr($name, 0, -strlen($operator . '_'));
             }
         }
 
-        return $result;
+        return [$name, $flags];
     }
 
-    public function group(callable $builder, int $flags = 0): self
+
+    public function raw(string $raw): self
     {
-        return $this->push(new GroupOperator($flags, $builder));
+        $this->operators->push(new RawOperator($raw));
+
+        return $this;
     }
 
     public function __toString(): string
@@ -153,12 +169,7 @@ class RuleBuilder extends _RuleBuilder
         $query = '';
 
         while (!$this->operators->isEmpty()) {
-            $compiled = $this->operators->pop()->compile();
-            if (!str_starts_with($compiled, ' ')) {
-                $compiled = ' ' . $compiled;
-            }
-
-            $query = $compiled . $query;
+            $query = $this->operators->pop()->compile() . ' ' . $query;
         }
 
         return trim($query);
@@ -190,5 +201,36 @@ class RuleBuilder extends _RuleBuilder
     public function build(): Rule
     {
         return new Rule($this->compile(), $this->tag);
+    }
+
+    private function addSampleOperator(Flags $flags, int $percent): self
+    {
+        $join = $flags->has(Operator::OR_FLAG) ? 'OR ' : '';
+
+        return $this->push(new RawOperator($join . 'sample:' . $percent));
+    }
+
+    // bounding_box:[west_long south_lat east_long north_lat]
+    private function addBoundingBoxOperator(Flags $flags, float $westLong, float $southLat, float $eastLong, float $northLat): self
+    {
+        $join  = $flags->has(Operator::OR_FLAG) ? 'OR ' : '';
+        $query = sprintf('%sbounding_box:[%s %s %s %s]', $join, $westLong, $southLat, $eastLong, $northLat);
+
+        return $this->push(new RawOperator($query));
+    }
+
+    private function addPointRadiusOperator(Flags $flags, float $longitude, float $latitude, float $radius): self
+    {
+        $join  = $flags->has(Operator::OR_FLAG) ? 'OR ' : '';
+        $query = sprintf('%spoint_radius:[%s %s %s]', $join, $longitude, $latitude, $radius);
+
+        return $this->push(new RawOperator($query));
+    }
+
+    private function addNotNullCastOperator(Flags $flags)
+    {
+        $join = $flags->has(Operator::OR_FLAG) ? 'OR ' : '';
+
+        return $this->push(new RawOperator($join . '-is:nullcast'));
     }
 }

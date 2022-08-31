@@ -2,30 +2,27 @@
 
 namespace Felix\TwitterStream\Rule\Operators;
 
-/** @internal */
-abstract class Operator
+interface Operator
 {
-    public const OR_OPERATOR  = 1 << 0;
-    public const AND_OPERATOR = 1 << 1;
-    public const NOT_OPERATOR = 1 << 2;
-    public const IS_OPERATOR  = 1 << 3;
-    public const HAS_OPERATOR = 1 << 4;
+    public const NOT_FLAG = 1 << 1;
+    public const OR_FLAG  = 1 << 2;
+    public const AND_FLAG = 1 << 3;
 
-    public const OPERATORS = [self::OR_OPERATOR, self::AND_OPERATOR, self::NOT_OPERATOR, self::IS_OPERATOR, self::HAS_OPERATOR];
+    public const COUNT_FLAG = 1 << 4;
+    public const IS_FLAG    = 1 << 5;
+    public const HAS_FLAG   = 1 << 6;
 
-    protected int $flags = 0;
+    public const OPERATORS = [
+        'or'  => self::OR_FLAG,
+        'and' => self::AND_FLAG,
+        'is'    => self::IS_FLAG,
+        'has'   => self::HAS_FLAG,
+        'not' => self::NOT_FLAG,
 
-    abstract public function compile(): string;
+        // to support the with{Metric}Count method, we ignore 'with'
+        'with'  => 0,
+        'count' => self::COUNT_FLAG,
+    ];
 
-    public function flags(): int
-    {
-        return $this->flags;
-    }
-
-    public function setFlags(int $flag): self
-    {
-        $this->flags = $flag;
-
-        return $this;
-    }
+    public function compile(): string;
 }
