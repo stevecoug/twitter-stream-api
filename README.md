@@ -23,7 +23,7 @@ composer require redwebcreation/twitter-stream-api
 
 ## Documentation
 
-You can find complete documentation [here](https://felixdorn.fr/content/listening-twitter-stream-api-real-time-php?r=github-readme).
+You can find complete documentation [here](https://felixdorn.fr/blog/listening-twitter-stream-api-real-time-php?r=github-readme).
 
 ## Testing
 
