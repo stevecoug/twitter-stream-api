@@ -54,10 +54,6 @@ composer require redwebcreation/twitter-stream-api
 
 > **Updating from v2 to v3?** Read the [upgrade guide](UPGRADE.md).
 
-## Documentation
-
-You can find complete documentation [here](https://felixdorn.fr/blog/listening-twitter-stream-api-real-time-php?r=github-readme).
-
 ## Testing
 
 ```bash
