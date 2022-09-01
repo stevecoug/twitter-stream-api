@@ -1,6 +1,6 @@
 <?php
 
-use Felix\TwitterStream\Rule\RuleBuilder;
+use Felix\TwitterStream\RuleBuilder;
 /** Do not edit manually; changes will be lost. */
 it('compiles', function ($value, $arguments, $expected) {
     expect((new RuleBuilder())->{$value}(...$arguments)->compile())->toBe($expected);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TwitterStream\Rule\Operators;
+namespace Felix\TwitterStream\Operators;
 
 class RawOperator implements Operator
 {

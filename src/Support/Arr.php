@@ -5,7 +5,7 @@ namespace Felix\TwitterStream\Support;
 /** @internal */
 class Arr
 {
-    public static function flatten($value)
+    public static function flatten(mixed $value): array
     {
         if (!is_array($value)) {
             $value = [$value];

@@ -3,6 +3,7 @@
 namespace Felix\TwitterStream;
 
 use Felix\TwitterStream\Contracts\StreamManager;
+use Felix\TwitterStream\Support\Clock;
 use JsonCollectionParser\Listener;
 use JsonCollectionParser\Stream\DataStream;
 use JsonStreamingParser\Parser;
@@ -11,16 +12,18 @@ use Psr\Http\Message\StreamInterface;
 
 abstract class TwitterStream implements StreamManager
 {
-    private int $received                = 0;
-    private ?ResponseInterface $response = null;
-    private ?StreamInterface $stream     = null;
-    private int $tweetLimit              = PHP_INT_MAX;
-    private int $backfill                = 0;
-    private array $fields                = [];
-    private array $expansions            = [];
-    private int $createdAt;
-    private ?Parser $parser = null;
-    private int $bufferSize = 85;
+    protected int $backfill     = 0;
+    protected array $fields     = [];
+    protected array $expansions = [];
+
+    protected ?ResponseInterface $response = null;
+    protected ?StreamInterface $stream     = null;
+    protected ?Parser $parser              = null;
+    protected int $received                = 0;
+    protected int $createdAt;
+
+    protected int $tweetLimit = PHP_INT_MAX;
+    protected int $bufferSize = 85;
 
     public function response(): ResponseInterface
     {
@@ -71,21 +74,19 @@ abstract class TwitterStream implements StreamManager
     {
         $this->response  = $connection->request('GET', $this->toURL(), ['stream' => true]);
         $this->stream    = $this->response->getBody();
-        $this->createdAt = hrtime()[0];
+        $this->createdAt = Clock::now();
 
         $this->parser = new Parser(
             DataStream::get($this->response),
             new Listener(
                 function (object $item) use ($callback) {
-                    if ($this->tweetLimit <= $this->received) {
-                        $this->stopListening();
-
-                        return;
-                    }
+                    $this->received++;
 
                     $callback($item, $this);
 
-                    $this->received++;
+                    if ($this->tweetLimit <= $this->received) {
+                        $this->stopListening();
+                    }
                 },
                 false
             ),
@@ -99,21 +100,16 @@ abstract class TwitterStream implements StreamManager
 
     public function toURL(): string
     {
-        $parameters = [];
+        $parameters = array_filter([
+            'expansions'       => implode(',', $this->expansions),
+            'backfill_minutes' => $this->backfill,
+        ]);
 
         foreach ($this->fields as $type => $fields) {
             $parameters[$type . '.fields'] = implode(',', is_array($fields) ? $fields : [$fields]);
         }
 
-        if (count($this->expansions) > 0) {
-            $parameters['expansions'] = implode(',', $this->expansions);
-        }
-
-        if ($this->backfill > 0) {
-            $parameters['backfill_minutes'] = $this->backfill;
-        }
-
-        return sprintf('%s?%s', $this->endpoint(), http_build_query($parameters));
+        return sprintf('%s%s', $this->endpoint(), count($parameters) > 0 ? '?' . http_build_query($parameters) : '');
     }
 
     abstract public function endpoint(): string;
@@ -128,7 +124,7 @@ abstract class TwitterStream implements StreamManager
 
     public function timeElapsedInSeconds(): float|int
     {
-        return max(0, hrtime()[0] - $this->createdAt);
+        return max(0, Clock::now() - $this->createdAt);
     }
 
     public function __destruct()

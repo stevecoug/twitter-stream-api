@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TwitterStream\Rule;
+namespace Felix\TwitterStream;
 
 class Rule
 {

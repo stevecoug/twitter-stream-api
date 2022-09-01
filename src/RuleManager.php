@@ -1,9 +1,6 @@
 <?php
 
-namespace Felix\TwitterStream\Rule;
-
-use Felix\TwitterStream\TwitterConnection;
-use Felix\TwitterStream\TwitterResponse;
+namespace Felix\TwitterStream;
 
 class RuleManager
 {
@@ -23,12 +20,8 @@ class RuleManager
         ), $rules->getPayload()['data'] ?? []);
     }
 
-    public function save(Rule|string $value, ?string $tag = null, bool $dryRun = false): TwitterResponse
+    public function save(string $value, ?string $tag = null, bool $dryRun = false): TwitterResponse
     {
-        if ($value instanceof Rule) {
-            return $this->saveMany([$value], $dryRun);
-        }
-
         return $this->saveMany([new Rule($value, $tag)], $dryRun);
     }
 

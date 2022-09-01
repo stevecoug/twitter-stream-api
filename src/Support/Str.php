@@ -12,5 +12,4 @@ class Str
         /* @phpstan-ignore-next-line */
         return strtolower(preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
     }
-
 }

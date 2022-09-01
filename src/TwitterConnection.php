@@ -19,11 +19,6 @@ class TwitterConnection
         ]);
     }
 
-    public function client(): Client
-    {
-        return $this->client;
-    }
-
     /**
      * @param array<string, mixed> $options see \GuzzleHttp\RequestOptions
      */

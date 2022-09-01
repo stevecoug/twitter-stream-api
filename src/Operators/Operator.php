@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TwitterStream\Rule\Operators;
+namespace Felix\TwitterStream\Operators;
 
 interface Operator
 {
@@ -13,11 +13,11 @@ interface Operator
     public const HAS_FLAG   = 1 << 6;
 
     public const OPERATORS = [
-        'or'  => self::OR_FLAG,
-        'and' => self::AND_FLAG,
+        'or'    => self::OR_FLAG,
+        'and'   => self::AND_FLAG,
         'is'    => self::IS_FLAG,
         'has'   => self::HAS_FLAG,
-        'not' => self::NOT_FLAG,
+        'not'   => self::NOT_FLAG,
 
         // to support the with{Metric}Count method, we ignore 'with'
         'with'  => 0,

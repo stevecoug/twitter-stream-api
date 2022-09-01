@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TwitterStream\Rule\Operators\Contracts;
+namespace Felix\TwitterStream\Operators\Contracts;
 
 trait Negatable
 {

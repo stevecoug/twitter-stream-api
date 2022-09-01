@@ -1,13 +1,13 @@
 <?php
 
-namespace Felix\TwitterStream\Rule\Operators;
+namespace Felix\TwitterStream\Operators;
 
 use Felix\TwitterStream\Support\Arr;
 use Felix\TwitterStream\Support\Flags;
 
 class KeyValueOperator implements Operator
 {
-    use Contracts\Negatable;
+    use \Felix\TwitterStream\Operators\Contracts\Negatable;
 
     public array $values;
 

@@ -1,8 +1,9 @@
 <?php
 
-use Felix\TwitterStream\Rule\RuleBuilder;
-use Felix\TwitterStream\Rule\RuleManager;
+use Felix\TwitterStream\RuleBuilder;
+use Felix\TwitterStream\RuleManager;
 use Felix\TwitterStream\TwitterResponse;
+use GuzzleHttp\Psr7\Response;
 
 function query(string $q = '')
 {
@@ -100,10 +101,17 @@ it('can compile has operator using the shorthand', function () {
 
 it('fails if you access an undefined property', function () {
     query('php')->foo;
-})->throws(ErrorException::class, 'Undefined property: Felix\TwitterStream\Rule\RuleBuilder::$foo');
+})->throws(ErrorException::class, 'Undefined property: Felix\TwitterStream\RuleBuilder::$foo');
 
 it('can compile an is operator', function () {
     expect(query('doggo')->is('quote')->compile())->toBe('doggo is:quote');
+});
+
+it('can compile a count operator', function () {
+    expect(query('')->withFollowersCount(100)->compile())->toBe('followers_count:100');
+    expect(query('')->withFollowersCount(100, 1000)->compile())->toBe('followers_count:100..1000');
+    expect(query('')->andWithFollowersCount(100, 1000)->compile())->toBe('followers_count:100..1000');
+    expect(query('')->orWithFollowersCount(100, 1000)->compile())->toBe('OR followers_count:100..1000');
 });
 
 it('can compile many is operator', function () {
@@ -134,7 +142,6 @@ it('can compile a negated nullcast operator', function () {
     expect(query('"mobile games"')->andNotNullCast()->compile())->toBe('"mobile games" -is:nullcast');
     expect(query('"mobile games"')->orNotNullCast()->compile())->toBe('"mobile games" OR -is:nullcast');
 });
-
 
 it('can group operators', function () {
     $rule = query()
@@ -176,7 +183,7 @@ it('can create the rule', function () {
     $mock = mock(RuleManager::class)
         ->shouldReceive('save')
         ->with('dogs is:quote', 'my-rule')
-        ->andReturn(TwitterResponse::empty())
+        ->andReturn(TwitterResponse::fromPsrResponse(new Response(body: '{}')))
         ->getMock();
 
     $rule = new RuleBuilder($mock, 'my-rule');

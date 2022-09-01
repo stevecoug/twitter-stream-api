@@ -20,5 +20,4 @@ class Flags
 
         return $this;
     }
-
 }

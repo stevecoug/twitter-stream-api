@@ -1,13 +1,13 @@
 <?php
 
-namespace Felix\TwitterStream\Rule;
+namespace Felix\TwitterStream;
 
 use BadMethodCallException;
 use Felix\TwitterStream\Exceptions\TwitterException;
-use Felix\TwitterStream\Rule\Operators\CountOperator;
-use Felix\TwitterStream\Rule\Operators\KeyValueOperator;
-use Felix\TwitterStream\Rule\Operators\Operator;
-use Felix\TwitterStream\Rule\Operators\RawOperator;
+use Felix\TwitterStream\Operators\CountOperator;
+use Felix\TwitterStream\Operators\KeyValueOperator;
+use Felix\TwitterStream\Operators\Operator;
+use Felix\TwitterStream\Operators\RawOperator;
 use Felix\TwitterStream\Support\Flags;
 use Felix\TwitterStream\Support\Str;
 use Psr\Http\Message\ResponseInterface;
@@ -32,19 +32,18 @@ use SplStack;
 class RuleBuilder extends _RuleBuilder
 {
     public const KEY_VALUE_OPERATORS = [
-        'from'            => 'from',
-        'to'              => 'to',
-        'url'             => 'url',
-        'retweets_of'     => 'retweets_of',
-        'context'         => 'context',
-        'entity'          => 'entity',
-        'conversation_id' => 'conversation_id',
-        'bio'             => 'bio',
-        'bio_name'        => 'bio_name',
-        'bio_location'    => 'bio_location',
-        'place'           => 'place',
-        'place_country'   => 'place_country',
-        // skipping bounding_box and point_radius
+        'from'                  => 'from',
+        'to'                    => 'to',
+        'url'                   => 'url',
+        'retweets_of'           => 'retweets_of',
+        'context'               => 'context',
+        'entity'                => 'entity',
+        'conversation_id'       => 'conversation_id',
+        'bio'                   => 'bio',
+        'bio_name'              => 'bio_name',
+        'bio_location'          => 'bio_location',
+        'place'                 => 'place',
+        'place_country'         => 'place_country',
         'lang'                  => 'lang',
         'url_title'             => 'url_title',
         'url_description'       => 'url_description',
@@ -92,15 +91,14 @@ class RuleBuilder extends _RuleBuilder
 
     public function __get(string $name): self
     {
-        if ($name === 'and') {
-            return $this;
-        }
+        match ($name) {
+            // skip it.
+            'and'   => null,
+            'or'    => $this->push(new RawOperator('OR')),
+            default => trigger_error('Undefined property: ' . static::class . '::$' . $name, PHP_MAJOR_VERSION === 8 ? E_USER_WARNING : E_USER_ERROR)
+        };
 
-        if ($name === 'or') {
-            return $this->push(new RawOperator('OR'));
-        }
-
-        trigger_error('Undefined property: ' . static::class . '::$' . $name, PHP_MAJOR_VERSION === 8 ? E_USER_WARNING : E_USER_ERROR);
+        return $this;
     }
 
     public function push(Operator $operator): self
@@ -110,7 +108,7 @@ class RuleBuilder extends _RuleBuilder
         return $this;
     }
 
-    public function __call(string $methodName, array $arguments)
+    public function __call(string $methodName, array $arguments): self
     {
         [$name, $flags] = $this->getNameAndFlags($methodName);
 
@@ -149,7 +147,6 @@ class RuleBuilder extends _RuleBuilder
 
         return [$name, $flags];
     }
-
 
     public function raw(string $raw): self
     {
@@ -227,7 +224,7 @@ class RuleBuilder extends _RuleBuilder
         return $this->push(new RawOperator($query));
     }
 
-    private function addNotNullCastOperator(Flags $flags)
+    private function addNotNullCastOperator(Flags $flags): self
     {
         $join = $flags->has(Operator::OR_FLAG) ? 'OR ' : '';
 
