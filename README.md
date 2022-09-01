@@ -22,14 +22,6 @@
 
 [//]: # (* point radius / bouding box operator &#40;"array" operators&#41;)
 
-[//]: # ()
-[//]: # (`andFrom&#40;'value'&#41;` -> raw operator `AND` + kv operator `from:value`)
-
-[//]: # (`andNotFrom&#40;'value'&#41;` -> raw operator `AND` + kv operator `-from:value`)
-
-[//]: # (`withTweetsCount&#40;$min = 0, $max = null&#41;`)
-
-[//]: # (* `notFrom&#40;['a', 'b']&#41;`)
 # Twitter Stream API (v2)
 
 [![Tests](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/tests.yml)

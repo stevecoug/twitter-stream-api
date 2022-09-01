@@ -12,9 +12,9 @@ class CountOperator
 
     public function __construct(string $name)
     {
-        $this->name = Str::camel($name);
+        $this->name             = Str::camel($name);
         $this->nameAsMethodName = ucfirst($this->name);
-        $this->snakeCasedName = Str::snake($this->name);
+        $this->snakeCasedName   = Str::snake($this->name);
     }
 
     public function methods(): array

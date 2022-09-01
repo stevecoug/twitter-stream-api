@@ -168,12 +168,11 @@ it('can group operators', function () {
 
 it('can compile a sample operator', function () {
     $rule = query()->sample(42)->compile();
-
     expect($rule)->toBe('sample:42');
 
     $rule = query()->notSample(42)->compile();
     expect($rule)->toBe('sample:42'); // not a typo
-});
+})->only();
 
 it('can be translated to a string', function () {
     expect((string) query('dogs')->isNotQuote())->toBe('dogs -is:quote');

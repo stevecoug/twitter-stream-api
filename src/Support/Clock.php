@@ -2,6 +2,7 @@
 
 namespace Felix\TwitterStream\Support;
 
+/** @internal */
 class Clock
 {
     protected static array $queue = [];
@@ -15,14 +16,12 @@ class Clock
         return hrtime()[0];
     }
 
-    /** @internal */
-    public static function freeze(int $time, callable $callable)
+    public static function freeze(int $time, callable $callable): void
     {
         self::queue([$time], $callable);
     }
 
-    /** @internal */
-    public static function queue(array $times, callable $callable)
+    public static function queue(array $times, callable $callable): void
     {
         Clock::$queue = [...Clock::$queue, ...$times];
 

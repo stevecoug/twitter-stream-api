@@ -4,10 +4,14 @@ namespace Felix\TwitterStream;
 
 use BadMethodCallException;
 use Felix\TwitterStream\Exceptions\TwitterException;
+use Felix\TwitterStream\Operators\BoundingBoxOperator;
 use Felix\TwitterStream\Operators\CountOperator;
 use Felix\TwitterStream\Operators\KeyValueOperator;
+use Felix\TwitterStream\Operators\NotNullCastOperator;
 use Felix\TwitterStream\Operators\Operator;
+use Felix\TwitterStream\Operators\PointRadiusOperator;
 use Felix\TwitterStream\Operators\RawOperator;
+use Felix\TwitterStream\Operators\SampleOperator;
 use Felix\TwitterStream\Support\Flags;
 use Felix\TwitterStream\Support\Str;
 use Psr\Http\Message\ResponseInterface;
@@ -20,34 +24,32 @@ use SplStack;
  * @method self sample(int $percentage)
  * @method self pointRadius(string $longitude, string $latitude, string $radius)
  * @method self boundingBox(string $westLongitude, string $southLatitude, string $eastLongitude, string $northLatitude)
- *
  * @method self orRaw(string|array $property)
  * @method self andRaw(string|array $property)
- *
  * @method self andNotNullcast()
  * @method self orNotNullcast()
  */
 class RuleBuilder extends _RuleBuilder
 {
     public const KEY_VALUE_OPERATORS = [
-        'from'                  => 'from',
-        'to'                    => 'to',
-        'url'                   => 'url',
-        'retweets_of'           => 'retweets_of',
-        'context'               => 'context',
-        'entity'                => 'entity',
-        'conversation_id'       => 'conversation_id',
-        'bio'                   => 'bio',
-        'bio_name'              => 'bio_name',
-        'bio_location'          => 'bio_location',
-        'place'                 => 'place',
-        'place_country'         => 'place_country',
-        'lang'                  => 'lang',
-        'url_title'             => 'url_title',
-        'url_description'       => 'url_description',
-        'url_contains'          => 'url_contains',
-        'source'                => 'source',
-        'in_reply_to_tweet_id'  => 'in_reply_to_tweet_id',
+        'from'                 => 'from',
+        'to'                   => 'to',
+        'url'                  => 'url',
+        'retweets_of'          => 'retweets_of',
+        'context'              => 'context',
+        'entity'               => 'entity',
+        'conversation_id'      => 'conversation_id',
+        'bio'                  => 'bio',
+        'bio_name'             => 'bio_name',
+        'bio_location'         => 'bio_location',
+        'place'                => 'place',
+        'place_country'        => 'place_country',
+        'lang'                 => 'lang',
+        'url_title'            => 'url_title',
+        'url_description'      => 'url_description',
+        'url_contains'         => 'url_contains',
+        'source'               => 'source',
+        'in_reply_to_tweet_id' => 'in_reply_to_tweet_id',
         'retweets_of_tweet_id' => 'retweets_of_tweet_id',
     ];
     public const IS_OPERATORS = [
@@ -73,10 +75,10 @@ class RuleBuilder extends _RuleBuilder
         'listed'    => 'listed',
     ];
     public const CUSTOM_OPERATORS = [
-        'sample'       => 'addSampleOperator',
-        'null_cast'    => 'addNotNullCastOperator',
-        'bounding_box' => 'addBoundingBoxOperator',
-        'point_radius' => 'addPointRadiusOperator',
+        'sample'       => SampleOperator::class,
+        'null_cast'    => NotNullCastOperator::class,
+        'bounding_box' => BoundingBoxOperator::class,
+        'point_radius' => PointRadiusOperator::class,
     ];
 
     /** @param SplStack<Operator> $operators */
@@ -111,7 +113,7 @@ class RuleBuilder extends _RuleBuilder
         [$name, $flags] = $this->getNameAndFlags($methodName);
 
         if (array_key_exists($name, self::CUSTOM_OPERATORS)) {
-            return $this->{self::CUSTOM_OPERATORS[$name]}($flags, ...$arguments);
+            return $this->push(new (self::CUSTOM_OPERATORS[$name])($flags, ...$arguments));
         }
 
         return $this->push(match (true) {
@@ -196,36 +198,5 @@ class RuleBuilder extends _RuleBuilder
     public function build(): Rule
     {
         return new Rule($this->compile(), $this->tag);
-    }
-
-    private function addSampleOperator(Flags $flags, int $percent): self
-    {
-        $join = $flags->has(Operator::OR_FLAG) ? 'OR ' : '';
-
-        return $this->push(new RawOperator($join . 'sample:' . $percent));
-    }
-
-    // bounding_box:[west_long south_lat east_long north_lat]
-    private function addBoundingBoxOperator(Flags $flags, float $westLong, float $southLat, float $eastLong, float $northLat): self
-    {
-        $join  = $flags->has(Operator::OR_FLAG) ? 'OR ' : '';
-        $query = sprintf('%sbounding_box:[%s %s %s %s]', $join, $westLong, $southLat, $eastLong, $northLat);
-
-        return $this->push(new RawOperator($query));
-    }
-
-    private function addPointRadiusOperator(Flags $flags, float $longitude, float $latitude, float $radius): self
-    {
-        $join  = $flags->has(Operator::OR_FLAG) ? 'OR ' : '';
-        $query = sprintf('%spoint_radius:[%s %s %s]', $join, $longitude, $latitude, $radius);
-
-        return $this->push(new RawOperator($query));
-    }
-
-    private function addNotNullCastOperator(Flags $flags): self
-    {
-        $join = $flags->has(Operator::OR_FLAG) ? 'OR ' : '';
-
-        return $this->push(new RawOperator($join . '-is:nullcast'));
     }
 }

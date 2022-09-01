@@ -26,12 +26,14 @@ class TwitterException extends Exception
             return new self('Too many requests (reset in: ' . $reset . ').', $decoded);
         }
 
+        /* @phpstan-ignore-next-line */
         return new self(json_encode($decoded['errors'][0]), $decoded);
     }
 
     public static function fromPayload(array $payload): TwitterException
     {
         if (array_key_exists('errors', $payload) && count($payload['errors']) > 0) {
+            /* @phpstan-ignore-next-line */
             return new self(json_encode($payload['errors'][0]), $payload);
         }
 
@@ -39,6 +41,7 @@ class TwitterException extends Exception
             return new self('Too many requests (reset in: unknown).', $payload);
         }
 
+        /* @phpstan-ignore-next-line */
         return new self(json_encode($payload), $payload);
     }
 }
