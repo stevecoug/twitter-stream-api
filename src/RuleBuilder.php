@@ -16,16 +16,14 @@ use SplStack;
 /**
  * @property RuleBuilder $and
  * @property RuleBuilder $or
- * @property RuleBuilder $not
  *
  * @method self sample(int $percentage)
  * @method self pointRadius(string $longitude, string $latitude, string $radius)
  * @method self boundingBox(string $westLongitude, string $southLatitude, string $eastLongitude, string $northLatitude)
+ *
  * @method self orRaw(string|array $property)
  * @method self andRaw(string|array $property)
- * @method self query(string|array $properties)
- * @method self andQuery(string|array $properties)
- * @method self orQuery(string|array $properties)
+ *
  * @method self andNotNullcast()
  * @method self orNotNullcast()
  */
@@ -50,7 +48,7 @@ class RuleBuilder extends _RuleBuilder
         'url_contains'          => 'url_contains',
         'source'                => 'source',
         'in_reply_to_tweet_id'  => 'in_reply_to_tweet_id',
-        'retweets_of_tweet_id:' => 'retweets_of_tweet_id',
+        'retweets_of_tweet_id' => 'retweets_of_tweet_id',
     ];
     public const IS_OPERATORS = [
         'retweet'  => 'retweet',

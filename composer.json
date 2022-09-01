@@ -32,7 +32,7 @@
       "@test:types",
       "@test:unit"
     ],
-    "gen:doc": "php scripts/generate_phpdoc.php > src/Rule/_RuleBuilder.php",
+    "gen:doc": "php scripts/generate_phpdoc.php > src/_RuleBuilder.php",
     "gen:tests": "php scripts/generate_tests.php > tests/GeneratedTests.php"
   },
   "require-dev": {

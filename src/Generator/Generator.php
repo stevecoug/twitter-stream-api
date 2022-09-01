@@ -2,6 +2,8 @@
 
 namespace Felix\TwitterStream\Generator;
 
+use Felix\TwitterStream\RuleBuilder;
+
 /**
  * @codeCoverageIgnore (internal tool)
  *
@@ -9,15 +11,6 @@ namespace Felix\TwitterStream\Generator;
  */
 class Generator
 {
-    // excluded here: sample, bounding_box, point_radius
-    public const PARAMETERIZED_OPERATORS = ['from', 'to', 'url', 'retweetsOf', 'context', 'entity', 'conversationId', 'bio', 'bioName', 'bioLocation', 'place', 'placeCountry', 'lang'];
-
-    public const STANDALONE_OPERATORS = [
-        // excluded here, -is:nullcast
-        'is'  => ['retweet', 'reply', 'quote', 'verified'],
-        'has' => ['hashtags', 'cashtags', 'links', 'mentions', 'media', 'images', 'videos', 'geo'],
-    ];
-
     public static function tests(): array
     {
         $tests = [];
@@ -31,14 +24,20 @@ class Generator
 
     public static function cases(): \Generator
     {
-        foreach (self::STANDALONE_OPERATORS as $name => $values) {
-            foreach ($values as $value) {
-                yield new StandaloneOperator($name, $value);
-            }
+        foreach (RuleBuilder::IS_OPERATORS as $name) {
+            yield new StandaloneOperator('is', $name);
         }
 
-        foreach (self::PARAMETERIZED_OPERATORS as $name) {
+        foreach (RuleBuilder::HAS_OPERATORS as $name) {
+            yield new StandaloneOperator('has', $name);
+        }
+
+        foreach (RuleBuilder::KEY_VALUE_OPERATORS as $name) {
             yield new ParameterizedOperator($name);
+        }
+
+        foreach (RuleBuilder::COUNT_OPERATOR as $name) {
+            yield new CountOperator($name);
         }
     }
 }

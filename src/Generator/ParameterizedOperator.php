@@ -11,12 +11,14 @@ use Felix\TwitterStream\Support\Str;
  */
 class ParameterizedOperator
 {
+    public string $name;
     public string $snakeCasedName;
     public string $nameAsMethodName;
 
     public function __construct(
-        public string $name,
+        string $name,
     ) {
+        $this->name = Str::camel($name);
         $this->nameAsMethodName = ucfirst($this->name);
         $this->snakeCasedName   = Str::snake($this->name);
     }

@@ -4109,4 +4109,1892 @@ it('compiles', function ($value, $arguments, $expected) {
     ),
     2 => '-lang:a -lang:b',
   ),
+  396 => 
+  array (
+    0 => 'urlTitle',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'url_title:a',
+  ),
+  397 => 
+  array (
+    0 => 'notUrlTitle',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => '-url_title:a',
+  ),
+  398 => 
+  array (
+    0 => 'orUrlTitle',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'OR url_title:a',
+  ),
+  399 => 
+  array (
+    0 => 'orNotUrlTitle',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'OR -url_title:a',
+  ),
+  400 => 
+  array (
+    0 => 'andUrlTitle',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'url_title:a',
+  ),
+  401 => 
+  array (
+    0 => 'andNotUrlTitle',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => '-url_title:a',
+  ),
+  402 => 
+  array (
+    0 => 'urlTitle',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'url_title:b',
+  ),
+  403 => 
+  array (
+    0 => 'notUrlTitle',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => '-url_title:b',
+  ),
+  404 => 
+  array (
+    0 => 'orUrlTitle',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'OR url_title:b',
+  ),
+  405 => 
+  array (
+    0 => 'orNotUrlTitle',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'OR -url_title:b',
+  ),
+  406 => 
+  array (
+    0 => 'andUrlTitle',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'url_title:b',
+  ),
+  407 => 
+  array (
+    0 => 'andNotUrlTitle',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => '-url_title:b',
+  ),
+  408 => 
+  array (
+    0 => 'urlTitle',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'url_title:a url_title:b',
+  ),
+  409 => 
+  array (
+    0 => 'notUrlTitle',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-url_title:a -url_title:b',
+  ),
+  410 => 
+  array (
+    0 => 'orUrlTitle',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'url_title:a OR url_title:b',
+  ),
+  411 => 
+  array (
+    0 => 'orNotUrlTitle',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-url_title:a OR -url_title:b',
+  ),
+  412 => 
+  array (
+    0 => 'andUrlTitle',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'url_title:a url_title:b',
+  ),
+  413 => 
+  array (
+    0 => 'andNotUrlTitle',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-url_title:a -url_title:b',
+  ),
+  414 => 
+  array (
+    0 => 'urlTitle',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'url_title:a url_title:b',
+  ),
+  415 => 
+  array (
+    0 => 'notUrlTitle',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-url_title:a -url_title:b',
+  ),
+  416 => 
+  array (
+    0 => 'orUrlTitle',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'url_title:a OR url_title:b',
+  ),
+  417 => 
+  array (
+    0 => 'orNotUrlTitle',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-url_title:a OR -url_title:b',
+  ),
+  418 => 
+  array (
+    0 => 'andUrlTitle',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'url_title:a url_title:b',
+  ),
+  419 => 
+  array (
+    0 => 'andNotUrlTitle',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-url_title:a -url_title:b',
+  ),
+  420 => 
+  array (
+    0 => 'urlDescription',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'url_description:a',
+  ),
+  421 => 
+  array (
+    0 => 'notUrlDescription',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => '-url_description:a',
+  ),
+  422 => 
+  array (
+    0 => 'orUrlDescription',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'OR url_description:a',
+  ),
+  423 => 
+  array (
+    0 => 'orNotUrlDescription',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'OR -url_description:a',
+  ),
+  424 => 
+  array (
+    0 => 'andUrlDescription',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'url_description:a',
+  ),
+  425 => 
+  array (
+    0 => 'andNotUrlDescription',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => '-url_description:a',
+  ),
+  426 => 
+  array (
+    0 => 'urlDescription',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'url_description:b',
+  ),
+  427 => 
+  array (
+    0 => 'notUrlDescription',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => '-url_description:b',
+  ),
+  428 => 
+  array (
+    0 => 'orUrlDescription',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'OR url_description:b',
+  ),
+  429 => 
+  array (
+    0 => 'orNotUrlDescription',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'OR -url_description:b',
+  ),
+  430 => 
+  array (
+    0 => 'andUrlDescription',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'url_description:b',
+  ),
+  431 => 
+  array (
+    0 => 'andNotUrlDescription',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => '-url_description:b',
+  ),
+  432 => 
+  array (
+    0 => 'urlDescription',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'url_description:a url_description:b',
+  ),
+  433 => 
+  array (
+    0 => 'notUrlDescription',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-url_description:a -url_description:b',
+  ),
+  434 => 
+  array (
+    0 => 'orUrlDescription',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'url_description:a OR url_description:b',
+  ),
+  435 => 
+  array (
+    0 => 'orNotUrlDescription',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-url_description:a OR -url_description:b',
+  ),
+  436 => 
+  array (
+    0 => 'andUrlDescription',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'url_description:a url_description:b',
+  ),
+  437 => 
+  array (
+    0 => 'andNotUrlDescription',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-url_description:a -url_description:b',
+  ),
+  438 => 
+  array (
+    0 => 'urlDescription',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'url_description:a url_description:b',
+  ),
+  439 => 
+  array (
+    0 => 'notUrlDescription',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-url_description:a -url_description:b',
+  ),
+  440 => 
+  array (
+    0 => 'orUrlDescription',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'url_description:a OR url_description:b',
+  ),
+  441 => 
+  array (
+    0 => 'orNotUrlDescription',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-url_description:a OR -url_description:b',
+  ),
+  442 => 
+  array (
+    0 => 'andUrlDescription',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'url_description:a url_description:b',
+  ),
+  443 => 
+  array (
+    0 => 'andNotUrlDescription',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-url_description:a -url_description:b',
+  ),
+  444 => 
+  array (
+    0 => 'urlContains',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'url_contains:a',
+  ),
+  445 => 
+  array (
+    0 => 'notUrlContains',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => '-url_contains:a',
+  ),
+  446 => 
+  array (
+    0 => 'orUrlContains',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'OR url_contains:a',
+  ),
+  447 => 
+  array (
+    0 => 'orNotUrlContains',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'OR -url_contains:a',
+  ),
+  448 => 
+  array (
+    0 => 'andUrlContains',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'url_contains:a',
+  ),
+  449 => 
+  array (
+    0 => 'andNotUrlContains',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => '-url_contains:a',
+  ),
+  450 => 
+  array (
+    0 => 'urlContains',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'url_contains:b',
+  ),
+  451 => 
+  array (
+    0 => 'notUrlContains',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => '-url_contains:b',
+  ),
+  452 => 
+  array (
+    0 => 'orUrlContains',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'OR url_contains:b',
+  ),
+  453 => 
+  array (
+    0 => 'orNotUrlContains',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'OR -url_contains:b',
+  ),
+  454 => 
+  array (
+    0 => 'andUrlContains',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'url_contains:b',
+  ),
+  455 => 
+  array (
+    0 => 'andNotUrlContains',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => '-url_contains:b',
+  ),
+  456 => 
+  array (
+    0 => 'urlContains',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'url_contains:a url_contains:b',
+  ),
+  457 => 
+  array (
+    0 => 'notUrlContains',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-url_contains:a -url_contains:b',
+  ),
+  458 => 
+  array (
+    0 => 'orUrlContains',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'url_contains:a OR url_contains:b',
+  ),
+  459 => 
+  array (
+    0 => 'orNotUrlContains',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-url_contains:a OR -url_contains:b',
+  ),
+  460 => 
+  array (
+    0 => 'andUrlContains',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'url_contains:a url_contains:b',
+  ),
+  461 => 
+  array (
+    0 => 'andNotUrlContains',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-url_contains:a -url_contains:b',
+  ),
+  462 => 
+  array (
+    0 => 'urlContains',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'url_contains:a url_contains:b',
+  ),
+  463 => 
+  array (
+    0 => 'notUrlContains',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-url_contains:a -url_contains:b',
+  ),
+  464 => 
+  array (
+    0 => 'orUrlContains',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'url_contains:a OR url_contains:b',
+  ),
+  465 => 
+  array (
+    0 => 'orNotUrlContains',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-url_contains:a OR -url_contains:b',
+  ),
+  466 => 
+  array (
+    0 => 'andUrlContains',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'url_contains:a url_contains:b',
+  ),
+  467 => 
+  array (
+    0 => 'andNotUrlContains',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-url_contains:a -url_contains:b',
+  ),
+  468 => 
+  array (
+    0 => 'source',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'source:a',
+  ),
+  469 => 
+  array (
+    0 => 'notSource',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => '-source:a',
+  ),
+  470 => 
+  array (
+    0 => 'orSource',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'OR source:a',
+  ),
+  471 => 
+  array (
+    0 => 'orNotSource',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'OR -source:a',
+  ),
+  472 => 
+  array (
+    0 => 'andSource',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'source:a',
+  ),
+  473 => 
+  array (
+    0 => 'andNotSource',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => '-source:a',
+  ),
+  474 => 
+  array (
+    0 => 'source',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'source:b',
+  ),
+  475 => 
+  array (
+    0 => 'notSource',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => '-source:b',
+  ),
+  476 => 
+  array (
+    0 => 'orSource',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'OR source:b',
+  ),
+  477 => 
+  array (
+    0 => 'orNotSource',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'OR -source:b',
+  ),
+  478 => 
+  array (
+    0 => 'andSource',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'source:b',
+  ),
+  479 => 
+  array (
+    0 => 'andNotSource',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => '-source:b',
+  ),
+  480 => 
+  array (
+    0 => 'source',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'source:a source:b',
+  ),
+  481 => 
+  array (
+    0 => 'notSource',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-source:a -source:b',
+  ),
+  482 => 
+  array (
+    0 => 'orSource',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'source:a OR source:b',
+  ),
+  483 => 
+  array (
+    0 => 'orNotSource',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-source:a OR -source:b',
+  ),
+  484 => 
+  array (
+    0 => 'andSource',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'source:a source:b',
+  ),
+  485 => 
+  array (
+    0 => 'andNotSource',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-source:a -source:b',
+  ),
+  486 => 
+  array (
+    0 => 'source',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'source:a source:b',
+  ),
+  487 => 
+  array (
+    0 => 'notSource',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-source:a -source:b',
+  ),
+  488 => 
+  array (
+    0 => 'orSource',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'source:a OR source:b',
+  ),
+  489 => 
+  array (
+    0 => 'orNotSource',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-source:a OR -source:b',
+  ),
+  490 => 
+  array (
+    0 => 'andSource',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'source:a source:b',
+  ),
+  491 => 
+  array (
+    0 => 'andNotSource',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-source:a -source:b',
+  ),
+  492 => 
+  array (
+    0 => 'inReplyToTweetId',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'in_reply_to_tweet_id:a',
+  ),
+  493 => 
+  array (
+    0 => 'notInReplyToTweetId',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => '-in_reply_to_tweet_id:a',
+  ),
+  494 => 
+  array (
+    0 => 'orInReplyToTweetId',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'OR in_reply_to_tweet_id:a',
+  ),
+  495 => 
+  array (
+    0 => 'orNotInReplyToTweetId',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'OR -in_reply_to_tweet_id:a',
+  ),
+  496 => 
+  array (
+    0 => 'andInReplyToTweetId',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'in_reply_to_tweet_id:a',
+  ),
+  497 => 
+  array (
+    0 => 'andNotInReplyToTweetId',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => '-in_reply_to_tweet_id:a',
+  ),
+  498 => 
+  array (
+    0 => 'inReplyToTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'in_reply_to_tweet_id:b',
+  ),
+  499 => 
+  array (
+    0 => 'notInReplyToTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => '-in_reply_to_tweet_id:b',
+  ),
+  500 => 
+  array (
+    0 => 'orInReplyToTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'OR in_reply_to_tweet_id:b',
+  ),
+  501 => 
+  array (
+    0 => 'orNotInReplyToTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'OR -in_reply_to_tweet_id:b',
+  ),
+  502 => 
+  array (
+    0 => 'andInReplyToTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'in_reply_to_tweet_id:b',
+  ),
+  503 => 
+  array (
+    0 => 'andNotInReplyToTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => '-in_reply_to_tweet_id:b',
+  ),
+  504 => 
+  array (
+    0 => 'inReplyToTweetId',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'in_reply_to_tweet_id:a in_reply_to_tweet_id:b',
+  ),
+  505 => 
+  array (
+    0 => 'notInReplyToTweetId',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-in_reply_to_tweet_id:a -in_reply_to_tweet_id:b',
+  ),
+  506 => 
+  array (
+    0 => 'orInReplyToTweetId',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'in_reply_to_tweet_id:a OR in_reply_to_tweet_id:b',
+  ),
+  507 => 
+  array (
+    0 => 'orNotInReplyToTweetId',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-in_reply_to_tweet_id:a OR -in_reply_to_tweet_id:b',
+  ),
+  508 => 
+  array (
+    0 => 'andInReplyToTweetId',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'in_reply_to_tweet_id:a in_reply_to_tweet_id:b',
+  ),
+  509 => 
+  array (
+    0 => 'andNotInReplyToTweetId',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-in_reply_to_tweet_id:a -in_reply_to_tweet_id:b',
+  ),
+  510 => 
+  array (
+    0 => 'inReplyToTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'in_reply_to_tweet_id:a in_reply_to_tweet_id:b',
+  ),
+  511 => 
+  array (
+    0 => 'notInReplyToTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-in_reply_to_tweet_id:a -in_reply_to_tweet_id:b',
+  ),
+  512 => 
+  array (
+    0 => 'orInReplyToTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'in_reply_to_tweet_id:a OR in_reply_to_tweet_id:b',
+  ),
+  513 => 
+  array (
+    0 => 'orNotInReplyToTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-in_reply_to_tweet_id:a OR -in_reply_to_tweet_id:b',
+  ),
+  514 => 
+  array (
+    0 => 'andInReplyToTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'in_reply_to_tweet_id:a in_reply_to_tweet_id:b',
+  ),
+  515 => 
+  array (
+    0 => 'andNotInReplyToTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-in_reply_to_tweet_id:a -in_reply_to_tweet_id:b',
+  ),
+  516 => 
+  array (
+    0 => 'retweetsOfTweetId',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'retweets_of_tweet_id:a',
+  ),
+  517 => 
+  array (
+    0 => 'notRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => '-retweets_of_tweet_id:a',
+  ),
+  518 => 
+  array (
+    0 => 'orRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'OR retweets_of_tweet_id:a',
+  ),
+  519 => 
+  array (
+    0 => 'orNotRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'OR -retweets_of_tweet_id:a',
+  ),
+  520 => 
+  array (
+    0 => 'andRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => 'retweets_of_tweet_id:a',
+  ),
+  521 => 
+  array (
+    0 => 'andNotRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 'a',
+    ),
+    2 => '-retweets_of_tweet_id:a',
+  ),
+  522 => 
+  array (
+    0 => 'retweetsOfTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'retweets_of_tweet_id:b',
+  ),
+  523 => 
+  array (
+    0 => 'notRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => '-retweets_of_tweet_id:b',
+  ),
+  524 => 
+  array (
+    0 => 'orRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'OR retweets_of_tweet_id:b',
+  ),
+  525 => 
+  array (
+    0 => 'orNotRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'OR -retweets_of_tweet_id:b',
+  ),
+  526 => 
+  array (
+    0 => 'andRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => 'retweets_of_tweet_id:b',
+  ),
+  527 => 
+  array (
+    0 => 'andNotRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'b',
+      ),
+    ),
+    2 => '-retweets_of_tweet_id:b',
+  ),
+  528 => 
+  array (
+    0 => 'retweetsOfTweetId',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'retweets_of_tweet_id:a retweets_of_tweet_id:b',
+  ),
+  529 => 
+  array (
+    0 => 'notRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-retweets_of_tweet_id:a -retweets_of_tweet_id:b',
+  ),
+  530 => 
+  array (
+    0 => 'orRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'retweets_of_tweet_id:a OR retweets_of_tweet_id:b',
+  ),
+  531 => 
+  array (
+    0 => 'orNotRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-retweets_of_tweet_id:a OR -retweets_of_tweet_id:b',
+  ),
+  532 => 
+  array (
+    0 => 'andRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => 'retweets_of_tweet_id:a retweets_of_tweet_id:b',
+  ),
+  533 => 
+  array (
+    0 => 'andNotRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 'a',
+      1 => 'b',
+    ),
+    2 => '-retweets_of_tweet_id:a -retweets_of_tweet_id:b',
+  ),
+  534 => 
+  array (
+    0 => 'retweetsOfTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'retweets_of_tweet_id:a retweets_of_tweet_id:b',
+  ),
+  535 => 
+  array (
+    0 => 'notRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-retweets_of_tweet_id:a -retweets_of_tweet_id:b',
+  ),
+  536 => 
+  array (
+    0 => 'orRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'retweets_of_tweet_id:a OR retweets_of_tweet_id:b',
+  ),
+  537 => 
+  array (
+    0 => 'orNotRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-retweets_of_tweet_id:a OR -retweets_of_tweet_id:b',
+  ),
+  538 => 
+  array (
+    0 => 'andRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => 'retweets_of_tweet_id:a retweets_of_tweet_id:b',
+  ),
+  539 => 
+  array (
+    0 => 'andNotRetweetsOfTweetId',
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 'a',
+        1 => 'b',
+      ),
+    ),
+    2 => '-retweets_of_tweet_id:a -retweets_of_tweet_id:b',
+  ),
+  540 => 
+  array (
+    0 => 'withFollowersCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => 'followers_count:1',
+  ),
+  541 => 
+  array (
+    0 => 'notWithFollowersCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => '-followers_count:1',
+  ),
+  542 => 
+  array (
+    0 => 'orWithFollowersCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => 'OR followers_count:1',
+  ),
+  543 => 
+  array (
+    0 => 'andWithFollowersCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => 'followers_count:1',
+  ),
+  544 => 
+  array (
+    0 => 'withFollowersCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => 'followers_count:1..2',
+  ),
+  545 => 
+  array (
+    0 => 'notWithFollowersCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => '-followers_count:1..2',
+  ),
+  546 => 
+  array (
+    0 => 'orWithFollowersCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => 'OR followers_count:1..2',
+  ),
+  547 => 
+  array (
+    0 => 'andWithFollowersCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => 'followers_count:1..2',
+  ),
+  548 => 
+  array (
+    0 => 'withTweetsCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => 'tweets_count:1',
+  ),
+  549 => 
+  array (
+    0 => 'notWithTweetsCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => '-tweets_count:1',
+  ),
+  550 => 
+  array (
+    0 => 'orWithTweetsCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => 'OR tweets_count:1',
+  ),
+  551 => 
+  array (
+    0 => 'andWithTweetsCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => 'tweets_count:1',
+  ),
+  552 => 
+  array (
+    0 => 'withTweetsCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => 'tweets_count:1..2',
+  ),
+  553 => 
+  array (
+    0 => 'notWithTweetsCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => '-tweets_count:1..2',
+  ),
+  554 => 
+  array (
+    0 => 'orWithTweetsCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => 'OR tweets_count:1..2',
+  ),
+  555 => 
+  array (
+    0 => 'andWithTweetsCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => 'tweets_count:1..2',
+  ),
+  556 => 
+  array (
+    0 => 'withFollowingCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => 'following_count:1',
+  ),
+  557 => 
+  array (
+    0 => 'notWithFollowingCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => '-following_count:1',
+  ),
+  558 => 
+  array (
+    0 => 'orWithFollowingCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => 'OR following_count:1',
+  ),
+  559 => 
+  array (
+    0 => 'andWithFollowingCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => 'following_count:1',
+  ),
+  560 => 
+  array (
+    0 => 'withFollowingCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => 'following_count:1..2',
+  ),
+  561 => 
+  array (
+    0 => 'notWithFollowingCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => '-following_count:1..2',
+  ),
+  562 => 
+  array (
+    0 => 'orWithFollowingCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => 'OR following_count:1..2',
+  ),
+  563 => 
+  array (
+    0 => 'andWithFollowingCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => 'following_count:1..2',
+  ),
+  564 => 
+  array (
+    0 => 'withListedCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => 'listed_count:1',
+  ),
+  565 => 
+  array (
+    0 => 'notWithListedCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => '-listed_count:1',
+  ),
+  566 => 
+  array (
+    0 => 'orWithListedCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => 'OR listed_count:1',
+  ),
+  567 => 
+  array (
+    0 => 'andWithListedCount',
+    1 => 
+    array (
+      0 => 1,
+    ),
+    2 => 'listed_count:1',
+  ),
+  568 => 
+  array (
+    0 => 'withListedCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => 'listed_count:1..2',
+  ),
+  569 => 
+  array (
+    0 => 'notWithListedCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => '-listed_count:1..2',
+  ),
+  570 => 
+  array (
+    0 => 'orWithListedCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => 'OR listed_count:1..2',
+  ),
+  571 => 
+  array (
+    0 => 'andWithListedCount',
+    1 => 
+    array (
+      0 => 1,
+      1 => 2,
+    ),
+    2 => 'listed_count:1..2',
+  ),
 ));

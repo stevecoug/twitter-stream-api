@@ -2,15 +2,17 @@
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
+use Felix\TwitterStream\Generator\CountOperator;
 use Felix\TwitterStream\Generator\Generator;
 use Felix\TwitterStream\Generator\ParameterizedOperator;
+use Felix\TwitterStream\Generator\StandaloneOperator;
 
 $cases = Generator::cases();
 
 $boilerplate = <<<EOF
 <?php
 
-namespace Felix\TwitterStream\Rule;
+namespace Felix\TwitterStream;
 
 /**
 %s
@@ -23,13 +25,12 @@ EOF;
 $doc = '';
 
 foreach ($cases as $case) {
-    $parameterized = $case instanceof ParameterizedOperator;
-
     foreach ($case->methods() as $method) {
-        $doc .= $parameterized ?
-            sprintf('* @method RuleBuilder %s(string|array $value)', $method) :
-            sprintf('* @method RuleBuilder %s()', $method);
-        $doc .= PHP_EOL;
+        $doc .= match ($case::class) {
+            ParameterizedOperator::class => sprintf('* @method RuleBuilder %s(string|array $value)', $method),
+            CountOperator::class         => sprintf('* @method RuleBuilder %s(int $min, ?int $max = null)', $method),
+            StandaloneOperator::class    => sprintf('* @method RuleBuilder %s()', $method)
+        } . PHP_EOL;
     }
 }
 
