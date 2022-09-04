@@ -17,7 +17,7 @@ class CountOperator
 
     public function __construct(string $name)
     {
-        $this->name             = Str::camel($name);
+        $this->name             = Str::snakeToCamel($name);
         $this->nameAsMethodName = ucfirst($this->name);
         $this->snakeCasedName   = Str::snake($this->name);
     }

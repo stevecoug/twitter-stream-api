@@ -1,7 +1,7 @@
 <?php
 
+use Felix\TwitterStream\Exceptions\TwitterException;
 use Felix\TwitterStream\Rule;
-use Felix\TwitterStream\RuleBuilder;
 use Felix\TwitterStream\RuleManager;
 use Felix\TwitterStream\TwitterConnection;
 use GuzzleHttp\Client;
@@ -10,10 +10,10 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 
-function mockTwitter(&$container, string $responsePayload = '[]'): RuleManager
+function mockTwitter(&$container, string $responsePayload = '[]', int $responseCode = 200): RuleManager
 {
     $mock = new MockHandler([
-        new Response(200, ['Content-Type' => 'application/json'], $responsePayload),
+        new Response($responseCode, ['Content-Type' => 'application/json'], $responsePayload),
     ]);
     $history      = Middleware::history($container);
     $handlerStack = HandlerStack::create($mock);
@@ -110,10 +110,16 @@ it('can create a new rule builder', function () {
 
 it('can validate a rule', function () {
     $requests = [];
-    $manager = mockTwitter($requests);
-    $mock = mock($manager)->makePartial()
+    $manager  = mockTwitter($requests);
+    $mock     = mock($manager)->makePartial()
         ->shouldReceive('save')->with('cats has:links', true)->andReturn([])
         ->getMock();
 
     $mock->validate('cats has:links');
 });
+
+it('throws a twitter exception if a client exception is thrown', function () {
+    $requests   = [];
+    $connection = mockTwitter($requests, '{"errors":[{"title":"Invalid rule","detail":"Rule value is invalid"}]}', 400)->connection;
+    $connection->request('GET', 'https://localhost');
+})->throws(TwitterException::class);

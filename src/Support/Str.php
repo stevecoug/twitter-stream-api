@@ -13,7 +13,7 @@ class Str
         return strtolower(preg_replace('/(.)(?=[A-Z])/u', '$1' . $delimiter, $value));
     }
 
-    public static function camel(string $value): string
+    public static function snakeToCamel(string $value): string
     {
         return lcfirst(str_replace('_', '', ucwords($value, '_')));
     }
