@@ -6,6 +6,7 @@ use BadMethodCallException;
 use Felix\TwitterStream\Exceptions\TwitterException;
 use Felix\TwitterStream\Operators\BoundingBoxOperator;
 use Felix\TwitterStream\Operators\CountOperator;
+use Felix\TwitterStream\Operators\GroupOperator;
 use Felix\TwitterStream\Operators\KeyValueOperator;
 use Felix\TwitterStream\Operators\NotNullCastOperator;
 use Felix\TwitterStream\Operators\Operator;
@@ -23,11 +24,21 @@ use SplStack;
  *
  * @method self sample(int $percentage)
  * @method self pointRadius(string $longitude, string $latitude, string $radius)
+ * @method self orPointRadius(string $longitude, string $latitude, string $radius)
+ * @method self andPointRadius(string $longitude, string $latitude, string $radius)
+ * @method self notPointRadius(string $longitude, string $latitude, string $radius)
  * @method self boundingBox(string $westLongitude, string $southLatitude, string $eastLongitude, string $northLatitude)
+ * @method self orBoundingBox(string $westLongitude, string $southLatitude, string $eastLongitude, string $northLatitude)
+ * @method self andBoundingBox(string $westLongitude, string $southLatitude, string $eastLongitude, string $northLatitude)
+ * @method self notBoundingBox(string $westLongitude, string $southLatitude, string $eastLongitude, string $northLatitude)
  * @method self orRaw(string|array $property)
  * @method self andRaw(string|array $property)
  * @method self andNotNullcast()
  * @method self orNotNullcast()
+ * @method self group(callable $callable)
+ * @method self orGroup(callable $callable)
+ * @method self andGroup(callable $callable)
+ * @method self notGroup(callable $callable)
  */
 class RuleBuilder extends _RuleBuilder
 {
@@ -79,6 +90,7 @@ class RuleBuilder extends _RuleBuilder
         'null_cast'    => NotNullCastOperator::class,
         'bounding_box' => BoundingBoxOperator::class,
         'point_radius' => PointRadiusOperator::class,
+        'group'        => GroupOperator::class,
     ];
 
     /** @param SplStack<Operator> $operators */

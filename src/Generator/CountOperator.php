@@ -4,6 +4,11 @@ namespace Felix\TwitterStream\Generator;
 
 use Felix\TwitterStream\Support\Str;
 
+/**
+ * @codeCoverageIgnore (internal tool)
+ *
+ * @internal
+ */
 class CountOperator
 {
     public string $snakeCasedName;

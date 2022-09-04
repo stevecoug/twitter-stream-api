@@ -1,5 +1,6 @@
 <?php
 
+use Felix\TwitterStream\Exceptions\CanNotNegateGroupOperator;
 use Felix\TwitterStream\RuleBuilder;
 use Felix\TwitterStream\RuleManager;
 use Felix\TwitterStream\TwitterResponse;
@@ -49,20 +50,20 @@ it('can compile a query with operators linked by OR and AND', function () {
 it('can compile a query with a group', function () {
     expect(query('php')->group(function (RuleBuilder $b) {
         $b->lang('en')->and->has('images');
-    })->compile())->toBe('php (lang:en AND has:images)');
-})->skip();
+    })->compile())->toBe('php (lang:en has:images)');
+});
 
 it('can compile a query with an or group', function () {
-    expect(query('cats')->has('images')->or->group(function (RuleBuilder $b) {
+    expect(query('cats')->has('images')->orGroup(function (RuleBuilder $b) {
         return $b->lang('en')->and->has('videos');
-    })->compile())->toBe('cats has:images OR (lang:en AND has:videos)');
-})->skip();
+    })->compile())->toBe('cats has:images OR (lang:en has:videos)');
+});
 
 it('can compile a query with an and group', function () {
-    expect(query('cats')->has('images')->and->group(function (RuleBuilder $b) {
+    expect(query('cats')->has('images')->andGroup(function (RuleBuilder $b) {
         return $b->lang('en')->or->has('videos');
-    })->compile())->toBe('cats has:images AND (lang:en OR has:videos)');
-})->skip();
+    })->compile())->toBe('cats has:images (lang:en OR has:videos)');
+});
 
 it('can compile a point radius operator', function () {
     expect(query('dogs')->pointRadius('42', '-42', '4.2')->compile())
@@ -149,22 +150,15 @@ it('can group operators', function () {
             return $b->raw('cats')->raw('dogs');
         })->compile();
 
-    expect($rule)->toBe('(cats OR dogs)');
+    expect($rule)->toBe('OR (cats dogs)');
 
     $rule = query()
         ->andGroup(function (RuleBuilder $b) {
             return $b->raw('cats')->raw('dogs');
         })->compile();
 
-    expect($rule)->toBe('(cats AND dogs)');
-
-    $rule = query()
-        ->andNotGroup(function (RuleBuilder $b) {
-            return $b->raw('cats')->raw('dogs')->isQuote();
-        })->compile();
-
-    expect($rule)->toBe('(cats AND dogs AND -is:quote)');
-})->skip();
+    expect($rule)->toBe('(cats dogs)');
+});
 
 it('can compile a sample operator', function () {
     $rule = query()->sample(42)->compile();
@@ -172,7 +166,7 @@ it('can compile a sample operator', function () {
 
     $rule = query()->notSample(42)->compile();
     expect($rule)->toBe('sample:42'); // not a typo
-})->only();
+});
 
 it('can be translated to a string', function () {
     expect((string) query('dogs')->isNotQuote())->toBe('dogs -is:quote');
@@ -211,3 +205,21 @@ it('can return a Rule object', function () {
     expect($built->value)->toBe('tip is:verified');
     expect($built->tag)->toBe('my tag');
 });
+
+it('can negate a point radius', function () {
+    expect(query()->notPointRadius('51.5074', '0.1278', '10mi')->compile())->toBe('-point_radius:[51.5074 0.1278 10mi]');
+});
+
+it('can negate count operator', function () {
+    expect(query()->notWithFollowersCount(100)->compile())->toBe('-followers_count:100');
+});
+
+it('can negate a bounding box operator', function () {
+    expect(query()->notBoundingBox('1', '2', '6', '42')->compile())->toBe('-bounding_box:[1 2 6 42]'); // OEIS A000610
+});
+
+it('can not negate a group operator', function () {
+    query()->notGroup(function (RuleBuilder $b) {
+        return $b->raw('cats')->raw('dogs');
+    })->compile();
+})->throws(CanNotNegateGroupOperator::class);
