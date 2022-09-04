@@ -38,7 +38,6 @@ use SplStack;
  * @method self group(callable $callable)
  * @method self orGroup(callable $callable)
  * @method self andGroup(callable $callable)
- * @method self notGroup(callable $callable)
  */
 class RuleBuilder extends _RuleBuilder
 {
@@ -132,13 +131,13 @@ class RuleBuilder extends _RuleBuilder
             array_key_exists($name, self::KEY_VALUE_OPERATORS) => new KeyValueOperator($flags, $name, ...$arguments),
 
             $flags->has(Operator::IS_FLAG) && array_key_exists($name, self::IS_OPERATORS) => new KeyValueOperator($flags, 'is', $name),
-            $flags->has(Operator::IS_FLAG) && $name === '' => new KeyValueOperator($flags, 'is', ...$arguments),
+            $flags->has(Operator::IS_FLAG) && $name === ''                                => new KeyValueOperator($flags, 'is', ...$arguments),
 
             $flags->has(Operator::HAS_FLAG) && array_key_exists($name, self::HAS_OPERATORS) => new KeyValueOperator($flags, 'has', $name),
-            $flags->has(Operator::HAS_FLAG) && $name === '' => new KeyValueOperator($flags, 'has', ...$arguments),
+            $flags->has(Operator::HAS_FLAG) && $name === ''                                 => new KeyValueOperator($flags, 'has', ...$arguments),
 
             $flags->has(Operator::COUNT_FLAG) && array_key_exists($name, self::COUNT_OPERATOR) => new CountOperator($flags, $name, ...$arguments),
-            true => throw new BadMethodCallException(sprintf('Call to undefined method %s::%s()', static::class, $methodName))
+            true                                                                               => throw new BadMethodCallException(sprintf('Call to undefined method %s::%s()', static::class, $methodName))
         });
     }
 
