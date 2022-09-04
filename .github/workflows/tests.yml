@@ -38,7 +38,7 @@ jobs:
       - name: Integration Test
         env:
           XDEBUG_MODE: coverage
-        run: php ./vendor/bin/pest --coverage-clover coverage.xml --min
+        run: php ./vendor/bin/pest --coverage-clover coverage.xml
 
       - name: Codecov
         uses: codecov/codecov-action@v1.0.6
