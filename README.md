@@ -1,33 +1,10 @@
-[//]: # (* todo: groups)
-
-[//]: # (* raw -> content `cat` &#40;NOT AN ARRAY&#41;)
-
-[//]: # (* negated raw operator `-cat`  &#40;NOT AN ARRAY&#41;)
-
-[//]: # (* quoted operator `"cat"` &#40;NOT AN ARRAY&#41;)
-
-[//]: # (* kv operator `key:value` &#40;MAY BE AN ARRAY&#41;)
-
-[//]: # (* kv operator )
-
-[//]: # (* sample operator `sample:value` )
-
-[//]: # (* not Nullcast operator `-is:nullcast`)
-
-[//]: # (* has operator &#40;MAY BE AN ARRAY&#41;)
-
-[//]: # (* is operator &#40;MAY BE AN ARRAY&#41;)
-
-[//]: # (* context operator)
-
-[//]: # (* point radius / bouding box operator &#40;"array" operators&#41;)
-
 # Twitter Stream API (v2)
 
 [![Tests](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/tests.yml)
 [![Formats](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/formats.yml/badge.svg?branch=master)](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/formats.yml)
 [![Version](https://poser.pugx.org/redwebcreation/twitter-stream-api/version)](//packagist.org/packages/redwebcreation/twitter-stream-api)
 [![Total Downloads](https://poser.pugx.org/redwebcreation/twitter-stream-api/downloads)](//packagist.org/packages/redwebcreation/twitter-stream-api)
+[![codecov](https://codecov.io/gh/felixdorn/twitter-stream-api/branch/main/graph/badge.svg?token=0bB80l3Hgt)](https://codecov.io/gh/felixdorn/twitter-stream-api)
 
 Consume the Twitter Stream API v2 in real-time.
 
