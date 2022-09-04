@@ -39,7 +39,9 @@ jobs:
         run: php ./vendor/bin/pest
 
       - name: Coverage
-        run: XDEBUG_MODE=coverage pest --coverage-clover coverage.xml
+        env:
+          XDEBUG_MODE: coverage
+        run: php ./vendor/bin/pest --coverage-clover coverage.xml
 
       - name: Upload coverage to Codecov
         run: bash <(curl -s https://codecov.io/bash)
