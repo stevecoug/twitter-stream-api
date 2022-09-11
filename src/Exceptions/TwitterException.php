@@ -16,14 +16,19 @@ class TwitterException extends Exception
     {
         $decoded = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 
-        if (array_key_exists('status', $decoded) && $decoded['status'] === 429) {
-            $reset = implode('', $response->getHeader('x-rate-limit-reset'));
+        if (array_key_exists('status', $decoded)) {
+            return (match($decoded['status']) {
+                429 => function () use ($response) {
+                    $reset = implode('', $response->getHeader('x-rate-limit-reset'));
 
-            if ($reset == '') {
-                $reset = 'unknown';
-            }
+                    if ($reset == '') {
+                        $reset = 'unknown';
+                    }
 
-            return new self('Too many requests (reset in: ' . $reset . ').', $decoded);
+                    return new self('Too many requests (reset in: ' . $reset . ').', $decoded);    
+                },
+                401 => fn () => new self('Unauthorized.', $decoded)
+            })();
         }
 
         /* @phpstan-ignore-next-line */
