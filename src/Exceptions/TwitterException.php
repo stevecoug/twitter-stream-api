@@ -17,17 +17,18 @@ class TwitterException extends Exception
         $decoded = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 
         if (array_key_exists('status', $decoded)) {
-            return (match($decoded['status']) {
-                429 => function () use ($response) {
+            return (match ($decoded['status']) {
+                429 => function () use ($response, $decoded) {
                     $reset = implode('', $response->getHeader('x-rate-limit-reset'));
 
                     if ($reset == '') {
                         $reset = 'unknown';
                     }
 
-                    return new self('Too many requests (reset in: ' . $reset . ').', $decoded);    
+                    return new self('Too many requests (reset in: ' . $reset . ').', $decoded);
                 },
-                401 => fn () => new self('Unauthorized.', $decoded)
+                401     => fn () => new self('Unauthorized.', $decoded),
+                default => fn () => new self('Should not happen: please open an issue at https://github.com/felixdorn/twitter-stream-api/issues', $decoded)
             })();
         }
 
