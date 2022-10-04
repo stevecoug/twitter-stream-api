@@ -7,9 +7,13 @@ use Psr\Http\Message\ResponseInterface;
 
 class TwitterException extends Exception
 {
-    public function __construct(string $message, public array $raw = [])
+    public array $raw;
+
+    public function __construct(string $message, array $raw = [])
     {
         parent::__construct($message);
+
+        $this->raw = $raw;
     }
 
     public static function fromResponse(ResponseInterface $response): TwitterException
@@ -29,12 +33,18 @@ class TwitterException extends Exception
                     return new self('Too many requests (reset in: ' . $reset . ').', $decoded);
                 },
                 401     => fn () => new self('Unauthorized.', $decoded),
-                default => fn () => new self('Should not happen: please open an issue at https://github.com/felixdorn/twitter-stream-api/issues', $decoded)
+                default => fn () => new self('Should not happen: please open an issue at https://github.com/felixdorn/twitter-stream-api/issues (include the payload)', $decoded)
             })();
         }
 
-        /* @phpstan-ignore-next-line */
-        return new self(json_encode($decoded['errors'][0]), $decoded);
+        if (!array_key_exists('errors', $decoded) || count($decoded['errors']) < 1) {
+            return new self('Should not happen: please open an issue at https://github.com/felixdorn/twitter-stream-api/issues (include the payload)', $decoded);
+        }
+
+        // Encoding to JSON here as $decoded['errors'][0] contains an
+        // inconsistent object, in the sense that its properties may
+        // change from one request to another.
+        return new self(json_encode($decoded['errors'][0], JSON_THROW_ON_ERROR), $decoded);
     }
 
     public static function fromPayload(array $payload): TwitterException
@@ -48,7 +58,6 @@ class TwitterException extends Exception
             return new self('Too many requests (reset in: unknown).', $payload);
         }
 
-        /* @phpstan-ignore-next-line */
-        return new self(json_encode($payload), $payload);
+        return new self(json_encode($payload, JSON_THROW_ON_ERROR), $payload);
     }
 }
