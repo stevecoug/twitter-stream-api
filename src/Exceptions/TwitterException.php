@@ -16,6 +16,7 @@ class TwitterException extends Exception
     {
         $decoded = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 
+        // We hit the Authn/Authz service in front of Twitter's API.
         if (array_key_exists('status', $decoded)) {
             return (match ($decoded['status']) {
                 429 => function () use ($response, $decoded) {
