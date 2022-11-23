@@ -23,6 +23,8 @@ abstract class TwitterStream implements StreamManager
     protected int $createdAt;
 
     protected int $tweetLimit = PHP_INT_MAX;
+
+    /** @var int The minimum payload length for a tweet. It assumes no content, no expansions, no fields. */
     protected int $bufferSize = 85;
 
     public function response(): ResponseInterface
