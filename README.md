@@ -131,8 +131,7 @@ Which returns an array of `Felix\TwitterStream\Rule\Rule`:
 		+id: "4567654567654567654"
 	}
 ]
-
-`
+```
 > Note, the `Felix\TwitterStream\Rule\Rule` is merely a Data Object, it does not contain any method.
 
 To delete the rule pass its ID to the `delete` method:
