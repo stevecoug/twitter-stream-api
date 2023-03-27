@@ -1,14 +1,9 @@
 # Twitter Stream API (v2)
 
-[![Tests](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/tests.yml)
-[![Formats](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/formats.yml/badge.svg?branch=master)](https://github.com/redwebcreation/twitter-stream-api/actions/workflows/formats.yml)
-[![Version](https://poser.pugx.org/redwebcreation/twitter-stream-api/version)](//packagist.org/packages/redwebcreation/twitter-stream-api)
-[![Total Downloads](https://poser.pugx.org/redwebcreation/twitter-stream-api/downloads)](//packagist.org/packages/redwebcreation/twitter-stream-api)
-[![codecov](https://codecov.io/gh/felixdorn/twitter-stream-api/branch/main/graph/badge.svg?token=0bB80l3Hgt)](https://codecov.io/gh/felixdorn/twitter-stream-api)
-
 Consume the Twitter Stream API v2 in real-time.
 
-This package is the spiritual successor of `fennb/phirehose`.
+This package is a temporary PHP 7.4 compatible version of felixdorn/twitter-stream-api. Most of the documentation below
+still references the original.
 
 ## Getting started
 
@@ -16,19 +11,16 @@ You need an approved developer account. If you don't have
 one, [apply here](https://developer.twitter.com/en/docs/twitter-api/getting-started/getting-access-to-the-twitter-api).
 Once you are in, create an "Application" in the Developer Portal and generate a new bearer token.
 
-> Requires [PHP 8.1+](https://www.php.net/releases/)
+> Requires [PHP 7.4+](https://www.php.net/releases/)
 
 
-You can install the package via composer:
-
-```bash
-composer require redwebcreation/twitter-stream-api
-```
+This is not currently available on Packagist (composer), but you can add it manually
+[see example](https://www.daggerhartlab.com/composer-how-to-use-git-repositories/).
 
 Then, create a connection:
 
 ```php
-$connection = new \Felix\TwitterStream\TwitterConnection(
+$connection = new \stevecoug\TwitterStream\TwitterConnection(
     bearerToken: '...' # the one you got from the Developer Portal
 );
 ```
@@ -37,15 +29,15 @@ $connection = new \Felix\TwitterStream\TwitterConnection(
 
 ### Streams
 
-* [\Felix\TwitterStream\Streams\VolumeStream](src/Streams/VolumeStream.php)
-* [\Felix\TwitterStream\Streams\FilteredStream](src/Streams/FilteredStream.php)
+* [\stevecoug\TwitterStream\Streams\VolumeStream](src/Streams/VolumeStream.php)
+* [\stevecoug\TwitterStream\Streams\FilteredStream](src/Streams/FilteredStream.php)
 
 ### Creating a stream
 
 ```phpf
-$stream = new \Felix\TwitterStream\Streams\VolumeStream();
+$stream = new \stevecoug\TwitterStream\Streams\VolumeStream();
 // or
-$stream = new \Felix\TwitterStream\Streams\FilteredStream();
+$stream = new \stevecoug\TwitterStream\Streams\FilteredStream();
 ```
 
 ### Configuring a stream
@@ -100,7 +92,7 @@ $stream->listen($connection, function (object $tweet) {
 > You can not update rules.
 
 ```php
-use Felix\TwitterStream\Rule\RuleManager;
+use stevecoug\TwitterStream\Rule\RuleManager;
 
 $rule = new RuleManager($connection);
 ```
@@ -121,18 +113,18 @@ You may now retrieve your newly saved rule:
 $rule->all();
 ```
 
-Which returns an array of `Felix\TwitterStream\Rule\Rule`:
+Which returns an array of `stevecoug\TwitterStream\Rule\Rule`:
 
 ```php
 [
-	0 => Felix\TwitterStream\Rule\Rule{
+	0 => stevecoug\TwitterStream\Rule\Rule{
 		+value: "cat has:images",
 		+tag: "images of cats",
 		+id: "4567654567654567654"
 	}
 ]
 ```
-> Note, the `Felix\TwitterStream\Rule\Rule` is merely a Data Object, it does not contain any method.
+> Note, the `stevecoug\TwitterStream\Rule\Rule` is merely a Data Object, it does not contain any method.
 
 To delete the rule pass its ID to the `delete` method:
 ```php
@@ -144,7 +136,7 @@ $rule->delete('4567654567654567654');
 To save many rules at once:
 
 ```php
-use Felix\TwitterStream\Rule\Rule;
+use stevecoug\TwitterStream\Rule\Rule;
 
 $rule->saveMany([  
    new Rule("cats has:images", "cat pictures"),  
