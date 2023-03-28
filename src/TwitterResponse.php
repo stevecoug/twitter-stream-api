@@ -1,16 +1,21 @@
 <?php
 
-namespace Felix\TwitterStream;
+namespace stevecoug\TwitterStream;
 
 use BadMethodCallException;
-use Felix\TwitterStream\Exceptions\TwitterException;
+use stevecoug\TwitterStream\Exceptions\TwitterException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
 class TwitterResponse implements ResponseInterface
 {
-    protected function __construct(protected ResponseInterface $response, protected array $payload = [])
+    protected ResponseInterface $response;
+    protected array $payload = [];
+
+    protected function __construct(ResponseInterface $response, array $payload = [])
     {
+        $this->response = $response;
+        $this->payload = $payload;
     }
 
     public static function fromPsrResponse(ResponseInterface $response): self
@@ -20,7 +25,7 @@ class TwitterResponse implements ResponseInterface
             return new self($response, []);
         }
 
-        $payload = json_decode($response->getBody()->getContents(), true, flags: JSON_THROW_ON_ERROR);
+        $payload = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
 
         if (array_key_exists('errors', $payload)) {
             throw TwitterException::fromPayload($payload);

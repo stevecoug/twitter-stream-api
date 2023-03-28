@@ -1,16 +1,26 @@
 <?php
 
-namespace Felix\TwitterStream\Operators;
+namespace stevecoug\TwitterStream\Operators;
 
-use Felix\TwitterStream\Operators\Contracts\Negatable;
-use Felix\TwitterStream\Support\Flags;
+use stevecoug\TwitterStream\Operators\Contracts\Negatable;
+use stevecoug\TwitterStream\Support\Flags;
 
 class BoundingBoxOperator implements Operator
 {
     use Negatable;
+    public Flags $flags;
+    public $westLong;
+    public $southLat;
+    public $eastLong;
+    public $northLat;
 
-    public function __construct(public Flags $flags, public int|float $westLong, public int|float $southLat, public int|float $eastLong, public int|float $northLat)
+    public function __construct(Flags $flags, $westLong, $southLat, $eastLong, $northLat)
     {
+        $this->flags = $flags;
+        $this->westLong = $westLong;
+        $this->eastLong = $eastLong;
+        $this->southLat = $southLat;
+        $this->northLat = $northLat;
     }
 
     public function compile(): string

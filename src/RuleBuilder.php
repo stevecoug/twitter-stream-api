@@ -1,20 +1,20 @@
 <?php
 
-namespace Felix\TwitterStream;
+namespace stevecoug\TwitterStream;
 
 use BadMethodCallException;
-use Felix\TwitterStream\Exceptions\TwitterException;
-use Felix\TwitterStream\Operators\BoundingBoxOperator;
-use Felix\TwitterStream\Operators\CountOperator;
-use Felix\TwitterStream\Operators\GroupOperator;
-use Felix\TwitterStream\Operators\KeyValueOperator;
-use Felix\TwitterStream\Operators\NotNullCastOperator;
-use Felix\TwitterStream\Operators\Operator;
-use Felix\TwitterStream\Operators\PointRadiusOperator;
-use Felix\TwitterStream\Operators\RawOperator;
-use Felix\TwitterStream\Operators\SampleOperator;
-use Felix\TwitterStream\Support\Flags;
-use Felix\TwitterStream\Support\Str;
+use stevecoug\TwitterStream\Exceptions\TwitterException;
+use stevecoug\TwitterStream\Operators\BoundingBoxOperator;
+use stevecoug\TwitterStream\Operators\CountOperator;
+use stevecoug\TwitterStream\Operators\GroupOperator;
+use stevecoug\TwitterStream\Operators\KeyValueOperator;
+use stevecoug\TwitterStream\Operators\NotNullCastOperator;
+use stevecoug\TwitterStream\Operators\Operator;
+use stevecoug\TwitterStream\Operators\PointRadiusOperator;
+use stevecoug\TwitterStream\Operators\RawOperator;
+use stevecoug\TwitterStream\Operators\SampleOperator;
+use stevecoug\TwitterStream\Support\Flags;
+use stevecoug\TwitterStream\Support\Str;
 use Psr\Http\Message\ResponseInterface;
 use SplStack;
 
@@ -92,22 +92,29 @@ class RuleBuilder extends _RuleBuilder
         'group'        => GroupOperator::class,
     ];
 
+    public $manager;
+    public $tag;
+    public SplStack $operators;
+
     /** @param SplStack<Operator> $operators */
     public function __construct(
-        public ?RuleManager $manager = null,
-        public ?string $tag = null,
-        public SplStack $operators = new SplStack()
+        ?RuleManager $manager = null,
+        ?string $tag = null,
+        SplStack $operators = null
     ) {
+        $this->manager = $manager;
+        $this->tag = $tag;
+        $this->operators = $operators ?? new SplStack();
     }
 
     public function __get(string $name): self
     {
-        match ($name) {
+        switch ($name) {
             // skip it.
-            'and'   => null,
-            'or'    => $this->push(new RawOperator('OR')),
-            default => trigger_error('Undefined property: ' . static::class . '::$' . $name, PHP_MAJOR_VERSION === 8 ? E_USER_WARNING : E_USER_ERROR)
-        };
+            case 'and'; break;
+            case 'or': $this->push(new RawOperator('OR')); break;
+            default: trigger_error('Undefined property: ' . static::class . '::$' . $name, PHP_MAJOR_VERSION === 8 ? E_USER_WARNING : E_USER_ERROR);
+        }
 
         return $this;
     }
@@ -124,21 +131,23 @@ class RuleBuilder extends _RuleBuilder
         [$name, $flags] = $this->getNameAndFlags($methodName);
 
         if (array_key_exists($name, self::CUSTOM_OPERATORS)) {
-            return $this->push(new (self::CUSTOM_OPERATORS[$name])($flags, ...$arguments));
+            $tmp = self::CUSTOM_OPERATORS[$name];
+            return $this->push(new $tmp($flags, ...$arguments));
         }
 
-        return $this->push(match (true) {
-            array_key_exists($name, self::KEY_VALUE_OPERATORS) => new KeyValueOperator($flags, $name, ...$arguments),
+        if (array_key_exists($name, self::KEY_VALUE_OPERATORS)) return $this->push(new KeyValueOperator($flags, $name, ...$arguments));
 
-            $flags->has(Operator::IS_FLAG) && array_key_exists($name, self::IS_OPERATORS) => new KeyValueOperator($flags, 'is', $name),
-            $flags->has(Operator::IS_FLAG) && $name === ''                                => new KeyValueOperator($flags, 'is', ...$arguments),
+        if ($flags->has(Operator::IS_FLAG) && array_key_exists($name, self::IS_OPERATORS)) return $this->push(new KeyValueOperator($flags, 'is', $name));
 
-            $flags->has(Operator::HAS_FLAG) && array_key_exists($name, self::HAS_OPERATORS) => new KeyValueOperator($flags, 'has', $name),
-            $flags->has(Operator::HAS_FLAG) && $name === ''                                 => new KeyValueOperator($flags, 'has', ...$arguments),
+        if ($flags->has(Operator::IS_FLAG) && $name === '') return $this->push(new KeyValueOperator($flags, 'is', ...$arguments));
 
-            $flags->has(Operator::COUNT_FLAG) && array_key_exists($name, self::COUNT_OPERATOR) => new CountOperator($flags, $name, ...$arguments),
-            true                                                                               => throw new BadMethodCallException(sprintf('Call to undefined method %s::%s()', static::class, $methodName))
-        });
+        if ($flags->has(Operator::HAS_FLAG) && array_key_exists($name, self::HAS_OPERATORS)) return $this->push(new KeyValueOperator($flags, 'has', $name));
+
+        if ($flags->has(Operator::HAS_FLAG) && $name === '') return $this->push(new KeyValueOperator($flags, 'has', ...$arguments));
+
+        if ($flags->has(Operator::COUNT_FLAG) && array_key_exists($name, self::COUNT_OPERATOR)) return $this->push(new CountOperator($flags, $name, ...$arguments));
+
+        throw new BadMethodCallException(sprintf('Call to undefined method %s::%s()', static::class, $methodName));
     }
 
     private function getNameAndFlags(string $name): array
@@ -185,25 +194,13 @@ class RuleBuilder extends _RuleBuilder
 
     public function save(): ?ResponseInterface
     {
-        return $this->manager?->save($this->compile(), $this->tag);
-    }
-
-    /**
-     * @codeCoverageIgnore Hard to test, not much to gain from testing. Skipping.
-     */
-    public function dd(): never
-    {
-        if (function_exists('dd')) {
-            dd($this->compile());
-        }
-
-        var_dump($this->compile());
-        exit;
+        if (!$this->manager) return null;
+        return $this->manager->save($this->compile(), $this->tag);
     }
 
     public function validate(): array
     {
-        return $this->manager?->validate($this->compile()) ?? throw new TwitterException('Manager not set in the rule builder. Are you using it correctly?');
+        return $this->manager->validate($this->compile());
     }
 
     public function build(): Rule

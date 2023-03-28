@@ -1,11 +1,14 @@
 <?php
 
-namespace Felix\TwitterStream\Operators;
+namespace stevecoug\TwitterStream\Operators;
 
 class RawOperator implements Operator
 {
-    public function __construct(public string $value)
+    public string $value;
+
+    public function __construct(string $value)
     {
+        $this->value = $value;
     }
 
     public function compile(): string

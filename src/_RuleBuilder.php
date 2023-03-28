@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TwitterStream;
+namespace stevecoug\TwitterStream;
 
 /**
  * @method RuleBuilder isRetweet()

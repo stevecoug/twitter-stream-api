@@ -1,8 +1,8 @@
 <?php
 
-namespace Felix\TwitterStream;
+namespace stevecoug\TwitterStream;
 
-use Felix\TwitterStream\Exceptions\TwitterException;
+use stevecoug\TwitterStream\Exceptions\TwitterException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 

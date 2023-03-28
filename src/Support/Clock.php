@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TwitterStream\Support;
+namespace stevecoug\TwitterStream\Support;
 
 /** @internal */
 class Clock

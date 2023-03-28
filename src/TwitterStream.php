@@ -1,9 +1,9 @@
 <?php
 
-namespace Felix\TwitterStream;
+namespace stevecoug\TwitterStream;
 
-use Felix\TwitterStream\Contracts\StreamManager;
-use Felix\TwitterStream\Support\Clock;
+use stevecoug\TwitterStream\Contracts\StreamManager;
+use stevecoug\TwitterStream\Support\Clock;
 use JsonCollectionParser\Listener;
 use JsonCollectionParser\Stream\DataStream;
 use JsonStreamingParser\Parser;
@@ -58,14 +58,14 @@ abstract class TwitterStream implements StreamManager
         return $this->received;
     }
 
-    public function withBufferSize(int $size): static
+    public function withBufferSize(int $size): self
     {
         $this->bufferSize = $size;
 
         return $this;
     }
 
-    public function withTweetLimit(int $limit): static
+    public function withTweetLimit(int $limit): self
     {
         $this->tweetLimit = $limit;
 
@@ -79,9 +79,9 @@ abstract class TwitterStream implements StreamManager
         $this->createdAt = Clock::now();
 
         $this->parser = new Parser(
-            stream: DataStream::get($this->response),
-            listener: new Listener(
-                callback: function (object $item) use ($callback) {
+            DataStream::get($this->response),
+            new Listener(
+                function (object $item) use ($callback) {
                     $this->received++;
 
                     $callback($item, $this);
@@ -90,11 +90,11 @@ abstract class TwitterStream implements StreamManager
                         $this->stopListening();
                     }
                 },
-                assoc: false
+                false
             ),
-            lineEnding: "\r\n",
-            emitWhitespace: false,
-            bufferSize: $this->bufferSize
+            "\r\n",
+            false,
+            $this->bufferSize
         );
 
         $this->parser->parse();
@@ -118,13 +118,13 @@ abstract class TwitterStream implements StreamManager
 
     public function stopListening(): self
     {
-        $this->parser?->stop();
-        $this->stream?->close();
+        if ($this->parser) $this->parser->stop();
+        if ($this->stream) $this->stream->close();
 
         return $this;
     }
 
-    public function timeElapsedInSeconds(): float|int
+    public function timeElapsedInSeconds()
     {
         return max(0, Clock::now() - $this->createdAt);
     }

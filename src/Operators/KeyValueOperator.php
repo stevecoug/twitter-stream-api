@@ -1,19 +1,23 @@
 <?php
 
-namespace Felix\TwitterStream\Operators;
+namespace stevecoug\TwitterStream\Operators;
 
-use Felix\TwitterStream\Operators\Contracts\Negatable;
-use Felix\TwitterStream\Support\Arr;
-use Felix\TwitterStream\Support\Flags;
+use stevecoug\TwitterStream\Operators\Contracts\Negatable;
+use stevecoug\TwitterStream\Support\Arr;
+use stevecoug\TwitterStream\Support\Flags;
 
 class KeyValueOperator implements Operator
 {
     use Negatable;
 
     public array $values;
+    public Flags $flags;
+    public string $name;
 
-    public function __construct(public Flags $flags, public string $name, string|array ...$values)
+    public function __construct(Flags $flags, string $name, ...$values)
     {
+        $this->flags = $flags;
+        $this->name = $name;
         $this->values = Arr::flatten($values);
     }
 

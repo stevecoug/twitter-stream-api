@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TwitterStream\Exceptions;
+namespace stevecoug\TwitterStream\Exceptions;
 
 use Exception;
 use Psr\Http\Message\ResponseInterface;
@@ -22,19 +22,25 @@ class TwitterException extends Exception
 
         // We hit the Authn/Authz service in front of Twitter's API.
         if (array_key_exists('status', $decoded)) {
-            return (match ($decoded['status']) {
-                429 => function () use ($response, $decoded) {
-                    $reset = implode('', $response->getHeader('x-rate-limit-reset'));
+            $func = fn () => new self('Should not happen: please open an issue at https://github.com/felixdorn/twitter-stream-api/issues (include the payload)', $decoded);
 
-                    if ($reset == '') {
-                        $reset = 'unknown';
-                    }
+            switch ($decoded['status']) {
+                case 429:
+                    $func = function () use ($response, $decoded) {
+                        $reset = implode('', $response->getHeader('x-rate-limit-reset'));
 
-                    return new self('Too many requests (reset in: ' . $reset . ').', $decoded);
-                },
-                401     => fn () => new self('Unauthorized.', $decoded),
-                default => fn () => new self('Should not happen: please open an issue at https://github.com/felixdorn/twitter-stream-api/issues (include the payload)', $decoded)
-            })();
+                        if ($reset == '') {
+                            $reset = 'unknown';
+                        }
+
+                        return new self('Too many requests (reset in: ' . $reset . ').', $decoded);
+                    };
+                break;
+
+                case 401: $funct = fn () => new self('Unauthorized.', $decoded); break;
+            }
+
+            $func();
         }
 
         if (!array_key_exists('errors', $decoded) || count($decoded['errors']) < 1) {

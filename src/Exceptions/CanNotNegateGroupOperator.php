@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TwitterStream\Exceptions;
+namespace stevecoug\TwitterStream\Exceptions;
 
 class CanNotNegateGroupOperator extends \Exception
 {

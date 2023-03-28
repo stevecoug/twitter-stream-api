@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TwitterStream\Generator;
+namespace stevecoug\TwitterStream\Generator;
 
 /**
  * @codeCoverageIgnore (internal tool)
@@ -11,9 +11,13 @@ class StandaloneOperator
 {
     public string $valueAsMethodName;
     public string $nameAsMethodName;
+    public string $name;
+    public string $value;
 
-    public function __construct(public string $name, public string $value)
+    public function __construct(string $name, string $value)
     {
+        $this->name = $name;
+        $this->value = $value;
         $this->nameAsMethodName  = ucfirst($name);
         $this->valueAsMethodName = ucfirst($this->value);
     }

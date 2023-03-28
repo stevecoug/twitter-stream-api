@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TwitterStream\Operators\Contracts;
+namespace stevecoug\TwitterStream\Operators\Contracts;
 
 trait Negatable
 {

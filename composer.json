@@ -1,51 +1,23 @@
 {
-  "name": "redwebcreation/twitter-stream-api",
+  "name": "stevecoug/twitter-stream-api",
   "description": "Consume the Twitter Stream API in real-time.",
   "keywords": ["phirehose", "php", "twitter", "streaming", "api"],
   "type": "library",
-  "homepage": "https://github.com/redwebcreation/phirehose",
+  "homepage": "https://github.com/stevecoug/phirehose",
   "license": "MIT",
   "authors": [
     {
-      "name": "Félix Dorn",
-      "email": "github@felixdorn.fr",
-      "homepage": "https://redwebcreation.fr/"
+      "name": "Steve Meyers"
     }
   ],
   "require": {
-    "php": "^8.1",
+    "php": "^7.4",
     "guzzlehttp/guzzle": "^7.3",
     "maxakawizard/json-collection-parser": "^1.8"
   },
   "autoload": {
     "psr-4": {
-      "Felix\\TwitterStream\\": "src/"
-    }
-  },
-  "scripts": {
-    "lint": "php-cs-fixer fix -v",
-    "test:unit": "pest",
-    "test:lint": "php-cs-fixer fix -v --dry-run",
-    "test:types": "phpstan analyse --ansi --memory-limit=-1",
-    "test": [
-      "@test:lint",
-      "@test:types",
-      "@test:unit"
-    ],
-    "gen:doc": "php scripts/generate_phpdoc.php > src/_RuleBuilder.php",
-    "gen:tests": "php scripts/generate_tests.php > tests/GeneratedTests.php"
-  },
-  "require-dev": {
-    "symfony/var-dumper": "^6.1",
-    "pestphp/pest": "^1.1",
-    "friendsofphp/php-cs-fixer": "^3",
-    "phpstan/phpstan": "^1",
-    "vlucas/phpdotenv": "^5.3",
-    "pestphp/pest-plugin-mock": "^1.0"
-  },
-  "config": {
-    "allow-plugins": {
-      "pestphp/pest-plugin": true
+      "stevecoug\\TwitterStream\\": "src/"
     }
   }
 }

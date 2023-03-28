@@ -1,6 +1,6 @@
 <?php
 
-namespace Felix\TwitterStream\Contracts;
+namespace stevecoug\TwitterStream\Contracts;
 
 use JsonStreamingParser\Parser;
 use Psr\Http\Message\ResponseInterface;
@@ -12,7 +12,7 @@ interface StreamManager
 
     public function createdAt(): int;
 
-    public function timeElapsedInSeconds(): float|int;
+    public function timeElapsedInSeconds();
 
     public function tweetsReceived(): int;
 

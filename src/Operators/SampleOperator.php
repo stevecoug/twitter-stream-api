@@ -1,13 +1,18 @@
 <?php
 
-namespace Felix\TwitterStream\Operators;
+namespace stevecoug\TwitterStream\Operators;
 
-use Felix\TwitterStream\Support\Flags;
+use stevecoug\TwitterStream\Support\Flags;
 
 class SampleOperator implements Operator
 {
-    public function __construct(public Flags $flags, public int $percentage)
+    public Flags $flags;
+    public int $percentage;
+
+    public function __construct(Flags $flags, int $percentage)
     {
+        $this->flags = $flags;
+        $this->percentage = $percentage;
     }
 
     public function compile(): string

@@ -1,13 +1,16 @@
 <?php
 
-namespace Felix\TwitterStream\Operators;
+namespace stevecoug\TwitterStream\Operators;
 
-use Felix\TwitterStream\Support\Flags;
+use stevecoug\TwitterStream\Support\Flags;
 
 class NotNullCastOperator implements Operator
 {
-    public function __construct(public Flags $flags)
+    public Flags $flags;
+
+    public function __construct(Flags $flags)
     {
+        $this->flags = $flags;
     }
 
     public function compile(): string

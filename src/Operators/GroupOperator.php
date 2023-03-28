@@ -1,18 +1,20 @@
 <?php
 
-namespace Felix\TwitterStream\Operators;
+namespace stevecoug\TwitterStream\Operators;
 
-use Felix\TwitterStream\Exceptions\CanNotNegateGroupOperator;
-use Felix\TwitterStream\RuleBuilder;
-use Felix\TwitterStream\Support\Flags;
+use stevecoug\TwitterStream\Exceptions\CanNotNegateGroupOperator;
+use stevecoug\TwitterStream\RuleBuilder;
+use stevecoug\TwitterStream\Support\Flags;
 
 class GroupOperator implements Operator
 {
     /** @var callable */
     public $callable;
+    public Flags $flags;
 
-    public function __construct(public Flags $flags, callable $callable)
+    public function __construct(Flags $flags, callable $callable)
     {
+        $this->flags = $flags;
         $this->callable = $callable;
     }
 

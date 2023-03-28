@@ -1,12 +1,15 @@
 <?php
 
-namespace Felix\TwitterStream\Support;
+namespace stevecoug\TwitterStream\Support;
 
 /** @internal */
 class Flags
 {
-    public function __construct(protected int $flags)
+    protected int $flags;
+
+    public function __construct(int $flags)
     {
+        $this->flags = $flags;
     }
 
     public function has(int $flag): bool

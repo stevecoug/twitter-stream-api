@@ -1,16 +1,25 @@
 <?php
 
-namespace Felix\TwitterStream\Operators;
+namespace stevecoug\TwitterStream\Operators;
 
-use Felix\TwitterStream\Operators\Contracts\Negatable;
-use Felix\TwitterStream\Support\Flags;
+use stevecoug\TwitterStream\Operators\Contracts\Negatable;
+use stevecoug\TwitterStream\Support\Flags;
 
 class CountOperator implements Operator
 {
     use Negatable;
 
-    public function __construct(public Flags $flags, public string $name, public int $min, public ?int $max = null)
+    public Flags $flags;
+    public string $name;
+    public int $min;
+    public $max;
+
+    public function __construct(Flags $flags, string $name, int $min, ?int $max = null)
     {
+        $this->flags = $flags;
+        $this->name = $name;
+        $this->min = $min;
+        $this->max = $max;
     }
 
     public function compile(): string

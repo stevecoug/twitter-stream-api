@@ -1,16 +1,24 @@
 <?php
 
-namespace Felix\TwitterStream\Operators;
+namespace stevecoug\TwitterStream\Operators;
 
-use Felix\TwitterStream\Operators\Contracts\Negatable;
-use Felix\TwitterStream\Support\Flags;
+use stevecoug\TwitterStream\Operators\Contracts\Negatable;
+use stevecoug\TwitterStream\Support\Flags;
 
 class PointRadiusOperator implements Operator
 {
     use Negatable;
+    public Flags $flags;
+    public string $longitude;
+    public string $latitude;
+    public string $radius;
 
-    public function __construct(public Flags $flags, public string $longitude, public string $latitude, public string $radius)
+    public function __construct(Flags $flags, string $longitude, string $latitude, string $radius)
     {
+        $this->flags = $flags;
+        $this->longitude = $longitude;
+        $this->latitude = $latitude;
+        $this->radius = $radius;
     }
 
     public function compile(): string

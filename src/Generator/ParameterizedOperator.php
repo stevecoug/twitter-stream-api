@@ -1,8 +1,8 @@
 <?php
 
-namespace Felix\TwitterStream\Generator;
+namespace stevecoug\TwitterStream\Generator;
 
-use Felix\TwitterStream\Support\Str;
+use stevecoug\TwitterStream\Support\Str;
 
 /**
  * @codeCoverageIgnore (internal tool)
@@ -16,7 +16,7 @@ class ParameterizedOperator
     public string $nameAsMethodName;
 
     public function __construct(
-        string $name,
+        string $name
     ) {
         $this->name             = Str::snakeToCamel($name);
         $this->nameAsMethodName = ucfirst($this->name);

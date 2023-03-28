@@ -1,13 +1,20 @@
 <?php
 
-namespace Felix\TwitterStream;
+namespace stevecoug\TwitterStream;
 
 class Rule
 {
+    public $value;
+    public $tag;
+    public $id;
+
     public function __construct(
-        public ?string $value,
-        public ?string $tag,
-        public ?string $id = null,
+        ?string $value,
+        ?string $tag,
+        ?string $id = null
     ) {
+        $this->value = $value;
+        $this->tag = $tag;
+        $this->id = $id;
     }
 }

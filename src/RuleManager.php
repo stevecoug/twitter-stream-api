@@ -1,11 +1,14 @@
 <?php
 
-namespace Felix\TwitterStream;
+namespace stevecoug\TwitterStream;
 
 class RuleManager
 {
-    public function __construct(public TwitterConnection $connection)
+    public TwitterConnection $connection;
+
+    public function __construct(TwitterConnection $connection)
     {
+        $this->connection = $connection;
     }
 
     /** @return Rule[] */
@@ -59,6 +62,6 @@ class RuleManager
 
     public function validate(string $rule): array
     {
-        return $this->save($rule, dryRun: true)->getPayload();
+        return $this->save($rule, null, true)->getPayload();
     }
 }
